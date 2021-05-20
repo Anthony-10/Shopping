@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shopping_app/core/wiget/top_bar/view/top_view.dart';
+import 'package:shopping_app/core/widget/top_bar/view/top_view.dart';
+import 'package:shopping_app/drawer/navigation_drawer_buy.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key key}) : super(key: key);
@@ -13,22 +13,20 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        top: true,
-        child: Column(
-          children: [
-            Container(
-              height: 40.0,
-              child: Center(
-                child: Text(
-                  'BUY',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-                ),
-              ),
-            ),
-            TopView(),
-          ],
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        title: Text(
+          'BUY',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
         ),
+      ),
+      drawer: NavigationDrawerBuy(),
+      body: Column(
+        children: [
+          TopView(),
+        ],
       ),
     );
   }
