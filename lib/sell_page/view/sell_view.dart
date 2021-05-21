@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/core/widget/top_bar/view/top_view.dart';
-import 'package:shopping_app/drawer/navigation_drawer_sell.dart';
+import 'package:shopping_app/core/widget/drawer/navigation_drawer_sell.dart';
+import 'package:shopping_app/core/widget/top_bar/view/top_views.dart';
 
 class SellView extends StatefulWidget {
   const SellView({Key key}) : super(key: key);
@@ -17,9 +17,11 @@ class _SellViewState extends State<SellView> {
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        title: Text(
-          'Sell',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+        title: Center(
+          child: Text(
+            'Sell',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.black),
+          ),
         ),
       ),
       drawer: NavigationDrawerSell(),
@@ -64,8 +66,7 @@ class _SellViewState extends State<SellView> {
                           subtitle: Text(
                             '7',
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: Colors.red, fontSize: 40.0),
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
                           ))),
                   Card(
                       child: ListTile(
@@ -76,8 +77,7 @@ class _SellViewState extends State<SellView> {
                           subtitle: Text(
                             '20',
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: Colors.red, fontSize: 40.0),
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
                           ))),
                   Card(
                       child: ListTile(
@@ -88,8 +88,7 @@ class _SellViewState extends State<SellView> {
                           subtitle: Text(
                             '2,000',
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: Colors.red, fontSize: 40.0),
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
                           ))),
                   Card(
                       child: ListTile(
@@ -100,8 +99,7 @@ class _SellViewState extends State<SellView> {
                           subtitle: Text(
                             '1,000',
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: Colors.red, fontSize: 40.0),
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
                           ))),
                   Card(
                       child: ListTile(
@@ -112,8 +110,7 @@ class _SellViewState extends State<SellView> {
                           subtitle: Text(
                             '14',
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: Colors.red, fontSize: 40.0),
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
                           ))),
                   Card(
                       child: ListTile(
@@ -124,8 +121,7 @@ class _SellViewState extends State<SellView> {
                           subtitle: Text(
                             '2',
                             textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: Colors.red, fontSize: 40.0),
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
                           ))),
                 ]),
           )

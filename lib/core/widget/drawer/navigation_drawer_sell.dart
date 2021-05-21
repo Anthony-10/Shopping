@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class NavigationDrawerBuy extends StatefulWidget {
+class NavigationDrawerSell extends StatefulWidget {
   @override
-  _NavigationDrawerBuyState createState() => _NavigationDrawerBuyState();
+  _NavigationDrawerSellState createState() => _NavigationDrawerSellState();
 }
 
-class _NavigationDrawerBuyState extends State<NavigationDrawerBuy> {
+class _NavigationDrawerSellState extends State<NavigationDrawerSell> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -30,25 +30,13 @@ class _NavigationDrawerBuyState extends State<NavigationDrawerBuy> {
           ),
 
           // body
-          InkWell(
-            child: ListTile(
-              onTap: () {
-                Get.offNamed("homeSell");
-              },
-              title: const Text('Sell'),
-              leading: const Icon(
-                Icons.store,
-                color: Colors.blue,
-              ),
-            ),
-          ),
 
           InkWell(
             child: ListTile(
               onTap: () {
-                Get.offNamed("buyHomePage");
+                Get.offNamed("/sell_view");
               },
-              title: const Text('Home Page'),
+              title: const Text('Sell Page'),
               leading: const Icon(
                 Icons.home,
                 color: Colors.blue,
@@ -59,23 +47,11 @@ class _NavigationDrawerBuyState extends State<NavigationDrawerBuy> {
           InkWell(
             child: ListTile(
               onTap: () {
-                Get.offNamed("cart");
+                Get.offNamed("profile");
               },
-              title: const Text('Shopping cart'),
+              title: const Text('Profile'),
               leading: const Icon(
-                Icons.shopping_cart,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-          InkWell(
-            child: ListTile(
-              onTap: () {
-                Get.offNamed("favourites");
-              },
-              title: const Text('Favourites'),
-              leading: const Icon(
-                Icons.favorite,
+                Icons.person,
                 color: Colors.blue,
               ),
             ),
@@ -84,11 +60,11 @@ class _NavigationDrawerBuyState extends State<NavigationDrawerBuy> {
           InkWell(
             child: ListTile(
               onTap: () {
-                Get.offNamed("bought");
+                Get.offNamed("products");
               },
-              title: const Text('Bought'),
+              title: const Text('Product'),
               leading: const Icon(
-                Icons.shop,
+                Icons.email,
                 color: Colors.blue,
               ),
             ),
@@ -97,7 +73,33 @@ class _NavigationDrawerBuyState extends State<NavigationDrawerBuy> {
           InkWell(
             child: ListTile(
               onTap: () {
-                Get.offNamed("locationBuy");
+                Get.offNamed("/add_products_view");
+              },
+              title: const Text('Add products'),
+              leading: const Icon(
+                Icons.add,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+
+          InkWell(
+            child: ListTile(
+              onTap: () {
+                Get.offNamed("orders");
+              },
+              title: const Text('Orders'),
+              leading: const Icon(
+                Icons.shopping_basket,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+
+          InkWell(
+            child: ListTile(
+              onTap: () {
+                Get.offNamed("LocationSell");
               },
               title: const Text('Location'),
               leading: const Icon(

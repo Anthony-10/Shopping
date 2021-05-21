@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class NavigationDrawerSell extends StatefulWidget {
+class NavigationDrawerBuy extends StatefulWidget {
+  final int index;
+
+  const NavigationDrawerBuy({Key key, this.index}) : super(key: key);
   @override
-  _NavigationDrawerSellState createState() => _NavigationDrawerSellState();
+  _NavigationDrawerBuyState createState() => _NavigationDrawerBuyState();
 }
 
-class _NavigationDrawerSellState extends State<NavigationDrawerSell> {
+class _NavigationDrawerBuyState extends State<NavigationDrawerBuy> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -36,19 +39,6 @@ class _NavigationDrawerSellState extends State<NavigationDrawerSell> {
               onTap: () {
                 Get.offNamed("buyHomePage");
               },
-              title: const Text('Buy'),
-              leading: const Icon(
-                Icons.shopping_basket,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-
-          InkWell(
-            child: ListTile(
-              onTap: () {
-                Get.offNamed("homeSell");
-              },
               title: const Text('Home Page'),
               leading: const Icon(
                 Icons.home,
@@ -60,61 +50,63 @@ class _NavigationDrawerSellState extends State<NavigationDrawerSell> {
           InkWell(
             child: ListTile(
               onTap: () {
-                Get.offNamed("profile");
+                Get.offNamed("favourites");
               },
-              title: const Text('Profile'),
+              title: const Text('Favourites'),
               leading: const Icon(
-                Icons.person,
+                Icons.favorite,
                 color: Colors.blue,
               ),
             ),
           ),
+
           InkWell(
             child: ListTile(
               onTap: () {
-                Get.offNamed("orders");
+                Get.offNamed("cart");
               },
-              title: const Text('Orders'),
+              title: const Text('Shopping cart'),
               leading: const Icon(
-                Icons.shopping_basket,
+                Icons.shopping_cart,
                 color: Colors.blue,
               ),
             ),
           ),
+
           InkWell(
             child: ListTile(
               onTap: () {
-                Get.offNamed("LocationSell");
+                Get.offNamed("bought");
+              },
+              title: const Text('Bought'),
+              leading: const Icon(
+                Icons.shop,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+
+          InkWell(
+            child: ListTile(
+              onTap: () {
+                Get.offNamed("favourites");
+              },
+              title: const Text('Try It'),
+              leading: const Icon(
+                Icons.favorite,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+
+          InkWell(
+            child: ListTile(
+              onTap: () {
+                Get.offNamed("locationBuy");
               },
               title: const Text('Location'),
               leading: const Icon(
                 Icons.map,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-
-          InkWell(
-            child: ListTile(
-              onTap: () {
-                Get.offNamed("products");
-              },
-              title: const Text('Product'),
-              leading: const Icon(
-                Icons.email,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-
-          InkWell(
-            child: ListTile(
-              onTap: () {
-                Get.offNamed("addProducts");
-              },
-              title: const Text('Add products'),
-              leading: const Icon(
-                Icons.add,
                 color: Colors.blue,
               ),
             ),
@@ -140,8 +132,7 @@ class _NavigationDrawerSellState extends State<NavigationDrawerSell> {
 
           InkWell(
             child: ListTile(
-              onTap: () {
-              },
+              onTap: () {},
               title: const Text('log Out'),
               leading: const Icon(Icons.logout),
             ),

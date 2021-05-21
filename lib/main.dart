@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/home_page/view/home_view.dart';
 import 'package:shopping_app/sell_page/view/sell_view.dart';
+
+import 'add_products/view/addproducts_view.dart';
+import 'buy_page/view/buy_view.dart';
+import 'core/widget/tab_bar/view/tab_bar.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,11 +18,13 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
 
       getPages: [
-        GetPage(name: "/home_view", page: ()=> HomeView()),
-        GetPage(name: "/sell_view", page: ()=> SellView())
+        GetPage(name: "/buy_view", page: ()=> BuyView()),
+        GetPage(name: "/sell_view", page: ()=> SellView()),
+        GetPage(name: "/tab_bar", page: ()=> TabBarPage()),
+        GetPage(name: "/add_products_view", page: ()=> AddProductsView()),
       ],
 
-     initialRoute: "/home_view",
+     initialRoute: "/buy_view",
     );
   }
 }
