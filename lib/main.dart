@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/add_products/binding/addproducts_binding.dart';
 import 'package:shopping_app/sell_page/view/sell_view.dart';
 
 import 'add_products/view/addproducts_view.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
 
       getPages: [
         GetPage(name: "/buy_view", page: ()=> BuyView()),
-        GetPage(name: "/sell_view", page: ()=> SellView()),
+        GetPage(name: "/sell_view", page: ()=> SellView(), binding: AddProductcBinding()),
         GetPage(name: "/tab_bar", page: ()=> TabBarPage()),
         GetPage(name: "/add_products_view", page: ()=> AddProductsView()),
       ],
