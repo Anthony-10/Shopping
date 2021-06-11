@@ -1,21 +1,25 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class AddProductsController extends GetxController {
   final picker = ImagePicker();
-  //final image = [].obs;
-  final image = ''.obs;
+  final image = [].obs;
+  //File image;
+  // File image = ''.obs as File;
   var imageSize = ''.obs;
 
   getImageGallery(ImageSource imageSource) async {
-    final pickedFile = await ImagePicker().getImage(source: imageSource);
+    final FilePickerResult pickedFile = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+      allowMultiple: true,
+    );
     if (pickedFile != null) {
-      image.value = File(pickedFile.path) as String;
-      imageSize.value =
-          "${(File(imageSize.value).lengthSync() / 1024 / 1024).toStringAsFixed(2)}Mb";
+      pickedFile.files.forEach((selectedFile) {
+        final File file = File(selectedFile.path);
+        image.add(file);
+      });
     } else {
       Get.snackbar('Error', 'No image selected',
           snackPosition: SnackPosition.BOTTOM);
@@ -25,16 +29,15 @@ class AddProductsController extends GetxController {
   getImageCamera(ImageSource imageSource) async {
     final pickedFile = await ImagePicker().getImage(source: imageSource);
     if (pickedFile != null) {
-      image.value = File(pickedFile.path) as String;
-      imageSize.value =
-          "${(File(imageSize.value).lengthSync() / 1024 / 1024).toStringAsFixed(2)}Mb";
+      image.add(File(pickedFile.path));
     } else {
       Get.snackbar('Error', 'No image selected',
           snackPosition: SnackPosition.BOTTOM);
     }
   }
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  /*final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   //String uid = FirebaseAuth.instance.currentUser.uid;
 
   Future<void> addProducts(String name, var size) async {
@@ -52,5 +55,5 @@ class AddProductsController extends GetxController {
     } catch (e) {
       rethrow;
     }
-  }
+  }*/
 }

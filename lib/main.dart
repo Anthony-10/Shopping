@@ -1,13 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/add_products/binding/addproducts_binding.dart';
+import 'package:shopping_app/extras/dashboard_view.dart';
 import 'package:shopping_app/sell_page/view/sell_view.dart';
 
 import 'add_products/view/addproducts_view.dart';
 import 'buy_page/view/buy_view.dart';
-import 'core/widget/tab_bar/view/tab_bar.dart';
+import 'core/widget/new_drawer/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -17,17 +22,30 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-
       getPages: [
-        GetPage(name: "/buy_view", page: ()=> BuyView()),
-        GetPage(name: "/sell_view", page: ()=> SellView(), binding: AddProductcBinding()),
-        GetPage(name: "/tab_bar", page: ()=> TabBarPage()),
-        GetPage(name: "/add_products_view", page: ()=> AddProductsView()),
+        GetPage(name: "/buy_view", page: () => BuyView()),
+        GetPage(
+            name: "/sell_view",
+            page: () => SellView(),
+            binding: AddProductcBinding()),
+        GetPage(
+            name: "/tab_bar",
+            page: () => dashboard_view(),
+            binding: AddProductcBinding()),
+        GetPage(
+            name: "/add_products_view",
+            page: () => AddProductsView(),
+            binding: AddProductcBinding()),
+        /*GetPage(name: "/side_view_buy", page: () => SideViewBuy()),
+        GetPage(
+            name: "/side_view_sell",
+            page: () => SideViewSell(),
+            binding: AddProductcBinding()),*/
+        GetPage(
+            name: "/home_drawer",
+            page: () => HomeDrawer()),
       ],
-
-     initialRoute: "/buy_view",
+      initialRoute: "/home_drawer",
     );
   }
 }
-
-
