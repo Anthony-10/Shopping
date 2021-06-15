@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/core/widget/new_drawer/drawer_menu_widget.dart';
+import 'extras/drawer_menu_widget.dart';
 
 
 
@@ -9,11 +9,13 @@ class Favourites extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: DrawerMenuWidget(onClicked: openDrawer),
+    return SafeArea(
+      child: Scaffold(
+        // appBar: AppBar(
+        //   leading: DrawerMenuWidget(onClicked: openDrawer),
+        // ),
+        body: Center(child: Text('favourites')),
       ),
-      body: Center(child: Text('favourites')),
     );
   }
 }

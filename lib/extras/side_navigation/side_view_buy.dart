@@ -1,4 +1,4 @@
-import 'dart:math';
+/*import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -54,7 +54,7 @@ class _SideViewBuyState extends State<SideViewBuy> {
                         style: TextStyle(color: Colors.white))
                   ],
                 )),
-                /*Expanded(
+                *//*Expanded(
                     child: widget.index == 0
                         ? ListView(
                             children: [
@@ -235,7 +235,7 @@ class _SideViewBuyState extends State<SideViewBuy> {
                                 leading: const Icon(Icons.logout),
                               ),
                             ],
-                          ))*/
+                          ))*//*
               ],
             ),
           )),
@@ -280,4 +280,4 @@ class _SideViewBuyState extends State<SideViewBuy> {
       ),
     );
   }
-}
+}*/

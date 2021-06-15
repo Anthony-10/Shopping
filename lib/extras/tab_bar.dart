@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/core/widget/new_drawer/drawer_widget.dart';
+import 'package:shopping_app/buy_page/view/buy_view.dart';
+import 'package:shopping_app/core/widget/drawer/drawer_widget.dart';
+import 'package:shopping_app/sell_page/view/sell_view.dart';
 
 class TabBarPage extends StatefulWidget {
   @override
@@ -102,9 +104,12 @@ class _TabBarPageState extends State<TabBarPage> {
               backgroundColor: Colors.grey,
             ),
             //drawer: NavigationDrawerBuy(index: initialIndex,),
-            body: DrawerWidget(
+            body: initialIndex == 0 ? BuyView() : SellView()
+
+            /*DrawerWidget(
               index: initialIndex,
-            ))); /*initialIndex == 0 ? SideViewBuy(index: initialIndex,) : SideViewSell()))*/
+            )*/
+            )); /*initialIndex == 0 ? SideViewBuy(index: initialIndex,) : SideViewSell()))*/
     /*appBar: AppBar(
               bottom: (
                 tabs: [

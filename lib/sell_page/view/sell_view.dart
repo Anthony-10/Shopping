@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/core/widget/tab_bar/tab_bar.dart';
+import 'package:shopping_app/extras/tab_bar.dart';
 
 class SellView extends StatefulWidget {
   const SellView({Key key}) : super(key: key);
@@ -12,16 +12,9 @@ class _SellViewState extends State<SellView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-      ),*/
-      //drawer: NavigationDrawerSell(),
+      backgroundColor: Colors.transparent,
       body: Column(
         children: [
-          Expanded(child: TabBarPage()),
-          //TopView(),
           Container(
             height: 80.0,
             child: ListTile(

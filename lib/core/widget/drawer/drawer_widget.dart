@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/data/buy_drawer/buy_item.dart';
 import 'package:shopping_app/data/sell_drawer/sell_item.dart';
 import 'package:shopping_app/models/drawer_items.dart';
 
-class DrawerWidget extends StatefulWidget {
+class DrawerWidget extends StatelessWidget {
   final ValueChanged<DrawerItem> onSelectedItem;
-  final int index;
-  const DrawerWidget({Key key, this.onSelectedItem, this.index})
-      : super(key: key);
 
-  @override
-  _DrawerWidgetState createState() => _DrawerWidgetState();
-}
+  DrawerWidget({Key key, this.onSelectedItem}) : super(key: key);
 
-class _DrawerWidgetState extends State<DrawerWidget> {
-  //int index = 0;
+  final initialindex = Get.put(InitialIndex());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +26,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   }
 
   buildDrawerItems(BuildContext context) => Column(
-      children: widget.index == 0
+      children: initialindex.initialIndex == 0
           ? BuyDrawerItems.all
               .map((item) => ListTile(
                     contentPadding:
@@ -45,7 +41,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         color: Colors.white,
                       ),
                     ),
-                    onTap: () => widget.onSelectedItem(item),
+                    onTap: () => onSelectedItem(item),
                   ))
               .toList()
           : SellDrawerItems.all
@@ -62,7 +58,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         color: Colors.white,
                       ),
                     ),
-                    onTap: () => widget.onSelectedItem(item),
+                    onTap: () => onSelectedItem(item),
                   ))
               .toList());
 }

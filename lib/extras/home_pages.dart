@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/core/widget/tab_bar/tab_bar.dart';
+import 'package:shopping_app/extras/tab_bar.dart';
 
 class HomePages extends StatelessWidget {
   final VoidCallback openDrawer;
@@ -8,7 +8,7 @@ class HomePages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.indigo,
       body: TabBarPage(),
       // appBar: AppBar(
       //   backgroundColor: Colors.transparent,

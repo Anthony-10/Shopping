@@ -7,7 +7,8 @@ import 'package:shopping_app/sell_page/view/sell_view.dart';
 
 import 'add_products/view/addproducts_view.dart';
 import 'buy_page/view/buy_view.dart';
-import 'core/widget/new_drawer/home.dart';
+import 'core/widget/drawer/drawer_view/drawer_view.dart';
+import 'extras/tab_bar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             binding: AddProductcBinding()),
         GetPage(
             name: "/tab_bar",
-            page: () => dashboard_view(),
+            page: () => TabBarPage(),
             binding: AddProductcBinding()),
         GetPage(
             name: "/add_products_view",
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
             binding: AddProductcBinding()),*/
         GetPage(
             name: "/home_drawer",
-            page: () => HomeDrawer()),
+            page: () => DrawerView()),
       ],
       initialRoute: "/home_drawer",
     );
