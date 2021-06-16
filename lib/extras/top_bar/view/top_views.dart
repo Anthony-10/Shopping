@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TopView extends StatelessWidget {
-  const TopView({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class TopView extends StatelessWidget {
                   TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
                 ),
                 onTap: (){
-                  Get.toNamed("/home_view");
+                  Get.offAllNamed("/buy_view");
                 },
               ),
               InkWell(
@@ -30,7 +29,7 @@ class TopView extends StatelessWidget {
                   TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
                 ),
                 onTap: (){
-                  Get.toNamed("/sell_view");
+                  Get.offAllNamed("/sell_view");
                 },
               )
             ],
