@@ -3,22 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy_page/view/buy_view.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
-import 'package:shopping_app/core/widget/drawer/drawer_widget.dart';
 import 'package:shopping_app/sell_page/view/sell_view.dart';
 
 class NewTab extends StatefulWidget {
-  //final int initialIndex;
-
-  //const NewTab({Key key, this.initialIndex}) : super(key: key);
-
   @override
   _NewTabState createState() => _NewTabState();
 }
 
 class _NewTabState extends State<NewTab> {
   final initialindex = Get.put(InitialIndex());
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +21,6 @@ class _NewTabState extends State<NewTab> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          //appBar: DrawerWidget(index: initialIndex,),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -50,8 +42,9 @@ class _NewTabState extends State<NewTab> {
                       child: Container(
                         width: Get.width * 0.30,
                         decoration: BoxDecoration(
-                            color:
-                            initialindex.initialIndex == 0 ? Colors.black : Colors.grey,
+                            color: initialindex.initialIndex == 0
+                                ? Colors.black
+                                : Colors.grey,
                             borderRadius: BorderRadius.circular(20.0)),
                         child: Center(
                           child: Text(
@@ -70,8 +63,9 @@ class _NewTabState extends State<NewTab> {
                       child: Container(
                         width: Get.width * 0.30,
                         decoration: BoxDecoration(
-                            color:
-                            initialindex.initialIndex == 1 ? Colors.black : Colors.grey,
+                            color: initialindex.initialIndex == 1
+                                ? Colors.black
+                                : Colors.grey,
                             borderRadius: BorderRadius.circular(20.0)),
                         child: Center(
                           child: Text(
@@ -84,7 +78,9 @@ class _NewTabState extends State<NewTab> {
                   ],
                 ),
               ),
-              Expanded(child: initialindex.initialIndex == 0 ? BuyView() : SellView())
+              Expanded(
+                  child:
+                      initialindex.initialIndex == 0 ? BuyView() : SellView())
             ],
           ),
         ),

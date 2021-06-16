@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
             binding: AddProductcBinding()),*/
         GetPage(
             name: "/home_drawer",
-            page: () => DrawerView()),
+            page: () => DrawerView(), binding: AddProductcBinding()),
       ],
       initialRoute: "/home_drawer",
     );

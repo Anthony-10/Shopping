@@ -16,6 +16,7 @@ class DrawerWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
       child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: [
             buildDrawerItems(context),
@@ -33,12 +34,12 @@ class DrawerWidget extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
                     leading: Icon(
                       item.icon,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     title: Text(
                       item.title,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     onTap: () => onSelectedItem(item),
@@ -50,12 +51,12 @@ class DrawerWidget extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
                     leading: Icon(
                       item.icon,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     title: Text(
                       item.title,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     onTap: () => onSelectedItem(item),

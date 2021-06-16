@@ -12,7 +12,6 @@ class SellDrawerItems {
   static const about = DrawerItem(title: 'About', icon: Icons.help);
   static const logOut = DrawerItem(title: 'log Out', icon: Icons.logout);
 
-
   static final List<DrawerItem> all = [
     sellPage,
     profile,

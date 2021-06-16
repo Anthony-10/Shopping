@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -11,11 +13,17 @@ class AddProductsController extends GetxController {
   var imageSize = ''.obs;
 
   getImageGallery(ImageSource imageSource) async {
+    image.clear();
     final FilePickerResult pickedFile = await FilePicker.platform.pickFiles(
       type: FileType.any,
       allowMultiple: true,
     );
     if (pickedFile != null) {
+      if (pickedFile.count > 3) {
+        Get.snackbar('Error', 'More than 3 items selected',
+            snackPosition: SnackPosition.BOTTOM);
+        return;
+      }
       pickedFile.files.forEach((selectedFile) {
         final File file = File(selectedFile.path);
         image.add(file);
@@ -27,6 +35,7 @@ class AddProductsController extends GetxController {
   }
 
   getImageCamera(ImageSource imageSource) async {
+    image.clear();
     final pickedFile = await ImagePicker().getImage(source: imageSource);
     if (pickedFile != null) {
       image.add(File(pickedFile.path));
@@ -36,8 +45,7 @@ class AddProductsController extends GetxController {
     }
   }
 
-
-  /*final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   //String uid = FirebaseAuth.instance.currentUser.uid;
 
   Future<void> addProducts(String name, var size) async {
@@ -55,5 +63,5 @@ class AddProductsController extends GetxController {
     } catch (e) {
       rethrow;
     }
-  }*/
+  }
 }
