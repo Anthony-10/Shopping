@@ -7,8 +7,7 @@ import 'package:shopping_app/models/drawer_items.dart';
 
 class DrawerWidget extends StatelessWidget {
   final ValueChanged<DrawerItem> onSelectedItem;
-
-  DrawerWidget({Key key, this.onSelectedItem}) : super(key: key);
+  DrawerWidget({Key key, this.onSelectedItem,}) : super(key: key);
 
   final initialindex = Get.put(InitialIndex());
   @override

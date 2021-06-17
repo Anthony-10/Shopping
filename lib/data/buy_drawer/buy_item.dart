@@ -3,7 +3,8 @@ import 'package:shopping_app/models/drawer_items.dart';
 
 class BuyDrawerItems {
   static const home = DrawerItem(title: 'Home', icon: Icons.home);
-  static const favourites = DrawerItem(title: 'Favourites', icon: Icons.favorite);
+  static const favourites =
+      DrawerItem(title: 'Favourites', icon: Icons.favorite);
   static const cart = DrawerItem(title: 'Home', icon: Icons.shopping_cart);
   static const bought = DrawerItem(title: 'Bought', icon: Icons.shop);
   static const tryIt = DrawerItem(title: 'Try It', icon: Icons.favorite);
@@ -12,8 +13,7 @@ class BuyDrawerItems {
   static const about = DrawerItem(title: 'About', icon: Icons.help);
   static const logOut = DrawerItem(title: 'log Out', icon: Icons.logout);
 
-
-  static final List<DrawerItem> all= [
+  static final List<DrawerItem> all = [
     home,
     favourites,
     cart,

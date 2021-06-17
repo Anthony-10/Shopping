@@ -56,7 +56,7 @@ class _DrawerViewState extends State<DrawerView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[400],
         //fromRGBO(21, 30, 61, 1),
         body: Stack(
           children: [
@@ -68,22 +68,24 @@ class _DrawerViewState extends State<DrawerView> {
 
   buildDrawer() => SafeArea(child: Container(
         //width: xOffset,
-        child: DrawerWidget(onSelectedItem: (item) async {
-          switch (item) {
-            case BuyDrawerItems.logOut:
-              Get.snackbar('massage', 'logOut');
-              return;
-            case SellDrawerItems.logOut:
-              Get.snackbar('massage', 'logOut');
-              return;
+        child: DrawerWidget(
+          onSelectedItem: (item) async {
+            switch (item) {
+              case BuyDrawerItems.logOut:
+                Get.snackbar('massage', 'logOut');
+                return;
+              case SellDrawerItems.logOut:
+                Get.snackbar('massage', 'logOut');
+                return;
 
-            default:
-              setState(() {
-                this.item = item;
-                closeDrawer();
-              });
-          }
-        }),
+              default:
+                setState(() {
+                  this.item = item;
+                  closeDrawer();
+                });
+            }
+          },
+        ),
       ));
 
   Widget buildPage() {
@@ -120,7 +122,7 @@ class _DrawerViewState extends State<DrawerView> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(isDrawerOpen ? 20 : 0),
                 child: Container(
-                    color: isDrawerOpen ? Colors.grey : Colors.white,
+                    color: isDrawerOpen ? Colors.grey[200] : Colors.white,
                     child: initialindex.initialIndex == 0
                         ? getBuyPage()
                         : getSellPage()),

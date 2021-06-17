@@ -35,10 +35,20 @@ class AddProductsController extends GetxController {
   }
 
   getImageCamera(ImageSource imageSource) async {
-    image.clear();
+    //image.clear();
+
     final pickedFile = await ImagePicker().getImage(source: imageSource);
     if (pickedFile != null) {
       image.add(File(pickedFile.path));
+      if (image.length == 3) {
+        return;
+      } else if (image.length > 3) {
+        image.removeLast();
+        Get.snackbar('Error', 'More than 3 items selected',
+            snackPosition: SnackPosition.BOTTOM);
+      } else {
+        this.getImageCamera(imageSource);
+      }
     } else {
       Get.snackbar('Error', 'No image selected',
           snackPosition: SnackPosition.BOTTOM);

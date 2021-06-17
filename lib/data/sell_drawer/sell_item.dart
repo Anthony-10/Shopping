@@ -6,7 +6,8 @@ class SellDrawerItems {
   static const profile = DrawerItem(title: 'Profile', icon: Icons.person);
   static const product = DrawerItem(title: 'Product', icon: Icons.email);
   static const addProducts = DrawerItem(title: 'Add products', icon: Icons.add);
-  static const orders = DrawerItem(title: 'Orders', icon: Icons.shopping_basket);
+  static const orders =
+      DrawerItem(title: 'Orders', icon: Icons.shopping_basket);
   static const location = DrawerItem(title: 'Location', icon: Icons.map);
   static const settings = DrawerItem(title: 'Settings', icon: Icons.settings);
   static const about = DrawerItem(title: 'About', icon: Icons.help);
