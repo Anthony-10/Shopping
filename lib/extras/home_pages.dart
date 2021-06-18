@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:shopping_app/extras/tab_bar.dart';
 
@@ -17,3 +18,4 @@ class HomePages extends StatelessWidget {
     );
   }
 }
+*/

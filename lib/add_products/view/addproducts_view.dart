@@ -1,15 +1,20 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_app/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/data/add_product/add_product.dart';
+import 'package:shopping_app/data/item_category/car_item.dart';
+import 'package:shopping_app/data/item_category/cloth_item.dart';
+import 'package:shopping_app/data/product_category/product_category.dart';
+import 'package:shopping_app/models/product_items.dart';
 
 class AddProductsView extends StatefulWidget {
-  const AddProductsView({Key key}) : super(key: key);
+  AddProductsView({
+    Key key,
+  }) : super(key: key);
 
   @override
   _AddProductsViewState createState() => _AddProductsViewState();
@@ -21,14 +26,20 @@ class _AddProductsViewState extends State<AddProductsView> {
 
   final addProductsController = Get.find<AddProductsController>();
 
+  ProductItems element = ProductCategories.car;
+
+  //final bottomSheet = Get.put(BottomSheet());
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _skip();
+    bottomSheetTimer();
   }
 
   bool value = false;
+
+  ValueChanged<ProductItems> onClickProduct;
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +156,13 @@ class _AddProductsViewState extends State<AddProductsView> {
                 SizedBox(
                   height: 30.0,
                 ),
+                Text(
+                  'Enter Three Dimension Of Your Products',
+                  style: TextStyle(color: Colors.red),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
                 SizedBox(
                     width: Get.width * 0.6,
                     child: Column(
@@ -202,24 +220,192 @@ class _AddProductsViewState extends State<AddProductsView> {
   }
 
   getBottomSheet() {
-    Get.bottomSheet(Container(height: 50.0, decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20))),
-      child: CheckboxListTile(
-        controlAffinity: ListTileControlAffinity.leading,
-        activeColor: Colors.red,
-        value: value,
-        title: Text('mA'),
-        /*onChanged: (value) => ,*/
-      ),));
+    Get.bottomSheet(Container(
+      height: Get.height,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      child: Row(
+        children: [
+          // ....................Category List
+
+          SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                    margin: EdgeInsets.all(15.0),
+                    child: Text('Select a category')),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: ProductCategories.all
+                      .map((element) =>
+                      GestureDetector(
+                        onTap: () {
+                          /*onClickProduct(element);*/
+                          setState(() {
+                            //TODO
+                            this.element = element;
+                            print(element.title);
+                            //widget.onClickProduct(this.element);
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(10.0),
+                          height: Get.height * 0.05,
+                          width: Get.width * 0.2,
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: Center(
+                              child: Text(
+                                element.title,
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        ),
+                      ))
+                      .toList(),
+                ),
+              ],
+            ),
+          ),
+
+          // ....................Item List
+
+          SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: getPage(),
+          ),
+        ],
+      ),
+    ));
   }
 
-  void _skip() async {
-    final timer = Timer(Duration(microseconds: 2000), () async {
-      print('something happens here');
+  void bottomSheetTimer() async {
+    final timer = Timer(Duration(microseconds: 1), () async {
       getBottomSheet();
     });
+  }
+
+  Widget getPage() {
+    /*element==ProductCategories.car
+    ?Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: CarItem.all
+          .map((element) => GestureDetector(
+        onTap: () {
+          setState(() {
+            Get.back();
+            //TODO
+            print(element.title);
+          });
+        },
+        child: Container(
+          margin: EdgeInsets.all(10.0),
+          height: Get.height * 0.05,
+          width: Get.width * 0.2,
+          decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10.0)),
+          child: Center(
+              child: Text(
+                element.title,
+                style: TextStyle(color: Colors.white),
+              )),
+        ),
+      ))
+          .toList(),
+    ):element==ProductCategories.clothes
+        ?Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: ClothItem.all
+          .map((element) => GestureDetector(
+        onTap: () {
+          setState(() {
+            Get.back();
+            //TODO
+            print(element.title);
+          });
+        },
+        child: Container(
+          margin: EdgeInsets.all(10.0),
+          height: Get.height * 0.05,
+          width: Get.width * 0.2,
+          decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10.0)),
+          child: Center(
+              child: Text(
+                element.title,
+                style: TextStyle(color: Colors.white),
+              )),
+        ),
+      ))
+          .toList(),
+    ):SizedBox();*/
+
+    switch (element) {
+      case ProductCategories.car:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: CarItem.all
+              .map((element) =>
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    Get.back();
+                    //TODO
+                    print(element.title);
+                  });
+                },
+                child: Container(
+                  margin: EdgeInsets.all(10.0),
+                  height: Get.height * 0.05,
+                  width: Get.width * 0.2,
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Center(
+                      child: Text(
+                        element.title,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ),
+              ))
+              .toList(),
+        );
+      case ProductCategories.clothes:
+      default:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: ClothItem.all
+              .map((element) =>
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    Get.back();
+                    //TODO
+                    print(element.title);
+                  });
+                },
+                child: Container(
+                  margin: EdgeInsets.all(10.0),
+                  height: Get.height * 0.05,
+                  width: Get.width * 0.2,
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Center(
+                      child: Text(
+                        element.title,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ),
+              ))
+              .toList(),
+        );
+    }
   }
 }
