@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_app/add_products/controller/addproducts_controller.dart';
+import 'package:shopping_app/add_products/widget/product_selection/car_view.dart';
+import 'package:shopping_app/add_products/widget/product_selection/cloth_view.dart';
 import 'package:shopping_app/data/add_product/add_product.dart';
 import 'package:shopping_app/data/item_category/car_item.dart';
 import 'package:shopping_app/data/item_category/cloth_item.dart';
@@ -94,65 +96,62 @@ class _AddProductsViewState extends State<AddProductsView> {
                   ),
                   height: 40.0,
                 ),
-                Obx(() =>
-                addProductsController.image.isNotEmpty
+                Obx(() => addProductsController.image.isNotEmpty
                     ? SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  physics: BouncingScrollPhysics(),
-                  child: Row(
-                    children: addProductsController.image
-                        .map((element) =>
-                        SizedBox(
-                          height: Get.height * 0.5,
-                          width: Get.width * 0.6,
-                          child: Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAlias,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(10.0)),
-                            child: Image.file(element,
-                                fit: BoxFit.cover,
-                                height: Get.height * 0.5,
-                                width: Get.width * 0.5),
-                            color: Colors.white70,
-                            elevation: 3.0,
-                            margin: EdgeInsets.all(5.0),
-                          ),
-                        ))
-                        .toList(),
-                  ),
-                )
-                    : SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  physics: BouncingScrollPhysics(),
-                  child: Row(
-                      children: AddProductItems.all
-                          .map(
-                            (item) =>
-                            SizedBox(
-                              height: Get.height * 0.5,
-                              width: Get.width * 0.6,
-                              child: Card(
-                                semanticContainer: true,
-                                clipBehavior: Clip.antiAlias,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(10.0)),
-                                child: Center(
-                                    child: Text(
-                                      item.name,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                                color: Colors.white70,
-                                elevation: 3.0,
-                                margin: EdgeInsets.all(5.0),
-                              ),
-                            ),
+                        scrollDirection: Axis.horizontal,
+                        physics: BouncingScrollPhysics(),
+                        child: Row(
+                          children: addProductsController.image
+                              .map((element) => SizedBox(
+                                    height: Get.height * 0.5,
+                                    width: Get.width * 0.6,
+                                    child: Card(
+                                      semanticContainer: true,
+                                      clipBehavior: Clip.antiAlias,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      child: Image.file(element,
+                                          fit: BoxFit.cover,
+                                          height: Get.height * 0.5,
+                                          width: Get.width * 0.5),
+                                      color: Colors.white70,
+                                      elevation: 3.0,
+                                      margin: EdgeInsets.all(5.0),
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
                       )
-                          .toList()),
-                )),
+                    : SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        physics: BouncingScrollPhysics(),
+                        child: Row(
+                            children: AddProductItems.all
+                                .map(
+                                  (item) => SizedBox(
+                                    height: Get.height * 0.5,
+                                    width: Get.width * 0.6,
+                                    child: Card(
+                                      semanticContainer: true,
+                                      clipBehavior: Clip.antiAlias,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      child: Center(
+                                          child: Text(
+                                        item.name,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                      color: Colors.white70,
+                                      elevation: 3.0,
+                                      margin: EdgeInsets.all(5.0),
+                                    ),
+                                  ),
+                                )
+                                .toList()),
+                      )),
                 SizedBox(
                   height: 30.0,
                 ),
@@ -241,31 +240,31 @@ class _AddProductsViewState extends State<AddProductsView> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: ProductCategories.all
-                      .map((element) =>
-                      GestureDetector(
-                        onTap: () {
-                          /*onClickProduct(element);*/
-                          setState(() {
-                            //TODO
-                            this.element = element;
-                            print(element.title);
-                            //widget.onClickProduct(this.element);
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(10.0),
-                          height: Get.height * 0.05,
-                          width: Get.width * 0.2,
-                          decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Center(
-                              child: Text(
+                      .map((element) => GestureDetector(
+                            onTap: () {
+                              /*onClickProduct(element);*/
+                              setState(() {
+                                //TODO
+                                this.element = element;
+                                print(element);
+                                print(element.title);
+                                //widget.onClickProduct(this.element);
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(10.0),
+                              height: Get.height * 0.05,
+                              width: Get.width * 0.2,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              child: Center(
+                                  child: Text(
                                 element.title,
                                 style: TextStyle(color: Colors.white),
                               )),
-                        ),
-                      ))
+                            ),
+                          ))
                       .toList(),
                 ),
               ],
@@ -289,8 +288,7 @@ class _AddProductsViewState extends State<AddProductsView> {
     });
   }
 
-  Widget getPage() {
-    /*element==ProductCategories.car
+  /*element==ProductCategories.car
     ?Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: CarItem.all
@@ -345,67 +343,14 @@ class _AddProductsViewState extends State<AddProductsView> {
       ))
           .toList(),
     ):SizedBox();*/
-
+  Widget getPage() {
     switch (element) {
       case ProductCategories.car:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: CarItem.all
-              .map((element) =>
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    Get.back();
-                    //TODO
-                    print(element.title);
-                  });
-                },
-                child: Container(
-                  margin: EdgeInsets.all(10.0),
-                  height: Get.height * 0.05,
-                  width: Get.width * 0.2,
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: Center(
-                      child: Text(
-                        element.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                ),
-              ))
-              .toList(),
-        );
+        return CarView();
+
       case ProductCategories.clothes:
       default:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: ClothItem.all
-              .map((element) =>
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    Get.back();
-                    //TODO
-                    print(element.title);
-                  });
-                },
-                child: Container(
-                  margin: EdgeInsets.all(10.0),
-                  height: Get.height * 0.05,
-                  width: Get.width * 0.2,
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: Center(
-                      child: Text(
-                        element.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                ),
-              ))
-              .toList(),
-        );
+        return ClothView();
     }
   }
 }
