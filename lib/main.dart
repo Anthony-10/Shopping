@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/add_products/binding/addproducts_binding.dart';
-import 'package:shopping_app/extras/dashboard_view.dart';
 import 'package:shopping_app/sell_page/view/sell_view.dart';
 
 import 'add_products/view/addproducts_view.dart';
