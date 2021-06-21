@@ -81,6 +81,8 @@ class _DrawerViewState extends State<DrawerView> {
               default:
                 setState(() {
                   this.item = item;
+                  print(item.title);
+                  print(item);
                   closeDrawer();
                 });
             }

@@ -23,6 +23,10 @@ class AddProductsController extends GetxController {
         Get.snackbar('Error', 'More than 3 items selected',
             snackPosition: SnackPosition.BOTTOM);
         return;
+      } else if (pickedFile.count < 3) {
+        Get.snackbar('Error', 'Less than 3 items selected',
+            snackPosition: SnackPosition.BOTTOM);
+        return;
       }
       pickedFile.files.forEach((selectedFile) {
         final File file = File(selectedFile.path);
