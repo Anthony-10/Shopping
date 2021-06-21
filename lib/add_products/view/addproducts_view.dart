@@ -28,7 +28,7 @@ class _AddProductsViewState extends State<AddProductsView> {
 
   final addProductsController = Get.find<AddProductsController>();
 
-  ProductItems element = ProductCategories.car;
+  ProductItems element;
 
   //final bottomSheet = Get.put(BottomSheet());
 
