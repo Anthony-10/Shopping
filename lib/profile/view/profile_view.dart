@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/data/product_category/product_category.dart';
+import 'package:shopping_app/data/profile_category/product_category.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({Key key}) : super(key: key);
@@ -36,8 +38,11 @@ class ProfileView extends StatelessWidget {
                       bottom: -3,
                       right: -3,
                       child: IconButton(
-                        icon: Icon(Icons.camera_alt, size: 30.0,),
-                        onPressed: (){},
+                        icon: Icon(
+                          Icons.camera_alt,
+                          size: 30.0,
+                        ),
+                        onPressed: () {},
                       ))
                 ],
               ),
@@ -52,13 +57,21 @@ class ProfileView extends StatelessWidget {
             ]),
           ),
           SizedBox(
-            height: 20.0,
+            height: 50.0,
           ),
-          ListTile(
-            title: Text('Language'),
-            subtitle: Text('Swahili'),
-            trailing: Icon(Icons.arrow_forward_ios_rounded),
-          )
+          Column(
+              children: ProductCategory.all
+                  .map((item) => Card(
+                        child: ListTile(
+                          title: Text(item.text),
+                          subtitle: Text(item.subText),
+                          trailing: Icon(item.icon),
+                          onTap: () {},
+                        ),
+                        elevation: 20.0,
+                        shadowColor: Colors.black,
+                      ))
+                  .toList()),
         ],
       ),
     ));

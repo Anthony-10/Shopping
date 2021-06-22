@@ -46,17 +46,19 @@ class _SellViewState extends State<SellView> {
                 children: SellViewCategory.all
                     .map(
                       (element) => Card(
-                          child: ListTile(
-                              title: TextButton.icon(
-                                  onPressed: () {},
-                                  icon: Icon(element.icon),
-                                  label: Expanded(child: Text(element.label))),
-                              subtitle: Text(
-                                element.subtitle,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.red, fontSize: 40.0),
-                              ))),
+                        child: ListTile(
+                            title: TextButton.icon(
+                                onPressed: () {},
+                                icon: Icon(element.icon),
+                                label: Expanded(child: Text(element.label))),
+                            subtitle: Text(
+                              element.subtitle,
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 40.0),
+                            )),
+                        elevation: 20.0,
+                      ),
                     )
                     .toList()),
           )

@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DirectionRepository {
   static const String _baseUrl =
-      'https://maps.googleapis.com/maps/api/directions/outputFormat/json?';
+      'https://maps.googleapis.com/maps/api/directions/json?';
 
   final Dio _dio;
 

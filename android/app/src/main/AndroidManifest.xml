@@ -3,6 +3,8 @@
    <application
         android:label="shopping_app"
         android:icon="@mipmap/ic_launcher">
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyCbF_1LNdcJrFEwlFacTeLRc3I9RoOFrtA"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -37,7 +39,5 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-       <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyCbF_1LNdcJrFEwlFacTeLRc3I9RoOFrtA"/>
     </application>
 </manifest>

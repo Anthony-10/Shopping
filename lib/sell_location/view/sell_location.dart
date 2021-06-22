@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopping_app/models/directions.dart';
 import 'package:shopping_app/sell_location/controller/sell_direction_controller.dart';
@@ -28,67 +29,83 @@ class _SellLocationState extends State<SellLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          GoogleMap(
-            myLocationButtonEnabled: false,
-            zoomControlsEnabled: false,
-            initialCameraPosition: _initialCameraPosition,
-            onMapCreated: (controller) => _googleMapController = controller,
-            markers: {
-              if (_origin != null) _origin,
-              if (_destination != null) _destination
-            },
-            polylines: {
-              if (_info != null)
-                Polyline(
-                    polylineId: const PolylineId('overview_polyline'),
-                    color: Colors.red,
-                    width: 5,
-                    points: _info.polylinePoints
-                        .map((e) => LatLng(e.latitude, e.longitude))
-                        .toList())
-            },
-            onLongPress: _addMarker,
-            //onTap: _zoomIn
-          ),
-          if (_info != null)
+      body: SafeArea(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            GoogleMap(
+              //mapType: MapType.satellite,
+              myLocationButtonEnabled: true,
+              zoomControlsEnabled: false,
+              initialCameraPosition: _initialCameraPosition,
+              onMapCreated: (controller) => _googleMapController = controller,
+              markers: {
+                if (_origin != null) _origin,
+                if (_destination != null) _destination
+              },
+              polylines: {
+                if (_info != null)
+                  Polyline(
+                      polylineId: const PolylineId('overview_polyline'),
+                      color: Colors.red,
+                      width: 5,
+                      points: _info.polylinePoints
+                          .map((e) => LatLng(e.latitude, e.longitude))
+                          .toList()),
+              },
+              onLongPress: _addMarker,
+            ),
+            if (_info != null)
+              Positioned(
+                  top: 20.0,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 6.0, horizontal: 12.0),
+                    decoration: BoxDecoration(
+                      color: Colors.yellowAccent,
+                      borderRadius: BorderRadius.circular(20.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(0, 2),
+                          blurRadius: 6.0,
+                        )
+                      ],
+                    ),
+                    child: Text(
+                      '${_info.totalDistance}, ${_info.totalDuration}',
+                      style: const TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.w600),
+                    ),
+                  )),
+
+            // Button that creates a marker when tapped
             Positioned(
-                top: 20.0,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 6.0, horizontal: 12.0),
-                  decoration: BoxDecoration(
-                    color: Colors.yellowAccent,
-                    borderRadius: BorderRadius.circular(20.0),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        offset: Offset(0, 2),
-                        blurRadius: 6.0,
-                      )
-                    ],
-                  ),
-                  child: Text(
-                    '${_info.totalDistance}, ${_info.totalDuration}',
-                    style: const TextStyle(
-                        fontSize: 18.0, fontWeight: FontWeight.w600),
-                  ),
-                ))
-        ],
+              top: 10.0,
+              right: 1.0,
+              child: IconButton(
+                icon: Icon(Icons.pin_drop),
+                color: Colors.purple,
+                iconSize: 40.0,
+                onPressed: () => _addMarker,
+              ),
+            )
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
-          onPressed: () => _googleMapController.animateCamera(_info != null
-              ? CameraUpdate.newLatLngBounds(_info.bounds, 100.0)
-              : CameraUpdate.newCameraPosition(_initialCameraPosition)),
+          onPressed: () => _googleMapController.animateCamera(
+                _info != null
+                    ? CameraUpdate.newLatLngBounds(_info.bounds, 100.0)
+                    : CameraUpdate.newCameraPosition(_initialCameraPosition),
+              ),
           child: const Icon(Icons.center_focus_strong)),
     );
   }
 
-  void _addMarker(LatLng argument) async {
+  void _addMarker(LatLng pos) async {
     if (_origin == null || (_origin != null && _destination != null)) {
       setState(() {
         _origin = Marker(
@@ -96,13 +113,13 @@ class _SellLocationState extends State<SellLocation> {
           infoWindow: const InfoWindow(title: 'origin'),
           icon:
               BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-          position: argument,
+          position: pos,
           onTap: _zoomOrigin,
         );
         _destination = null;
 
         // Reset info
-        _info = null;
+        //_info = null;
       });
     } else {
       setState(() {
@@ -110,17 +127,15 @@ class _SellLocationState extends State<SellLocation> {
           markerId: const MarkerId('destination'),
           infoWindow: const InfoWindow(title: 'Destination'),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          position: argument,
+          position: pos,
           onTap: _zoomDestination,
         );
       });
 
       // Get directions
       final directions = await DirectionRepository()
-          .getDirections(origin: _origin.position, destination: argument);
-      setState(() {
-        _info = directions;
-      });
+          .getDirections(origin: _origin.position, destination: pos);
+      setState(() => _info = directions);
     }
   }
 
@@ -147,4 +162,14 @@ class _SellLocationState extends State<SellLocation> {
       ),
     );
   }
+
+  /*void _addSelfMarker(LatLng argument) {
+    var maker = Marker(
+      position: _initialCameraPosition.target,
+          icon: BitmapDescriptor.defaultMarker,
+      infoWindow: InfoWindow(title: 'wewe')
+
+    );
+    _initialCameraPosition.addSelfMarker(maker);
+  }*/
 }
