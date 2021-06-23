@@ -38,6 +38,7 @@ dependencies:
   dio: ^4.0.0
   flutter_polyline_points: ^1.0.0
   google_maps_flutter: ^2.0.6
+  location: ^4.3.0
 
 
 

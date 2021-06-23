@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopping_app/models/directions.dart';
 import 'package:shopping_app/sell_location/controller/sell_direction_controller.dart';
+import 'package:location/location.dart';
 
 class SellLocation extends StatefulWidget {
   const SellLocation({Key key}) : super(key: key);
@@ -12,24 +13,53 @@ class SellLocation extends StatefulWidget {
 }
 
 class _SellLocationState extends State<SellLocation> {
-  static const _initialCameraPosition =
-      CameraPosition(target: LatLng(37.773972, -122.431297), zoom: 11.5);
+  GoogleMapController mapController;
+  final LatLng _center = const LatLng(45.521563, -122.677433);
+  Location _location = Location();
 
-  GoogleMapController _googleMapController;
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    _location.onLocationChanged.listen((event) {
+      mapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: LatLng(event.latitude, event.longitude), zoom: 18),
+        ),
+      );
+    });
+  }
+  /*static const _initialCameraPosition =
+      CameraPosition(target: LatLng(37.773972, -122.431297), zoom: 11.5);*/
+
+  /*GoogleMapController _googleMapController;
   Marker _origin;
   Marker _destination;
-  Directions _info;
+  Directions _info;*/
 
-  @override
+  /* @override
   void dispose() {
     _googleMapController.dispose();
     super.dispose();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: Stack(
+        children: [
+          GoogleMap(
+            myLocationEnabled: true,
+            //trafficEnabled: true,
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(
+              target: _center,
+              zoom: 11.0,
+            ),
+
+          ),
+        ],
+      ),
+
+      /*SafeArea(
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -92,8 +122,8 @@ class _SellLocationState extends State<SellLocation> {
             )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
+      ),*/
+      /*floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           onPressed: () => _googleMapController.animateCamera(
@@ -101,11 +131,11 @@ class _SellLocationState extends State<SellLocation> {
                     ? CameraUpdate.newLatLngBounds(_info.bounds, 100.0)
                     : CameraUpdate.newCameraPosition(_initialCameraPosition),
               ),
-          child: const Icon(Icons.center_focus_strong)),
+          child: const Icon(Icons.center_focus_strong)),*/
     );
   }
 
-  void _addMarker(LatLng pos) async {
+  /* void _addMarker(LatLng pos) async {
     if (_origin == null || (_origin != null && _destination != null)) {
       setState(() {
         _origin = Marker(
@@ -137,9 +167,9 @@ class _SellLocationState extends State<SellLocation> {
           .getDirections(origin: _origin.position, destination: pos);
       setState(() => _info = directions);
     }
-  }
+  }*/
 
-  void _zoomOrigin() {
+  /*void _zoomOrigin() {
     _googleMapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -149,9 +179,9 @@ class _SellLocationState extends State<SellLocation> {
         ),
       ),
     );
-  }
+  }*/
 
-  void _zoomDestination() {
+  /*void _zoomDestination() {
     _googleMapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -161,15 +191,5 @@ class _SellLocationState extends State<SellLocation> {
         ),
       ),
     );
-  }
-
-  /*void _addSelfMarker(LatLng argument) {
-    var maker = Marker(
-      position: _initialCameraPosition.target,
-          icon: BitmapDescriptor.defaultMarker,
-      infoWindow: InfoWindow(title: 'wewe')
-
-    );
-    _initialCameraPosition.addSelfMarker(maker);
   }*/
 }
