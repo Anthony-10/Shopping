@@ -8,6 +8,7 @@ import 'add_products/view/addproducts_view.dart';
 import 'buy_page/view/buy_view.dart';
 import 'core/widget/drawer/drawer_view/drawer_view.dart';
 import 'extras/tab_bar.dart';
+import 'login/login_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,8 +46,11 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: "/home_drawer",
             page: () => DrawerView(), binding: AddProductcBinding()),
+        GetPage(
+            name: "/login_view",
+            page: () => LoginView()),
       ],
-      initialRoute: "/home_drawer",
+      initialRoute: "/login_view",
     );
   }
 }

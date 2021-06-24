@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_app/add_products/controller/addproducts_controller.dart';
+import 'package:shopping_app/add_products/widget/bottom_sheet.dart';
 import 'package:shopping_app/add_products/widget/product_selection/car_view.dart';
 import 'package:shopping_app/add_products/widget/product_selection/cloth_view.dart';
 import 'package:shopping_app/data/add_product/add_product.dart';
@@ -30,12 +31,14 @@ class _AddProductsViewState extends State<AddProductsView> {
 
   Rx<ProductItems> element = ProductCategories.car.obs;
 
+  final bottomSheetView = Get.put(BottomSheetView());
+
   //final bottomSheet = Get.put(BottomSheet());
 
   @override
   void initState() {
     // TODO: implement initState
-    bottomSheetTimer();
+    /* bottomSheetTimer();*/
     super.initState();
   }
 
@@ -198,8 +201,9 @@ class _AddProductsViewState extends State<AddProductsView> {
                             onPressed: () {
                               if (_productName.text.isNotEmpty &&
                                   _productSize.text.isNotEmpty) {
-                                addProductsController.addProducts(
-                                    _productName.text, _productSize.text);
+                                bottomSheetView.getBottomSheet();
+                                /*addProductsController.addProducts(
+                                    _productName.text, _productSize.text);*/
                                 Get.snackbar(
                                     'message', 'product details added');
                               } else if (_productName.text.isEmpty) {
@@ -219,31 +223,12 @@ class _AddProductsViewState extends State<AddProductsView> {
     );
   }
 
-  getBottomSheet() {
-    Get.bottomSheet(
-        );
-  }
-
-  void bottomSheetTimer() async {
+  /*void bottomSheetTimer() async {
     final timer = Timer(Duration(microseconds: 1), () async {
       getBottomSheet();
     });
-  }
+  }*/
 
-  getPage() {
-    print('UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU,${element.value}');
-    print('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL,${element.value.title}');
-
-    Obx(
-      () => element.value == ProductCategories.clothes
-          ? ClothView()
-          : element.value == ProductCategories.car
-              ? CarView()
-              : SizedBox(
-                  child: Text("wewe"),
-                ),
-    );
-  }
   /*Widget getPage() {
     switch (element) {
       case ProductCategories.car:

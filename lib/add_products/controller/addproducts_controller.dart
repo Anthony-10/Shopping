@@ -62,7 +62,7 @@ class AddProductsController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   //String uid = FirebaseAuth.instance.currentUser.uid;
 
-  Future<void> addProducts(String name, var size) async {
+/*  Future<void> addProducts(String name, var size) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       if (uid != null) {
@@ -77,5 +77,5 @@ class AddProductsController extends GetxController {
     } catch (e) {
       rethrow;
     }
-  }
+  }*/
 }

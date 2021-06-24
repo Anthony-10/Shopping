@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopping_app/models/directions.dart';
@@ -22,11 +23,25 @@ class _SellLocationState extends State<SellLocation> {
     _location.onLocationChanged.listen((event) {
       mapController.animateCamera(
         CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(event.latitude, event.longitude), zoom: 18),
+          CameraPosition(
+              target: LatLng(event.latitude, event.longitude), zoom: 18),
         ),
       );
     });
+    //setPolylines();
   }
+  Set<Polyline> _polyline = Set<Polyline>();
+  List<LatLng> polylineCoordinates = [];
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     polylinePoints = PolylinePoints();
+  }
+  PolylinePoints polylinePoints = PolylinePoints();
   /*static const _initialCameraPosition =
       CameraPosition(target: LatLng(37.773972, -122.431297), zoom: 11.5);*/
 
@@ -52,10 +67,44 @@ class _SellLocationState extends State<SellLocation> {
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
               target: _center,
-              zoom: 11.0,
+              zoom: 10,
             ),
-
+            polylines: _polyline,
           ),
+          Positioned(
+            top: 50,
+            left: 20,
+            right: 20,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: 'Enter location',
+                    suffixIcon: Icon(Icons.search),
+                    contentPadding:
+                        const EdgeInsets.only(left: 20, bottom: 5, right: 5),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(color: Colors.white)),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide(color: Colors.white))),
+              ),
+            ),
+          ),
+          Positioned(
+              bottom: 50,
+              left: 20,
+              right: 20,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 70.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary: Colors.black),
+                  child: Text('Save'),
+                ),
+              ))
         ],
       ),
 
@@ -135,6 +184,10 @@ class _SellLocationState extends State<SellLocation> {
     );
   }
 
+ /* void setPolylines() async {
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(googleApiKey, origin, destination)
+  }
+*/
   /* void _addMarker(LatLng pos) async {
     if (_origin == null || (_origin != null && _destination != null)) {
       setState(() {
