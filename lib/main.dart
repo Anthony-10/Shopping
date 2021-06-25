@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             page: () => DrawerView(), binding: AddProductcBinding()),
         GetPage(
             name: "/auth_view",
-            page: () => AuthView()),
+            page: () => AuthView(), binding: AddProductcBinding()),
       ],
       initialRoute: "/auth_view",
     );

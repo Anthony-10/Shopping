@@ -77,6 +77,7 @@ class _NewTabState extends State<NewTab> {
                   ],
                 ),
               ),
+              SizedBox(height: Get.height * 0.03),
               Expanded(
                   child:
                       initialindex.initialIndex == 0 ? BuyView() : SellView())
