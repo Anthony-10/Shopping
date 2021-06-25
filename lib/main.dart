@@ -5,10 +5,10 @@ import 'package:shopping_app/add_products/binding/addproducts_binding.dart';
 import 'package:shopping_app/sell_page/view/sell_view.dart';
 
 import 'add_products/view/addproducts_view.dart';
+import 'authentication/auth_view.dart';
 import 'buy_page/view/buy_view.dart';
 import 'core/widget/drawer/drawer_view/drawer_view.dart';
 import 'extras/tab_bar.dart';
-import 'login/login_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,10 +47,10 @@ class MyApp extends StatelessWidget {
             name: "/home_drawer",
             page: () => DrawerView(), binding: AddProductcBinding()),
         GetPage(
-            name: "/login_view",
-            page: () => LoginView()),
+            name: "/auth_view",
+            page: () => AuthView()),
       ],
-      initialRoute: "/login_view",
+      initialRoute: "/auth_view",
     );
   }
 }
