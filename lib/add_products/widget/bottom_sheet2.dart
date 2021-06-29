@@ -13,17 +13,13 @@ class BottomSheet2 extends StatefulWidget {
 }
 
 class _BottomSheet2State extends State<BottomSheet2> {
-  
   ProductItems element = ProductCategories.clothes;
-  
+
   @override
   Widget build(BuildContext context) {
-    return  getBottomSheet();
-    
-  }
-   getBottomSheet() {
-    Get.bottomSheet(Container(
-      height: Get.height,
+    return Container(
+      height: 350,
+      width: Get.width,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -44,26 +40,29 @@ class _BottomSheet2State extends State<BottomSheet2> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: ProductCategories.all
                       .map((element) => GestureDetector(
-                    onTap: () {
-                      this.element = element;
-                      print(element.obs);
-                      print(element.title);
-                      print('************************${this.element.title}');
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
-                      decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                            element.title,
-                            style: TextStyle(color: Colors.white),
-                          )),
-                    ),
-                  ))
+                            onTap: () {
+                              setState(() {
+                                this.element = element;
+                              });
+                              print(element.obs);
+                              print(element.title);
+                              print(
+                                  '************************${this.element.title}');
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(10.0),
+                              height: Get.height * 0.05,
+                              width: Get.width * 0.2,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              child: Center(
+                                  child: Text(
+                                element.title,
+                                style: TextStyle(color: Colors.white),
+                              )),
+                            ),
+                          ))
                       .toList(),
                 ),
               ],
@@ -78,8 +77,9 @@ class _BottomSheet2State extends State<BottomSheet2> {
           ),
         ],
       ),
-    ));
+    );
   }
+
   Widget getPage(element) {
     switch (element) {
       case ProductCategories.car:
@@ -87,27 +87,27 @@ class _BottomSheet2State extends State<BottomSheet2> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: CarItem.all
               .map((element) => GestureDetector(
-            onTap: () {
-              setState(() {
-                Get.back();
-                //TODO
-                print(element.title);
-              });
-            },
-            child: Container(
-              margin: EdgeInsets.all(10.0),
-              height: Get.height * 0.05,
-              width: Get.width * 0.2,
-              decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: Center(
-                  child: Text(
-                    element.title,
-                    style: TextStyle(color: Colors.white),
-                  )),
-            ),
-          ))
+                    onTap: () {
+                      setState(() {
+                        Get.back();
+                        //TODO
+                        print(element.title);
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(10.0),
+                      height: Get.height * 0.05,
+                      width: Get.width * 0.2,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(10.0)),
+                      child: Center(
+                          child: Text(
+                        element.title,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                    ),
+                  ))
               .toList(),
         );
 
@@ -117,27 +117,27 @@ class _BottomSheet2State extends State<BottomSheet2> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: ClothItem.all
               .map((element) => GestureDetector(
-            onTap: () {
-              setState(() {
-                Get.back();
-                //TODO
-                print(element.title);
-              });
-            },
-            child: Container(
-              margin: EdgeInsets.all(10.0),
-              height: Get.height * 0.05,
-              width: Get.width * 0.2,
-              decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: Center(
-                  child: Text(
-                    element.title,
-                    style: TextStyle(color: Colors.white),
-                  )),
-            ),
-          ))
+                    onTap: () {
+                      setState(() {
+                        Get.back();
+                        //TODO
+                        print(element.title);
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(10.0),
+                      height: Get.height * 0.05,
+                      width: Get.width * 0.2,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(10.0)),
+                      child: Center(
+                          child: Text(
+                        element.title,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                    ),
+                  ))
               .toList(),
         );
     }

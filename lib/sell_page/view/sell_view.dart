@@ -13,15 +13,15 @@ class _SellViewState extends State<SellView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo[50],
+      backgroundColor: Colors.transparent,
       body: Column(
         children: [
           Container(
             decoration: BoxDecoration(
-                color: Colors.indigo,
+                color: Colors.white,
                 borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0))),
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0))),
             height: Get.height * 0.2,
             child: Center(
               child: ListTile(
@@ -45,35 +45,43 @@ class _SellViewState extends State<SellView> {
             ),
           ),
           Expanded(
-            child: GridView.count(
-                primary: false,
-                padding: const EdgeInsets.all(20),
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-                crossAxisCount: 2,
-                physics: BouncingScrollPhysics(),
-                children: SellViewCategory.all
-                    .map(
-                      (element) => Card(
-                        child: ListTile(
-                            title: TextButton.icon(
-                                onPressed: () {},
-                                icon: Icon(element.icon),
-                                label: Expanded(child: Text(element.label))),
-                            subtitle: Text(
-                              element.subtitle,
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.red, fontSize: 40.0),
-                            )),
-                        elevation: 20.0,
-                        color: Colors.indigo[50],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.indigo[50],
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0))),
+              //color: Colors.indigo[50],
+              child: GridView.count(
+                  primary: false,
+                  padding: const EdgeInsets.all(20),
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  crossAxisCount: 2,
+                  physics: BouncingScrollPhysics(),
+                  children: SellViewCategory.all
+                      .map(
+                        (element) => Card(
+                          child: ListTile(
+                              title: TextButton.icon(
+                                  onPressed: () {},
+                                  icon: Icon(element.icon),
+                                  label: Expanded(child: Text(element.label))),
+                              subtitle: Text(
+                                element.subtitle,
+                                textAlign: TextAlign.center,
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 40.0),
+                              )),
+                          elevation: 20.0,
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
                         ),
-                      ),
-                    )
-                    .toList()),
+                      )
+                      .toList()),
+            ),
           )
         ],
       ),

@@ -62,6 +62,8 @@ class ProfileView extends StatelessWidget {
           Column(
               children: ProductCategory.all
                   .map((item) => Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0)),
                         child: ListTile(
                           title: Text(item.text),
                           subtitle: Text(item.subText),

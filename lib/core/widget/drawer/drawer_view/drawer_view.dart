@@ -10,6 +10,7 @@ import 'package:shopping_app/orders/view/oders_view.dart';
 import 'package:shopping_app/products/view/product_view.dart';
 import 'package:shopping_app/profile/view/profile_view.dart';
 import 'package:shopping_app/sell_location/view/sell_location.dart';
+import 'package:shopping_app/settings/view/setting_view.dart';
 
 import '../../../../../../favourites.dart';
 import '../drawer_widget.dart';
@@ -146,6 +147,8 @@ class _DrawerViewState extends State<DrawerView> {
 
   Widget getSellPage() {
     switch (item) {
+      case SellDrawerItems.settings:
+        return SettingView();
       case SellDrawerItems.profile:
         return ProfileView();
       case SellDrawerItems.product:

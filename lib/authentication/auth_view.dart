@@ -45,7 +45,8 @@ class _AuthViewState extends State<AuthView> {
                             ? Align(
                                 alignment: Alignment(-0.5, -0.1),
                                 child: Text(
-                                  'Sign In',
+                                  'Welcome'
+                                  '\nBack',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 35.0),
                                 ),
@@ -53,13 +54,92 @@ class _AuthViewState extends State<AuthView> {
                             : Align(
                                 alignment: Alignment(-0.5, -0.1),
                                 child: Text(
-                                  'Sign Up',
+                                  'Create'
+                                  '\nAccount',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 35.0),
                                 ),
                               )),
                     Expanded(
                       child: Container(
+                        child: Align(
+                          alignment: Alignment(0.9, 0.7),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.mail,
+                                    size: 30.0,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.facebook,
+                                    size: 30.0,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20.0,
+                                ),
+                                initialIndex == 0
+                                    ? Row(children: [
+                                        Text('Dont have an account?'),
+                                        SizedBox(
+                                          width: 10.0,
+                                        ),
+                                        TextButton(
+                                          child: Text('Sign Up'),
+                                          onPressed: () {
+                                            setState(() {
+                                              initialIndex = 1;
+                                            });
+                                          },
+                                        )
+                                      ])
+                                    : Row(
+                                        children: [
+                                          Text('Already have an account?'),
+                                          SizedBox(
+                                            width: 5.0,
+                                          ),
+                                          TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  initialIndex = 0;
+                                                });
+                                              },
+                                              child: Text('Sign In')),
+                                        ],
+                                      )
+
+                                /*child: Align(
+                                      alignment: Alignment(0.9, 0.7),
+                                      child: Row(
+                                          children: [
+                                            IconButton(icon: Icon(Icons.mail,size: 20.0,),),
+                                            SizedBox(
+                                              width: 20.0,
+                                            ),
+                                            Icon(Icons.facebook),
+                                            SizedBox(
+                                              width: 60.0,
+                                            ),
+                                            Text('Dont have an account'),
+                                            SizedBox(
+                                              width: 20.0,
+                                            ),
+                                            Text('Sign Up'),
+                                          ]),
+                                    )*/
+                              ],
+                            ),
+                          ),
+                        ),
+                        width: Get.width,
                         decoration: BoxDecoration(
                             color: Colors.indigo[50],
                             borderRadius: BorderRadius.only(
@@ -71,8 +151,8 @@ class _AuthViewState extends State<AuthView> {
                 ),
               ),
               /*Container(
-                */ /*height: Get.height * 0.5,
-                width: Get.width,*/ /*
+                height: Get.height * 0.5,
+                width: Get.width,
                 decoration: BoxDecoration(
                   color: Colors.red,
                     borderRadius: BorderRadius.only(
@@ -98,72 +178,87 @@ class _AuthViewState extends State<AuthView> {
                           style: TextStyle(color: Colors.white, fontSize: 35.0),
                         )),*/
               Positioned(
-                  bottom: 70.0,
+                  bottom: 140.0,
                   left: 50.0,
                   right: 50.0,
                   child: initialIndex == 0
-                      ? Container(
-                          height: Get.height * 0.6,
-                          width: Get.width * 0.8,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                20.0, 40.0, 20.0, 30.0),
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  key: const ValueKey("UserName"),
-                                  textAlign: TextAlign.start,
-                                  decoration: InputDecoration(
-                                    hintText: "Email",
-                                  ),
-                                  controller: _UserName,
+                      ? Stack(
+                          children: [
+                            Container(
+                              height: Get.height * 0.5,
+                              width: Get.width * 0.8,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    20.0, 40.0, 20.0, 30.0),
+                                child: Column(
+                                  children: [
+                                    TextFormField(
+                                      key: const ValueKey("UserName"),
+                                      textAlign: TextAlign.start,
+                                      decoration: InputDecoration(
+                                        hintText: "Email",
+                                      ),
+                                      controller: _UserName,
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    TextFormField(
+                                      obscureText: true,
+                                      key: const ValueKey("UserPassWord"),
+                                      textAlign: TextAlign.start,
+                                      decoration: InputDecoration(
+                                        hintText: "PassWord",
+                                      ),
+                                      controller: _UserPassWord,
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    TextButton(
+                                        onPressed: () {},
+                                        child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Text('Forgot PassWord?'))),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          Get.to(() => DrawerView());
+                                        },
+                                        child: Text('Sign In')),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    /*TextButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            initialIndex = 1;
+                                          });
+                                          //Get.to(() => SignUp());
+                                        },
+                                        child: Text('Sign Up'))*/
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 20.0,
-                                ),
-                                TextFormField(
-                                  obscureText: true,
-                                  key: const ValueKey("UserPassWord"),
-                                  textAlign: TextAlign.start,
-                                  decoration: InputDecoration(
-                                    hintText: "PassWord",
-                                  ),
-                                  controller: _UserPassWord,
-                                ),
-                                SizedBox(
-                                  height: 40.0,
-                                ),
-                                TextButton(
-                                    onPressed: () {},
-                                    child: Text('Forgot Your PassWord?')),
-                                SizedBox(
-                                  height: 30.0,
-                                ),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Get.to(() => DrawerView());
-                                    },
-                                    child: Text('Sign In')),
-                                SizedBox(
-                                  height: 20.0,
-                                ),
-                                TextButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        initialIndex = 1;
-                                      });
-                                      //Get.to(() => SignUp());
-                                    },
-                                    child: Text('Sign Up'))
-                              ],
+                              ),
                             ),
-                          ),
+                            /* Positioned(
+                            bottom: -9.0,
+                            left: 50.0,
+                            right: 50.0,
+                            child:  ElevatedButton(
+                              onPressed: () {
+                                Get.to(() => DrawerView());
+                              },
+                              child: Text('Sign In')),)*/
+                          ],
                         )
                       : Container(
-                          height: Get.height * 0.6,
+                          height: Get.height * 0.5,
                           width: Get.width * 0.8,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -213,14 +308,13 @@ class _AuthViewState extends State<AuthView> {
                                 SizedBox(
                                   height: 20.0,
                                 ),
-                                TextButton(
+                                /*TextButton(
                                     onPressed: () {
                                       setState(() {
                                         initialIndex = 0;
                                       });
-                                      //Get.to(() => LoginView());
                                     },
-                                    child: Text('Sign In'))
+                                    child: Text('Sign In'))*/
                               ],
                             ),
                           ),

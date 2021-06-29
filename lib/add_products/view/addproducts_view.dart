@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_app/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/add_products/widget/bottom_sheet.dart';
+import 'package:shopping_app/add_products/widget/bottom_sheet2.dart';
 import 'package:shopping_app/add_products/widget/product_selection/car_view.dart';
 import 'package:shopping_app/add_products/widget/product_selection/cloth_view.dart';
 import 'package:shopping_app/data/add_product/add_product.dart';
@@ -201,7 +202,7 @@ class _AddProductsViewState extends State<AddProductsView> {
                             onPressed: () {
                               if (_productName.text.isNotEmpty &&
                                   _productSize.text.isNotEmpty) {
-                                bottomSheetView.getBottomSheet();
+                                Get.bottomSheet(BottomSheet2());
                                 /*addProductsController.addProducts(
                                     _productName.text, _productSize.text);*/
                                 Get.snackbar(

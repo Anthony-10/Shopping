@@ -107,7 +107,6 @@ class _SellLocationState extends State<SellLocation> {
               ))
         ],
       ),
-
       /*SafeArea(
         child: Stack(
           alignment: Alignment.center,
@@ -183,8 +182,7 @@ class _SellLocationState extends State<SellLocation> {
           child: const Icon(Icons.center_focus_strong)),*/
     );
   }
-
- /* void setPolylines() async {
+  /* void setPolylines() async {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(googleApiKey, origin, destination)
   }
 */
@@ -221,7 +219,6 @@ class _SellLocationState extends State<SellLocation> {
       setState(() => _info = directions);
     }
   }*/
-
   /*void _zoomOrigin() {
     _googleMapController.animateCamera(
       CameraUpdate.newCameraPosition(
@@ -233,7 +230,6 @@ class _SellLocationState extends State<SellLocation> {
       ),
     );
   }*/
-
   /*void _zoomDestination() {
     _googleMapController.animateCamera(
       CameraUpdate.newCameraPosition(
