@@ -19,15 +19,17 @@ class _NewTabState extends State<NewTab> {
       initialIndex: initialindex.initialIndex,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 20,
-              ),
               Container(
-                height: Get.height * 0.05,
+                height: Get.height * 0.09,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(20.0),
+                        bottomLeft: Radius.circular(20.0))),
                 //width: Get.width * 0.25,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -40,6 +42,7 @@ class _NewTabState extends State<NewTab> {
                       },
                       child: Container(
                         width: Get.width * 0.30,
+                        height: Get.height * 0.05,
                         decoration: BoxDecoration(
                             color: initialindex.initialIndex == 0
                                 ? Colors.black
@@ -61,6 +64,7 @@ class _NewTabState extends State<NewTab> {
                       },
                       child: Container(
                         width: Get.width * 0.30,
+                        height: Get.height * 0.05,
                         decoration: BoxDecoration(
                             color: initialindex.initialIndex == 1
                                 ? Colors.black
@@ -77,6 +81,11 @@ class _NewTabState extends State<NewTab> {
                   ],
                 ),
               ),
+              /*SizedBox(
+                  height: Get.height * 0.03,
+                  child:
+              DecoratedBox(decoration: BoxDecoration(color: Colors.red)),
+              ),*/
               Expanded(
                   child:
                       initialindex.initialIndex == 0 ? BuyView() : SellView())

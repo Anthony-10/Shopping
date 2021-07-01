@@ -39,6 +39,6 @@ class _CarViewState extends State<CarView> {
             ),
           ))
           .toList(),
-    );;
+    );
   }
 }

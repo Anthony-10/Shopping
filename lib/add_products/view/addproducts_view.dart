@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_app/add_products/controller/addproducts_controller.dart';
+import 'package:shopping_app/add_products/widget/bottom_sheet.dart';
+import 'package:shopping_app/add_products/widget/bottom_sheet2.dart';
 import 'package:shopping_app/add_products/widget/product_selection/car_view.dart';
 import 'package:shopping_app/add_products/widget/product_selection/cloth_view.dart';
 import 'package:shopping_app/data/add_product/add_product.dart';
@@ -28,15 +30,17 @@ class _AddProductsViewState extends State<AddProductsView> {
 
   final addProductsController = Get.find<AddProductsController>();
 
-  ProductItems element = ProductCategories.clothes;
+  Rx<ProductItems> element = ProductCategories.car.obs;
+
+  final bottomSheetView = Get.put(BottomSheetView());
 
   //final bottomSheet = Get.put(BottomSheet());
 
   @override
   void initState() {
     // TODO: implement initState
+    /* bottomSheetTimer();*/
     super.initState();
-    bottomSheetTimer();
   }
 
   bool value = false;
@@ -45,6 +49,7 @@ class _AddProductsViewState extends State<AddProductsView> {
 
   @override
   Widget build(BuildContext context) {
+    //bottomSheetTimer();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
@@ -197,8 +202,9 @@ class _AddProductsViewState extends State<AddProductsView> {
                             onPressed: () {
                               if (_productName.text.isNotEmpty &&
                                   _productSize.text.isNotEmpty) {
-                                addProductsController.addProducts(
-                                    _productName.text, _productSize.text);
+                                Get.bottomSheet(BottomSheet2());
+                                /*addProductsController.addProducts(
+                                    _productName.text, _productSize.text);*/
                                 Get.snackbar(
                                     'message', 'product details added');
                               } else if (_productName.text.isEmpty) {
@@ -218,139 +224,72 @@ class _AddProductsViewState extends State<AddProductsView> {
     );
   }
 
-  getBottomSheet() {
-    Get.bottomSheet(Container(
-      height: Get.height,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-      child: Row(
-        children: [
-          // ....................Category List
-
-          SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    margin: EdgeInsets.all(15.0),
-                    child: Text('Select a category')),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: ProductCategories.all
-                      .map((element) => GestureDetector(
-                            onTap: () {
-                              /*onClickProduct(element);*/
-                              setState(() {
-                                //TODO
-                                this.element = element;
-                                print(element);
-                                print(element.title);
-                                //widget.onClickProduct(this.element);
-                              });
-                            },
-                            child: Container(
-                              margin: EdgeInsets.all(10.0),
-                              height: Get.height * 0.05,
-                              width: Get.width * 0.2,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              child: Center(
-                                  child: Text(
-                                element.title,
-                                style: TextStyle(color: Colors.white),
-                              )),
-                            ),
-                          ))
-                      .toList(),
-                ),
-              ],
-            ),
-          ),
-
-          // ....................Item List
-
-          SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: getPage(),
-          ),
-        ],
-      ),
-    ));
-  }
-
-  void bottomSheetTimer() async {
+  /*void bottomSheetTimer() async {
     final timer = Timer(Duration(microseconds: 1), () async {
       getBottomSheet();
     });
-  }
+  }*/
 
-  /*element==ProductCategories.car
-    ?Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: CarItem.all
-          .map((element) => GestureDetector(
-        onTap: () {
-          setState(() {
-            Get.back();
-            //TODO
-            print(element.title);
-          });
-        },
-        child: Container(
-          margin: EdgeInsets.all(10.0),
-          height: Get.height * 0.05,
-          width: Get.width * 0.2,
-          decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10.0)),
-          child: Center(
-              child: Text(
-                element.title,
-                style: TextStyle(color: Colors.white),
-              )),
-        ),
-      ))
-          .toList(),
-    ):element==ProductCategories.clothes
-        ?Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: ClothItem.all
-          .map((element) => GestureDetector(
-        onTap: () {
-          setState(() {
-            Get.back();
-            //TODO
-            print(element.title);
-          });
-        },
-        child: Container(
-          margin: EdgeInsets.all(10.0),
-          height: Get.height * 0.05,
-          width: Get.width * 0.2,
-          decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10.0)),
-          child: Center(
-              child: Text(
-                element.title,
-                style: TextStyle(color: Colors.white),
-              )),
-        ),
-      ))
-          .toList(),
-    ):SizedBox();*/
-  Widget getPage() {
+  /*Widget getPage() {
     switch (element) {
       case ProductCategories.car:
-        return CarView();
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: CarItem.all
+              .map((element) => GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        Get.back();
+                        //TODO
+                        print(element.title);
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(10.0),
+                      height: Get.height * 0.05,
+                      width: Get.width * 0.2,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(10.0)),
+                      child: Center(
+                          child: Text(
+                        element.title,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                    ),
+                  ))
+              .toList(),
+        );
 
       case ProductCategories.clothes:
       default:
-        return ClothView();
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: ClothItem.all
+              .map((element) => GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        Get.back();
+                        //TODO
+                        print(element.title);
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(10.0),
+                      height: Get.height * 0.05,
+                      width: Get.width * 0.2,
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(10.0)),
+                      child: Center(
+                          child: Text(
+                        element.title,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                    ),
+                  ))
+              .toList(),
+        );
     }
-  }
+  }*/
 }
