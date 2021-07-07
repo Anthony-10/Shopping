@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/buy_page/view/buy_view.dart';
-import 'package:shopping_app/core/widget/drawer/drawer_widget.dart';
-import 'package:shopping_app/sell_page/view/sell_view.dart';
+import 'package:shopping_app/buy/buy_page/view/buy_view.dart';
+import 'package:shopping_app/sell/sell_page/view/sell_view.dart';
 
 class TabBarPage extends StatefulWidget {
   @override

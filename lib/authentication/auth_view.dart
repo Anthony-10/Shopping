@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -44,20 +45,34 @@ class _AuthViewState extends State<AuthView> {
                         child: initialIndex == 0
                             ? Align(
                                 alignment: Alignment(-0.5, -0.1),
-                                child: Text(
-                                  'Welcome'
-                                  '\nBack',
+                                child: DefaultTextStyle(
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 35.0),
+                                      fontSize: 35.0, color: Colors.white),
+                                  child: AnimatedTextKit(
+                                    isRepeatingAnimation: false,
+                                    //pause: Duration(microseconds: 30000),
+                                    animatedTexts: [
+                                      TypewriterAnimatedText(
+                                          'Welcome'
+                                          '\nBack',
+                                          speed: Duration(milliseconds: 60)),
+                                    ],
+                                    /*style: TextStyle(
+                                      color: Colors.white, fontSize: 35.0)*/
+                                  ),
                                 ),
                               )
                             : Align(
                                 alignment: Alignment(-0.5, -0.1),
-                                child: Text(
-                                  'Create'
-                                  '\nAccount',
+                                child: DefaultTextStyle(
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 35.0),
+                                      fontSize: 35.0, color: Colors.white),
+                                  child: Text(
+                                    'Create'
+                                    '\nAccount',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 35.0),
+                                  ),
                                 ),
                               )),
                     Expanded(
@@ -87,7 +102,7 @@ class _AuthViewState extends State<AuthView> {
                                 ),
                                 initialIndex == 0
                                     ? Row(children: [
-                                        Text('Dont have an account?'),
+                                        Text('Don\'t have an account?'),
                                         SizedBox(
                                           width: 10.0,
                                         ),
@@ -115,26 +130,6 @@ class _AuthViewState extends State<AuthView> {
                                               child: Text('Sign In')),
                                         ],
                                       )
-
-                                /*child: Align(
-                                      alignment: Alignment(0.9, 0.7),
-                                      child: Row(
-                                          children: [
-                                            IconButton(icon: Icon(Icons.mail,size: 20.0,),),
-                                            SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            Icon(Icons.facebook),
-                                            SizedBox(
-                                              width: 60.0,
-                                            ),
-                                            Text('Dont have an account'),
-                                            SizedBox(
-                                              width: 20.0,
-                                            ),
-                                            Text('Sign Up'),
-                                          ]),
-                                    )*/
                               ],
                             ),
                           ),

@@ -1,19 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shopping_app/add_products/controller/addproducts_controller.dart';
-import 'package:shopping_app/add_products/widget/bottom_sheet.dart';
-import 'package:shopping_app/add_products/widget/bottom_sheet2.dart';
-import 'package:shopping_app/add_products/widget/product_selection/car_view.dart';
-import 'package:shopping_app/add_products/widget/product_selection/cloth_view.dart';
 import 'package:shopping_app/data/add_product/add_product.dart';
-import 'package:shopping_app/data/item_category/car_item.dart';
-import 'package:shopping_app/data/item_category/cloth_item.dart';
 import 'package:shopping_app/data/product_category/product_category.dart';
 import 'package:shopping_app/models/product_items.dart';
+import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
+import 'package:shopping_app/sell/add_products/widget/bottom_sheet.dart';
+import 'package:shopping_app/sell/add_products/widget/bottom_sheet2.dart';
 
 class AddProductsView extends StatefulWidget {
   AddProductsView({
@@ -94,12 +88,12 @@ class _AddProductsViewState extends State<AddProductsView> {
               children: [
                 Container(
                   child: Center(
-                    child: Text(
+                      /*child: Text(
                       "Add Product",
                       style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                  height: 40.0,
+                    ),*/
+                      ),
+                  height: 30.0,
                 ),
                 Obx(() => addProductsController.image.isNotEmpty
                     ? SingleChildScrollView(
@@ -109,7 +103,7 @@ class _AddProductsViewState extends State<AddProductsView> {
                           children: addProductsController.image
                               .map((element) => SizedBox(
                                     height: Get.height * 0.5,
-                                    width: Get.width * 0.6,
+                                    width: Get.width * 0.7,
                                     child: Card(
                                       semanticContainer: true,
                                       clipBehavior: Clip.antiAlias,
@@ -117,9 +111,9 @@ class _AddProductsViewState extends State<AddProductsView> {
                                           borderRadius:
                                               BorderRadius.circular(10.0)),
                                       child: Image.file(element,
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.fill,
                                           height: Get.height * 0.5,
-                                          width: Get.width * 0.5),
+                                          width: Get.width * 0.7),
                                       color: Colors.white70,
                                       elevation: 3.0,
                                       margin: EdgeInsets.all(5.0),
@@ -136,7 +130,7 @@ class _AddProductsViewState extends State<AddProductsView> {
                                 .map(
                                   (item) => SizedBox(
                                     height: Get.height * 0.5,
-                                    width: Get.width * 0.6,
+                                    width: Get.width * 0.7,
                                     child: Card(
                                       semanticContainer: true,
                                       clipBehavior: Clip.antiAlias,
@@ -173,9 +167,9 @@ class _AddProductsViewState extends State<AddProductsView> {
                       children: [
                         TextFormField(
                           key: const ValueKey("productName"),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.start,
                           decoration: InputDecoration(
-                            hintText: "productName",
+                            hintText: "ProductName",
                           ),
                           keyboardType: TextInputType.text,
                           controller: _productName,
@@ -185,9 +179,9 @@ class _AddProductsViewState extends State<AddProductsView> {
                         ),
                         TextFormField(
                           key: const ValueKey("productSize"),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.start,
                           decoration: InputDecoration(
-                            hintText: "productSize",
+                            hintText: "ProductSize",
                           ),
                           keyboardType: TextInputType.number,
                           inputFormatters: [
@@ -198,24 +192,27 @@ class _AddProductsViewState extends State<AddProductsView> {
                         SizedBox(
                           height: 30.0,
                         ),
-                        TextButton(
-                            onPressed: () {
-                              if (_productName.text.isNotEmpty &&
-                                  _productSize.text.isNotEmpty) {
-                                Get.bottomSheet(BottomSheet2());
-                                /*addProductsController.addProducts(
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_productName.text.isNotEmpty &&
+                                _productSize.text.isNotEmpty) {
+                              Get.bottomSheet(BottomSheet2());
+                              /*addProductsController.addProducts(
                                     _productName.text, _productSize.text);*/
-                                Get.snackbar(
-                                    'message', 'product details added');
-                              } else if (_productName.text.isEmpty) {
-                                Get.snackbar('message', 'Enter ProductName');
-                              } else {
-                                if (_productSize.text.isEmpty) {
-                                  Get.snackbar('message', 'Enter ProductSize');
-                                }
+                              Get.snackbar('message', 'product details added');
+                            } else if (_productName.text.isEmpty) {
+                              Get.snackbar('message', 'Enter ProductName');
+                            } else {
+                              if (_productSize.text.isEmpty) {
+                                Get.snackbar('message', 'Enter ProductSize');
                               }
-                            },
-                            child: Text('Add Product'))
+                            }
+                          },
+                          child: Text('Add Product'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.black,
+                          ),
+                        )
                       ],
                     ))
               ],

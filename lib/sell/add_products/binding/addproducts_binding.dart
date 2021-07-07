@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:shopping_app/add_products/controller/addproducts_controller.dart';
+import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 
 class AddProductcBinding implements Bindings {
   @override
@@ -7,5 +7,4 @@ class AddProductcBinding implements Bindings {
     // TODO: implement dependencies
     Get.put(AddProductsController());
   }
-
 }

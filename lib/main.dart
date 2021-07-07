@@ -1,18 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/add_products/binding/addproducts_binding.dart';
-import 'package:shopping_app/sell_page/view/sell_view.dart';
+import 'package:shopping_app/sell/add_products/binding/addproducts_binding.dart';
+import 'package:shopping_app/sell/add_products/view/addproducts_view.dart';
+import 'package:shopping_app/sell/sell_page/view/sell_view.dart';
 
-import 'add_products/view/addproducts_view.dart';
 import 'authentication/auth_view.dart';
-import 'buy_page/view/buy_view.dart';
+import 'buy/buy_page/view/buy_view.dart';
 import 'core/widget/drawer/drawer_view/drawer_view.dart';
 import 'extras/tab_bar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp();
   runApp(MyApp());
 }
@@ -45,10 +44,12 @@ class MyApp extends StatelessWidget {
             binding: AddProductcBinding()),*/
         GetPage(
             name: "/home_drawer",
-            page: () => DrawerView(), binding: AddProductcBinding()),
+            page: () => DrawerView(),
+            binding: AddProductcBinding()),
         GetPage(
             name: "/auth_view",
-            page: () => AuthView(), binding: AddProductcBinding()),
+            page: () => AuthView(),
+            binding: AddProductcBinding()),
       ],
       initialRoute: "/auth_view",
     );

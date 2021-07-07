@@ -3,7 +3,6 @@ import 'package:shopping_app/models/drawer_items.dart';
 
 class SellDrawerItems {
   static const sellPage = DrawerItem(title: 'Sell Page', icon: Icons.home);
-  static const profile = DrawerItem(title: 'Profile', icon: Icons.person);
   static const product = DrawerItem(title: 'Product', icon: Icons.email);
   static const addProducts = DrawerItem(title: 'Add products', icon: Icons.add);
   static const orders =
@@ -15,7 +14,6 @@ class SellDrawerItems {
 
   static final List<DrawerItem> all = [
     sellPage,
-    profile,
     product,
     addProducts,
     orders,

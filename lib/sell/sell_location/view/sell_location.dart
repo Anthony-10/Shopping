@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:shopping_app/models/directions.dart';
-import 'package:shopping_app/sell_location/controller/sell_direction_controller.dart';
 import 'package:location/location.dart';
 
 class SellLocation extends StatefulWidget {
@@ -30,17 +27,17 @@ class _SellLocationState extends State<SellLocation> {
     });
     //setPolylines();
   }
+
   Set<Polyline> _polyline = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
-
-
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     polylinePoints = PolylinePoints();
+    polylinePoints = PolylinePoints();
   }
+
   PolylinePoints polylinePoints = PolylinePoints();
   /*static const _initialCameraPosition =
       CameraPosition(target: LatLng(37.773972, -122.431297), zoom: 11.5);*/
@@ -62,6 +59,8 @@ class _SellLocationState extends State<SellLocation> {
       body: Stack(
         children: [
           GoogleMap(
+            compassEnabled: true,
+            trafficEnabled: true,
             myLocationEnabled: true,
             //trafficEnabled: true,
             onMapCreated: _onMapCreated,

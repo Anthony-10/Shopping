@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/buy_page/view/buy_view.dart';
+import 'package:shopping_app/buy/buy_page/view/buy_view.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
-import 'package:shopping_app/sell_page/view/sell_view.dart';
+import 'package:shopping_app/sell/sell_page/view/sell_view.dart';
 
 class NewTab extends StatefulWidget {
   @override
