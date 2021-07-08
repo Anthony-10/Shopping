@@ -4,14 +4,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoder/geocoder.dart' as geoCo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class BuyerLocation extends StatefulWidget {
-  const BuyerLocation({Key key}) : super(key: key);
+class BuyerLocations extends StatefulWidget {
+  const BuyerLocations({Key key}) : super(key: key);
 
   @override
-  _BuyerLocationState createState() => _BuyerLocationState();
+  _BuyerLocationsState createState() => _BuyerLocationsState();
 }
 
-class _BuyerLocationState extends State<BuyerLocation> {
+class _BuyerLocationsState extends State<BuyerLocations> {
   GoogleMapController googleMapController;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Position position;

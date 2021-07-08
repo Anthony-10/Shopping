@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/buy/buyer_location.dart';
+import 'package:shopping_app/buy/buy_location/view/buyer_location.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/core/widget/tab_bar/new_tab.dart';
 import 'package:shopping_app/data/sell_drawer/sell_item.dart';
