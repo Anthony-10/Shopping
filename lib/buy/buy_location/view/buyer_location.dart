@@ -45,7 +45,7 @@ class _BuyerLocationState extends State<BuyerLocation> {
 
   @override
   Widget build(BuildContext context) {
-    Set<Marker> getMarker() {
+    /*Set<Marker> getMarker() {
       return <Marker>[
         Marker(
             markerId: MarkerId('Place'),
@@ -53,7 +53,7 @@ class _BuyerLocationState extends State<BuyerLocation> {
             icon: BitmapDescriptor.defaultMarker,
             infoWindow: InfoWindow(title: 'Shop'))
       ].toSet();
-    }
+    }*/
 
     return Scaffold(
       body: GoogleMap(
