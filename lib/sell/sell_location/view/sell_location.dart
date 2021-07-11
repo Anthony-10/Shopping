@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoder/geocoder.dart' as geoCo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 
 class SellLocation extends StatefulWidget {
   const SellLocation({Key key}) : super(key: key);
@@ -11,47 +12,83 @@ class SellLocation extends StatefulWidget {
 }
 
 class _SellLocationState extends State<SellLocation> {
-  GoogleMapController mapController;
+  //GoogleMapController googleMapController;
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   final LatLng _center = const LatLng(45.521563, -122.677433);
-  Location _location = Location();
+  GoogleMapController mapController;
+
+  Position position;
+  String addressLocation;
+  String country;
+  String postalCode;
+  String country1;
+  String address1;
+  //Geolocator _geolocator = Geolocator();
+
+  void getMarkers(double lat, double long) {
+    MarkerId markerId = MarkerId(lat.toString() + long.toString());
+    Marker _marker = Marker(
+        markerId: markerId,
+        position: LatLng(lat, long),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        infoWindow: InfoWindow(snippet: addressLocation));
+    setState(() {
+      markers[markerId] = _marker;
+    });
+  }
+
+  void getCurrentLocation() async {
+    Position currentPosition =
+        await GeolocatorPlatform.instance.getCurrentPosition();
+    setState(() {
+      position = currentPosition;
+    });
+  }
+
+  /*void getCurrentAddress() async {
+    final coordinated =
+        new geoCo.Coordinates(position.latitude, position.longitude);
+    var address =
+        await geoCo.Geocoder.local.findAddressesFromCoordinates(coordinated);
+    var firstAddress1 = address.first;
+    getMarkers(position.latitude, position.longitude);
+    setState(() {
+      country = firstAddress1.countryName;
+      postalCode = firstAddress1.postalCode;
+      addressLocation = firstAddress1.addressLine;
+      print(
+          '????????????????????????????????????????$country$postalCode$addressLocation$firstAddress1');
+    });
+  }*/
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
-    _location.onLocationChanged.listen((event) {
+    Geolocator.getPositionStream().listen((Position position) {
       mapController.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
-              target: LatLng(event.latitude, event.longitude), zoom: 18),
+              target: LatLng(
+                  position.latitude.toDouble(), position.longitude.toDouble()),
+              zoom: 18),
         ),
       );
     });
     //setPolylines();
   }
 
-  Set<Polyline> _polyline = Set<Polyline>();
-  List<LatLng> polylineCoordinates = [];
-
   @override
   void initState() {
     // TODO: implement initState
+    getCurrentLocation();
     super.initState();
-    polylinePoints = PolylinePoints();
   }
 
-  PolylinePoints polylinePoints = PolylinePoints();
-  /*static const _initialCameraPosition =
-      CameraPosition(target: LatLng(37.773972, -122.431297), zoom: 11.5);*/
-
-  /*GoogleMapController _googleMapController;
-  Marker _origin;
-  Marker _destination;
-  Directions _info;*/
-
-  /* @override
+  @override
   void dispose() {
-    _googleMapController.dispose();
+    // TODO: implement dispose
+    mapController.dispose();
     super.dispose();
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,185 +96,85 @@ class _SellLocationState extends State<SellLocation> {
       body: Stack(
         children: [
           GoogleMap(
+            myLocationEnabled: true,
             compassEnabled: true,
             trafficEnabled: true,
-            myLocationEnabled: true,
-            //trafficEnabled: true,
             onMapCreated: _onMapCreated,
+
+            /*(GoogleMapController controller) {
+
+              setState(() {
+                googleMapController = controller;
+              });
+            },*/
             initialCameraPosition: CameraPosition(
-              target: _center,
-              zoom: 10,
-            ),
-            polylines: _polyline,
+                target: _center
+                /*LatLng(position.latitude.toDouble(),
+                    position.longitude.toDouble())*/
+                ,
+                zoom: 18.0),
+            markers: Set<Marker>.of(markers.values),
           ),
           Positioned(
-            top: 50,
-            left: 20,
-            right: 20,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: 'Enter location',
-                    suffixIcon: Icon(Icons.search),
-                    contentPadding:
-                        const EdgeInsets.only(left: 20, bottom: 5, right: 5),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        borderSide: BorderSide(color: Colors.white)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(color: Colors.white))),
-              ),
-            ),
-          ),
-          Positioned(
-              bottom: 50,
-              left: 20,
-              right: 20,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 70.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.black),
-                  child: Text('Save'),
+            top: 60.0,
+            right: 20.0,
+            left: 20.0,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white60,
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Column(children: [
+                Text(
+                  'Address : $addressLocation',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-              ))
+                Text('Postal : $postalCode',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Country : $country',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                //Text('Country : $country1'),
+              ]),
+            ),
+          ),
+          Positioned(
+            bottom: 40.0,
+            right: 20.0,
+            left: 20.0,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 70.0),
+              child: ElevatedButton(
+                  onPressed: () async {
+                    final coordinated = new geoCo.Coordinates(
+                        position.latitude, position.longitude);
+                    var address = await geoCo.Geocoder.local
+                        .findAddressesFromCoordinates(coordinated);
+                    var firstAddress1 = address.first;
+                    getMarkers(position.latitude, position.longitude);
+                    await FirebaseFirestore.instance
+                        .collection('location')
+                        .add({
+                      'latitude': position.latitude,
+                      'longitude': position.longitude,
+                      'Address': firstAddress1.addressLine,
+                      'Country': firstAddress1.countryName,
+                    });
+                    setState(() {
+                      country = firstAddress1.countryName;
+                      postalCode = firstAddress1.postalCode;
+                      addressLocation = firstAddress1.addressLine;
+                      print(
+                          '????????????????????????????????????????$country$postalCode$addressLocation$firstAddress1');
+                    });
+                  },
+                  child: Text('Save'),
+                  style: ElevatedButton.styleFrom(
+                    side: BorderSide(width: 2), //border width and color
+                    primary: Colors.black,
+                  )),
+            ),
+          ),
         ],
       ),
-      /*SafeArea(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            GoogleMap(
-              //mapType: MapType.satellite,
-              myLocationButtonEnabled: true,
-              zoomControlsEnabled: false,
-              initialCameraPosition: _initialCameraPosition,
-              onMapCreated: (controller) => _googleMapController = controller,
-              markers: {
-                if (_origin != null) _origin,
-                if (_destination != null) _destination
-              },
-              polylines: {
-                if (_info != null)
-                  Polyline(
-                      polylineId: const PolylineId('overview_polyline'),
-                      color: Colors.red,
-                      width: 5,
-                      points: _info.polylinePoints
-                          .map((e) => LatLng(e.latitude, e.longitude))
-                          .toList()),
-              },
-              onLongPress: _addMarker,
-            ),
-            if (_info != null)
-              Positioned(
-                  top: 20.0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 6.0, horizontal: 12.0),
-                    decoration: BoxDecoration(
-                      color: Colors.yellowAccent,
-                      borderRadius: BorderRadius.circular(20.0),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black26,
-                          offset: Offset(0, 2),
-                          blurRadius: 6.0,
-                        )
-                      ],
-                    ),
-                    child: Text(
-                      '${_info.totalDistance}, ${_info.totalDuration}',
-                      style: const TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.w600),
-                    ),
-                  )),
-
-            // Button that creates a marker when tapped
-            Positioned(
-              top: 10.0,
-              right: 1.0,
-              child: IconButton(
-                icon: Icon(Icons.pin_drop),
-                color: Colors.purple,
-                iconSize: 40.0,
-                onPressed: () => _addMarker,
-              ),
-            )
-          ],
-        ),
-      ),*/
-      /*floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          onPressed: () => _googleMapController.animateCamera(
-                _info != null
-                    ? CameraUpdate.newLatLngBounds(_info.bounds, 100.0)
-                    : CameraUpdate.newCameraPosition(_initialCameraPosition),
-              ),
-          child: const Icon(Icons.center_focus_strong)),*/
     );
   }
-  /* void setPolylines() async {
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(googleApiKey, origin, destination)
-  }
-*/
-  /* void _addMarker(LatLng pos) async {
-    if (_origin == null || (_origin != null && _destination != null)) {
-      setState(() {
-        _origin = Marker(
-          markerId: const MarkerId('origin'),
-          infoWindow: const InfoWindow(title: 'origin'),
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-          position: pos,
-          onTap: _zoomOrigin,
-        );
-        _destination = null;
-
-        // Reset info
-        //_info = null;
-      });
-    } else {
-      setState(() {
-        _destination = Marker(
-          markerId: const MarkerId('destination'),
-          infoWindow: const InfoWindow(title: 'Destination'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          position: pos,
-          onTap: _zoomDestination,
-        );
-      });
-
-      // Get directions
-      final directions = await DirectionRepository()
-          .getDirections(origin: _origin.position, destination: pos);
-      setState(() => _info = directions);
-    }
-  }*/
-  /*void _zoomOrigin() {
-    _googleMapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: _origin.position,
-          zoom: 15.0,
-          tilt: 50.0,
-        ),
-      ),
-    );
-  }*/
-  /*void _zoomDestination() {
-    _googleMapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: _destination.position,
-          zoom: 15.0,
-          tilt: 50.0,
-        ),
-      ),
-    );
-  }*/
 }
