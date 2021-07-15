@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_app/models/directions.dart';
-import 'package:shopping_app/sell_location/controller/.env.dart';
+import 'package:shopping_app/sell/sell_location/controller/.env.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DirectionRepository {

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/add_products/widget/product_selection/car_view.dart';
-import 'package:shopping_app/add_products/widget/product_selection/cloth_view.dart';
-import 'package:shopping_app/data/item_category/cloth_item.dart';
 import 'package:shopping_app/data/product_category/product_category.dart';
 import 'package:shopping_app/models/product_items.dart';
+import 'package:shopping_app/sell/add_products/widget/product_selection/car_view.dart';
+import 'package:shopping_app/sell/add_products/widget/product_selection/cloth_view.dart';
 
 class BottomSheetView extends GetxController {
   //final ValueChanged<ProductItems> onClick;
@@ -40,7 +39,8 @@ class BottomSheetView extends GetxController {
                               this.element = element.obs;
                               print(element.obs);
                               print(element.title);
-                              print('************************${this.element.value.title}');
+                              print(
+                                  '************************${this.element.value.title}');
                             },
                             child: Container(
                               margin: EdgeInsets.all(10.0),

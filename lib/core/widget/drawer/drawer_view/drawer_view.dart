@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/add_products/view/addproducts_view.dart';
+import 'package:shopping_app/authentication/controller/auth_controller.dart';
+import 'package:shopping_app/buy/buy_location/view/buyer_location.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/core/widget/tab_bar/new_tab.dart';
 import 'package:shopping_app/data/sell_drawer/sell_item.dart';
 import 'package:shopping_app/data/buy_drawer/buy_item.dart';
 import 'package:shopping_app/models/drawer_items.dart';
-import 'package:shopping_app/orders/view/oders_view.dart';
-import 'package:shopping_app/products/view/product_view.dart';
-import 'package:shopping_app/profile/view/profile_view.dart';
-import 'package:shopping_app/sell_location/view/sell_location.dart';
-import 'package:shopping_app/settings/view/setting_view.dart';
+import 'package:shopping_app/sell/add_products/view/addproducts_view.dart';
+import 'package:shopping_app/sell/orders/view/oders_view.dart';
+import 'package:shopping_app/sell/products/view/product_view.dart';
+import 'package:shopping_app/sell/sell_location/view/sell_location.dart';
+import 'package:shopping_app/sell/settings/view/setting_view.dart';
 
 import '../../../../../../favourites.dart';
 import '../drawer_widget.dart';
@@ -46,13 +47,14 @@ class _DrawerViewState extends State<DrawerView> {
       });
 
   openDrawer() => setState(() {
-        xOffset = 230;
-        yOffset = 130;
+        xOffset = 210;
+        yOffset = 170;
         scaleFactor = 0.6;
         isDrawerOpen = true;
       });
 
   final initialindex = Get.put(InitialIndex());
+  final authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +75,11 @@ class _DrawerViewState extends State<DrawerView> {
           onSelectedItem: (item) async {
             switch (item) {
               case BuyDrawerItems.logOut:
+                authController.signOut();
                 Get.snackbar('massage', 'logOut');
                 return;
               case SellDrawerItems.logOut:
+                authController.signOut();
                 Get.snackbar('massage', 'logOut');
                 return;
 
@@ -139,6 +143,8 @@ class _DrawerViewState extends State<DrawerView> {
     switch (item) {
       case BuyDrawerItems.favourites:
         return Favourites();
+      case BuyDrawerItems.location:
+        return BuyerLocation();
       case BuyDrawerItems.home:
       default:
         return NewTab();
@@ -149,8 +155,6 @@ class _DrawerViewState extends State<DrawerView> {
     switch (item) {
       case SellDrawerItems.settings:
         return SettingView();
-      case SellDrawerItems.profile:
-        return ProfileView();
       case SellDrawerItems.product:
         return ProductView();
       case SellDrawerItems.addProducts:

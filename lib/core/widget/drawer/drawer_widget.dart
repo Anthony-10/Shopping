@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
@@ -7,9 +8,14 @@ import 'package:shopping_app/models/drawer_items.dart';
 
 class DrawerWidget extends StatelessWidget {
   final ValueChanged<DrawerItem> onSelectedItem;
-  DrawerWidget({Key key, this.onSelectedItem,}) : super(key: key);
+
+  DrawerWidget({
+    Key key,
+    this.onSelectedItem,
+  }) : super(key: key);
 
   final initialindex = Get.put(InitialIndex());
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +23,9 @@ class DrawerWidget extends StatelessWidget {
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            buildCircleAvatar(context),
             buildDrawerItems(context),
           ],
         ),
@@ -61,4 +69,39 @@ class DrawerWidget extends StatelessWidget {
                     onTap: () => onSelectedItem(item),
                   ))
               .toList());
+
+  buildCircleAvatar(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(left: 20.0, top: 10.0, bottom: 20.0),
+        child: Row(children: [
+          Stack(
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.grey,
+                radius: 50.0,
+                child: Icon(
+                  Icons.person,
+                  size: Get.height * 0.1,
+                ),
+              ),
+              Positioned(
+                  bottom: -3,
+                  right: -3,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.camera_alt,
+                      size: 30.0,
+                    ),
+                    onPressed: () {},
+                  ))
+            ],
+          ),
+          SizedBox(
+            width: 20.0,
+          ),
+          Column(children: [
+            Text('Ambros Kim', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Aweru@gmail.com'),
+          ]),
+        ]),
+      );
 }

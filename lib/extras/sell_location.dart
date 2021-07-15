@@ -1,9 +1,7 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:shopping_app/models/directions.dart';
-import 'package:shopping_app/sell_location/controller/sell_direction_controller.dart';
 import 'package:location/location.dart';
 
 class SellLocation extends StatefulWidget {
@@ -30,31 +28,37 @@ class _SellLocationState extends State<SellLocation> {
     });
     //setPolylines();
   }
+
   Set<Polyline> _polyline = Set<Polyline>();
   List<LatLng> polylineCoordinates = [];
-
-
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     polylinePoints = PolylinePoints();
+    polylinePoints = PolylinePoints();
   }
-  PolylinePoints polylinePoints = PolylinePoints();
-  /*static const _initialCameraPosition =
-      CameraPosition(target: LatLng(37.773972, -122.431297), zoom: 11.5);*/
 
-  /*GoogleMapController _googleMapController;
+  PolylinePoints polylinePoints = PolylinePoints();
+  */
+/*static const _initialCameraPosition =
+      CameraPosition(target: LatLng(37.773972, -122.431297), zoom: 11.5);*/ /*
+
+
+  */
+/*GoogleMapController _googleMapController;
   Marker _origin;
   Marker _destination;
-  Directions _info;*/
+  Directions _info;*/ /*
 
-  /* @override
+
+  */
+/* @override
   void dispose() {
     _googleMapController.dispose();
     super.dispose();
-  }*/
+  }*/ /*
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +66,8 @@ class _SellLocationState extends State<SellLocation> {
       body: Stack(
         children: [
           GoogleMap(
+            compassEnabled: true,
+            trafficEnabled: true,
             myLocationEnabled: true,
             //trafficEnabled: true,
             onMapCreated: _onMapCreated,
@@ -84,7 +90,7 @@ class _SellLocationState extends State<SellLocation> {
                     hintText: 'Enter location',
                     suffixIcon: Icon(Icons.search),
                     contentPadding:
-                        const EdgeInsets.only(left: 20, bottom: 5, right: 5),
+                    const EdgeInsets.only(left: 20, bottom: 5, right: 5),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                         borderSide: BorderSide(color: Colors.white)),
@@ -107,7 +113,8 @@ class _SellLocationState extends State<SellLocation> {
               ))
         ],
       ),
-      /*SafeArea(
+      */
+/*SafeArea(
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -170,8 +177,10 @@ class _SellLocationState extends State<SellLocation> {
             )
           ],
         ),
-      ),*/
-      /*floatingActionButton: FloatingActionButton(
+      ),*/ /*
+
+      */
+/*floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           onPressed: () => _googleMapController.animateCamera(
@@ -179,14 +188,18 @@ class _SellLocationState extends State<SellLocation> {
                     ? CameraUpdate.newLatLngBounds(_info.bounds, 100.0)
                     : CameraUpdate.newCameraPosition(_initialCameraPosition),
               ),
-          child: const Icon(Icons.center_focus_strong)),*/
+          child: const Icon(Icons.center_focus_strong)),*/ /*
+
     );
   }
-  /* void setPolylines() async {
+*/
+/* void setPolylines() async {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(googleApiKey, origin, destination)
   }
+*/ /*
+
 */
-  /* void _addMarker(LatLng pos) async {
+/* void _addMarker(LatLng pos) async {
     if (_origin == null || (_origin != null && _destination != null)) {
       setState(() {
         _origin = Marker(
@@ -218,8 +231,10 @@ class _SellLocationState extends State<SellLocation> {
           .getDirections(origin: _origin.position, destination: pos);
       setState(() => _info = directions);
     }
-  }*/
-  /*void _zoomOrigin() {
+  }*/ /*
+
+*/
+/*void _zoomOrigin() {
     _googleMapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -229,8 +244,10 @@ class _SellLocationState extends State<SellLocation> {
         ),
       ),
     );
-  }*/
-  /*void _zoomDestination() {
+  }*/ /*
+
+*/
+/*void _zoomDestination() {
     _googleMapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -240,5 +257,7 @@ class _SellLocationState extends State<SellLocation> {
         ),
       ),
     );
-  }*/
+  }*/ /*
+
 }
+*/
