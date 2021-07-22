@@ -10,7 +10,7 @@ class BottomSheetView extends GetxController {
   //BottomSheetView({this.onClick});
 
   //ProductItems element = ProductCategories.clothes;
-  Rx<ProductItems> element = ProductCategories.car.obs;
+  Rx<ProductItems> element = ProductCategories.vehicle.obs;
 
   getBottomSheet() {
     Get.bottomSheet(Container(
@@ -78,9 +78,9 @@ class BottomSheetView extends GetxController {
     print('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL,${element.value.title}');
 
     Obx(
-      () => element.value == ProductCategories.clothes
+      () => element.value == ProductCategories.fashion
           ? ClothView()
-          : element.value == ProductCategories.car
+          : element.value == ProductCategories.vehicle
               ? CarView()
               : SizedBox(
                   child: Text("wewe"),

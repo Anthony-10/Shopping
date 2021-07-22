@@ -26,7 +26,7 @@ class _AddProductsViewState extends State<AddProductsView> {
 
   final addProductsController = Get.put(AddProductsController());
 
-  Rx<ProductItems> element = ProductCategories.car.obs;
+  //Rx<ProductItems> element = ProductCategories.car.obs;
 
   final bottomSheetView = Get.put(BottomSheetView());
 
@@ -161,13 +161,13 @@ class _AddProductsViewState extends State<AddProductsView> {
                   style: TextStyle(color: Colors.red),
                 ),
                 SizedBox(
-                  height: 30.0,
+                  height: 60.0,
                 ),
                 SizedBox(
                     width: Get.width * 0.6,
                     child: Column(
                       children: [
-                        TextFormField(
+                        /*TextFormField(
                           key: const ValueKey("productName"),
                           textAlign: TextAlign.start,
                           decoration: InputDecoration(
@@ -190,17 +190,18 @@ class _AddProductsViewState extends State<AddProductsView> {
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           controller: _productSize,
-                        ),
-                        SizedBox(
+                        ),*/
+                        /* SizedBox(
                           height: 30.0,
-                        ),
+                        ),*/
                         ElevatedButton(
                           onPressed: () {
-                            if (_productName.text.isNotEmpty &&
+                            Get.bottomSheet(BottomSheet2());
+                            /*if (_productName.text.isNotEmpty &&
                                 _productSize.text.isNotEmpty) {
                               Get.bottomSheet(BottomSheet2());
-                              /*addProductsController.addProducts(
-                                    _productName.text, _productSize.text);*/
+                              */ /*addProductsController.addProducts(
+                                    _productName.text, _productSize.text);*/ /*
                               Get.snackbar('message', 'product details added');
                             } else if (_productName.text.isEmpty) {
                               Get.snackbar('message', 'Enter ProductName');
@@ -208,9 +209,9 @@ class _AddProductsViewState extends State<AddProductsView> {
                               if (_productSize.text.isEmpty) {
                                 Get.snackbar('message', 'Enter ProductSize');
                               }
-                            }
+                            }*/
                           },
-                          child: Text('Add Product'),
+                          child: Text('Continue'),
                           style: ElevatedButton.styleFrom(
                             primary: Colors.black,
                           ),

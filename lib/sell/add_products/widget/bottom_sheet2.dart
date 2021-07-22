@@ -6,7 +6,6 @@ import 'package:shopping_app/data/item_category/cloth_item.dart';
 import 'package:shopping_app/data/product_category/product_category.dart';
 import 'package:shopping_app/models/product_items.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
-import 'package:shopping_app/sell/add_products/widget/bottom_sheet/category_list.dart';
 
 class BottomSheet2 extends StatefulWidget {
   const BottomSheet2({Key key}) : super(key: key);
@@ -44,6 +43,9 @@ class _BottomSheet2State extends State<BottomSheet2> {
                   addProductsController.initialIndex == 0
                       ? Text('Select a category')
                       : Text('Select a item'),
+                  SizedBox(
+                    height: 30.0,
+                  ),
                   /*Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: ProductCategories.all
@@ -150,7 +152,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
 
   Widget getPage(element) {
     switch (element) {
-      case ProductCategories.car:
+      case ProductCategories.vehicle:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: CarItem.all
@@ -179,7 +181,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
               .toList(),
         );
 
-      case ProductCategories.clothes:
+      case ProductCategories.fashion:
       default:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
