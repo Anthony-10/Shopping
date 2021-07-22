@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/authentication/view/auth_view.dart';
 import 'package:shopping_app/authentication/view/auth_view.dart';
 import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
 

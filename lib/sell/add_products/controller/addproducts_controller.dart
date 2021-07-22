@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shopping_app/models/product_items.dart';
 
 class AddProductsController extends GetxController {
   final picker = ImagePicker();
@@ -11,6 +12,8 @@ class AddProductsController extends GetxController {
   //File image;
   // File image = ''.obs as File;
   var imageSize = ''.obs;
+  int initialIndex = 0;
+  ProductItems element;
 
   getImageGallery(ImageSource imageSource) async {
     image.clear();

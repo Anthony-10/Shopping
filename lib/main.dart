@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+      defaultTransition: Transition.fade,
       getPages: [
         GetPage(name: "/buy_view", page: () => BuyView()),
         GetPage(

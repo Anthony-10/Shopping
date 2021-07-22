@@ -22,7 +22,9 @@ class _AddProductsViewState extends State<AddProductsView> {
   final TextEditingController _productName = TextEditingController();
   final TextEditingController _productSize = TextEditingController();
 
-  final addProductsController = Get.find<AddProductsController>();
+  //final addProductsController = Get.find<AddProductsController>();
+
+  final addProductsController = Get.put(AddProductsController());
 
   Rx<ProductItems> element = ProductCategories.car.obs;
 
