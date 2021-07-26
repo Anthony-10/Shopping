@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_app/data/add_product/add_product.dart';
-import 'package:shopping_app/data/product_category/product_category.dart';
 import 'package:shopping_app/models/product_items.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/sell/add_products/widget/bottom_sheet.dart';

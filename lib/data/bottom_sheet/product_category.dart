@@ -6,7 +6,7 @@ class ProductCategories {
   static const house = ProductItems(title: 'House');
   static const office = ProductItems(title: 'Office');
   static const agriculture = ProductItems(title: 'Agriculture');
-  static const animal = ProductItems(title: 'Animal');
+  static const pets = ProductItems(title: 'Animal');
   static const electronics = ProductItems(title: 'Electronics');
   static const health = ProductItems(title: 'Health');
   static const repair = ProductItems(title: 'Repair');
@@ -19,7 +19,7 @@ class ProductCategories {
     house,
     office,
     agriculture,
-    animal,
+    pets,
     electronics,
     health,
     repair,

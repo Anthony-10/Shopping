@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/product_category/product_category.dart';
+import 'package:shopping_app/data/bottom_sheet/product_category.dart';
 import 'package:shopping_app/models/product_items.dart';
 import 'package:shopping_app/sell/add_products/widget/product_selection/car_view.dart';
 import 'package:shopping_app/sell/add_products/widget/product_selection/cloth_view.dart';
