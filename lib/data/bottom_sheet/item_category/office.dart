@@ -1,7 +1,7 @@
 import 'package:shopping_app/models/product_items.dart';
 
 class Office {
-  static const officeAccessories = ProductItems(title: 'Office accessories');
+  static const officeAccessories = ProductItems(title: 'Office Accessories');
   static const office = ProductItems(title: 'Office');
   static const others = ProductItems(title: 'Others');
 

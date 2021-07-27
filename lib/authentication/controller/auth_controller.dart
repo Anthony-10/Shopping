@@ -10,12 +10,12 @@ class AuthController extends GetxController {
   String get user => _firebaseUser.value.email;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-  int initialIndex = 0;
+  int initialIndexAuth = 0;
 
   @override
   void onInit() {
     // TODO: implement onInit
-    _firebaseUser.bindStream(_auth.idTokenChanges());
+    _firebaseUser.bindStream(_auth.authStateChanges());
     //super.onInit();
   }
 

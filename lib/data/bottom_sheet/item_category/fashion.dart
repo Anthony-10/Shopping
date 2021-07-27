@@ -5,7 +5,7 @@ class ClothItem {
   static ProductItems shoes = ProductItems(title: 'Shoes');
   static ProductItems watches = ProductItems(title: 'Watches');
   static ProductItems clothingAccessories =
-      ProductItems(title: 'Clothing accessories');
+      ProductItems(title: 'Clothing Accessories');
   static ProductItems bugs = ProductItems(title: 'Bugs');
   static ProductItems jewelry = ProductItems(title: 'Jewelry');
   static final List<ProductItems> all = [

@@ -41,7 +41,7 @@ class _AuthViewState extends State<AuthView> {
                   Container(
                       height: Get.height * 0.5,
                       width: Get.width,
-                      child: authController.initialIndex == 0
+                      child: authController.initialIndexAuth == 0
                           ? Align(
                               alignment: Alignment(-0.5, -0.1),
                               child: DefaultTextStyle(
@@ -56,83 +56,107 @@ class _AuthViewState extends State<AuthView> {
                                         '\nBack',
                                         speed: Duration(milliseconds: 60)),
                                   ],
-                                  /*style: TextStyle(
-                                    color: Colors.white, fontSize: 35.0)*/
                                 ),
                               ),
                             )
-                          : Align(
-                              alignment: Alignment(-0.5, -0.1),
-                              child: DefaultTextStyle(
-                                style: TextStyle(
-                                    fontSize: 35.0, color: Colors.white),
-                                child: Text(
-                                  'Create'
-                                  '\nAccount',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 35.0),
-                                ),
-                              ),
-                            )),
+                          : authController.initialIndexAuth == 1
+                              ? Align(
+                                  alignment: Alignment(-0.5, -0.1),
+                                  child: DefaultTextStyle(
+                                    style: TextStyle(
+                                        fontSize: 35.0, color: Colors.white),
+                                    child: Text(
+                                      'Create'
+                                      '\nAccount',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 35.0),
+                                    ),
+                                  ),
+                                )
+                              //TODO
+                              : Align(
+                                  alignment: Alignment(-0.5, -0.1),
+                                  child: DefaultTextStyle(
+                                    style: TextStyle(
+                                        fontSize: 35.0, color: Colors.white),
+                                    child: Text(
+                                      'Forget'
+                                      '\nPassword',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 35.0),
+                                    ),
+                                  ),
+                                )),
                   Expanded(
                     child: Container(
-                      child: Align(
-                        alignment: Alignment(0.9, 0.7),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.mail,
-                                  size: 30.0,
-                                  color: Colors.red,
-                                ),
-                                onPressed: () {},
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.facebook,
-                                  size: 30.0,
-                                  color: Colors.blue,
-                                ),
-                                onPressed: () {},
-                              ),
-                              SizedBox(
-                                width: 20.0,
-                              ),
-                              authController.initialIndex == 0
-                                  ? Row(children: [
-                                      Text('Don\'t have an account?'),
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      TextButton(
-                                        child: Text('Sign Up'),
-                                        onPressed: () {
-                                          setState(() {
-                                            authController.initialIndex = 1;
-                                          });
-                                        },
-                                      )
-                                    ])
-                                  : Row(
-                                      children: [
-                                        Text('Already have an account?'),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 90, top: 230),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Row(
+                              children: [
+                                authController.initialIndexAuth == 0
+                                    ? Row(children: [
+                                        Text('Don\'t have an account?'),
                                         SizedBox(
-                                          width: 5.0,
+                                          width: 10.0,
                                         ),
                                         TextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                authController.initialIndex = 0;
-                                              });
-                                            },
-                                            child: Text('Sign In')),
-                                      ],
-                                    )
-                            ],
-                          ),
+                                          child: Text('Sign Up'),
+                                          onPressed: () {
+                                            setState(() {
+                                              authController.initialIndexAuth =
+                                                  1;
+                                            });
+                                          },
+                                        )
+                                      ])
+                                    : Row(
+                                        children: [
+                                          Text('Already have an account?'),
+                                          SizedBox(
+                                            width: 5.0,
+                                          ),
+                                          TextButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  authController
+                                                      .initialIndexAuth = 0;
+                                                });
+                                              },
+                                              child: Text('Sign In')),
+                                        ],
+                                      )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.mail,
+                                    size: 30.0,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.facebook,
+                                    size: 30.0,
+                                    color: Colors.blue,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                       width: Get.width,
@@ -177,9 +201,9 @@ class _AuthViewState extends State<AuthView> {
                 bottom: 140.0,
                 left: 50.0,
                 right: 50.0,
-                child: authController.initialIndex == 0
+                child: authController.initialIndexAuth == 0
                     ? Login()
-                    : authController.initialIndex == 1
+                    : authController.initialIndexAuth == 1
                         ? Register()
                         : ForgetPassword())
           ],

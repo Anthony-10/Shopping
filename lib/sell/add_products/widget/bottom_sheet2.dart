@@ -15,7 +15,6 @@ import 'package:shopping_app/data/bottom_sheet/item_category/vehicles.dart';
 import 'package:shopping_app/data/bottom_sheet/product_category.dart';
 import 'package:shopping_app/models/product_items.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
-import 'package:shopping_app/sell/add_products/widget/check_box_view.dart';
 import 'package:shopping_app/sell/add_products/widget/others.dart';
 
 class BottomSheet2 extends StatefulWidget {
@@ -31,7 +30,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
   int initialIndex1 = 0;
   AddProductsController addProductsController =
       Get.put(AddProductsController());
-  bool value = true;
+  bool value = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,8 +52,19 @@ class _BottomSheet2State extends State<BottomSheet2> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   addProductsController.initialIndex == 0
-                      ? Text('Select a category')
-                      : Text('Select a item'),
+                      ? Text(
+                          'Select a category',
+                          style: TextStyle(fontSize: 20.0),
+                        )
+                      : addProductsController.initialIndex == 1
+                          ? Text(
+                              'Select a item',
+                              style: TextStyle(fontSize: 20.0),
+                            )
+                          : Text(
+                              'Select size',
+                              style: TextStyle(fontSize: 20.0),
+                            ),
                   SizedBox(
                     height: 30.0,
                   ),
@@ -75,8 +85,9 @@ class _BottomSheet2State extends State<BottomSheet2> {
                                     },
                                     child: Container(
                                       margin: EdgeInsets.all(10.0),
-                                      height: Get.height * 0.05,
-                                      width: Get.width * 0.2,
+                                      padding: EdgeInsets.all(10.0),
+                                      height: Get.height * 0.07,
+                                      width: Get.width * 0.3,
                                       decoration: BoxDecoration(
                                           color: this.element == element
                                               ? Colors.blue
@@ -174,27 +185,28 @@ class _BottomSheet2State extends State<BottomSheet2> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: Vehicles.all
-              .map((element) => GestureDetector(
+              .map((element1) => GestureDetector(
                     onTap: () {
                       setState(() {
                         //addProductsController.initialIndex = 0;
-                        this.element = element;
+                        this.element = element1;
                         //TODO
-                        print(element.title);
+                        print(element1.title);
                       });
                     },
                     child: Container(
                       margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
+                      padding: EdgeInsets.all(10.0),
+                      height: Get.height * 0.07,
+                      width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == element
+                          color: this.element == element1
                               ? Colors.blue
                               : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        element.title,
+                        element1.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
@@ -216,8 +228,9 @@ class _BottomSheet2State extends State<BottomSheet2> {
                     },
                     child: Container(
                       margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
+                      padding: EdgeInsets.all(10.0),
+                      height: Get.height * 0.07,
+                      width: Get.width * 0.3,
                       decoration: BoxDecoration(
                           color: this.element == element
                               ? Colors.blue
@@ -247,8 +260,9 @@ class _BottomSheet2State extends State<BottomSheet2> {
                     },
                     child: Container(
                       margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
+                      padding: EdgeInsets.all(10.0),
+                      height: Get.height * 0.07,
+                      width: Get.width * 0.3,
                       decoration: BoxDecoration(
                           color: this.element == element
                               ? Colors.blue
@@ -278,8 +292,9 @@ class _BottomSheet2State extends State<BottomSheet2> {
                     },
                     child: Container(
                       margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
+                      padding: EdgeInsets.all(10.0),
+                      height: Get.height * 0.07,
+                      width: Get.width * 0.3,
                       decoration: BoxDecoration(
                           color: this.element == element
                               ? Colors.blue
@@ -309,8 +324,9 @@ class _BottomSheet2State extends State<BottomSheet2> {
                     },
                     child: Container(
                       margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
+                      padding: EdgeInsets.all(10.0),
+                      height: Get.height * 0.07,
+                      width: Get.width * 0.3,
                       decoration: BoxDecoration(
                           color: this.element == element
                               ? Colors.blue
@@ -340,8 +356,9 @@ class _BottomSheet2State extends State<BottomSheet2> {
                     },
                     child: Container(
                       margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
+                      padding: EdgeInsets.all(10.0),
+                      height: Get.height * 0.07,
+                      width: Get.width * 0.3,
                       decoration: BoxDecoration(
                           color: this.element == element
                               ? Colors.blue
@@ -371,8 +388,9 @@ class _BottomSheet2State extends State<BottomSheet2> {
                     },
                     child: Container(
                       margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
+                      padding: EdgeInsets.all(10.0),
+                      height: Get.height * 0.07,
+                      width: Get.width * 0.3,
                       decoration: BoxDecoration(
                           color: this.element == element
                               ? Colors.blue
@@ -402,8 +420,9 @@ class _BottomSheet2State extends State<BottomSheet2> {
                     },
                     child: Container(
                       margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
+                      padding: EdgeInsets.all(10.0),
+                      height: Get.height * 0.07,
+                      width: Get.width * 0.3,
                       decoration: BoxDecoration(
                           color: this.element == element
                               ? Colors.blue
@@ -433,8 +452,9 @@ class _BottomSheet2State extends State<BottomSheet2> {
                     },
                     child: Container(
                       margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
+                      padding: EdgeInsets.all(10.0),
+                      height: Get.height * 0.07,
+                      width: Get.width * 0.3,
                       decoration: BoxDecoration(
                           color: this.element == element
                               ? Colors.blue
@@ -458,10 +478,10 @@ class _BottomSheet2State extends State<BottomSheet2> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: ClothItem.all
-              .map((element) => GestureDetector(
+              .map((e) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        this.element = element;
+                        this.element = e;
                         //addProductsController.initialIndex = 0;
                         //TODO
                         print(element.title);
@@ -469,16 +489,15 @@ class _BottomSheet2State extends State<BottomSheet2> {
                     },
                     child: Container(
                       margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
+                      padding: EdgeInsets.all(10.0),
+                      height: Get.height * 0.07,
+                      width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == element
-                              ? Colors.blue
-                              : Colors.grey,
+                          color: this.element == e ? Colors.blue : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        element.title,
+                        e.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
