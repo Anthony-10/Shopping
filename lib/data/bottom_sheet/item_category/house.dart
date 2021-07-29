@@ -1,15 +1,14 @@
+import 'package:shopping_app/models/item_model.dart';
 import 'package:shopping_app/models/product_items.dart';
 
 class House {
-  static ProductItems houseAccessories =
-      ProductItems(title: 'House Accessories');
-  static ProductItems furniture = ProductItems(title: 'Furniture');
-  static ProductItems kitchenAppliances =
-      ProductItems(title: 'Kitchen Appliances');
-  static ProductItems houseAppliances = ProductItems(title: 'House Appliances');
-  static ProductItems garden = ProductItems(title: 'Garden');
+  static ItemModel houseAccessories = ItemModel(title: 'House Accessories');
+  static ItemModel furniture = ItemModel(title: 'Furniture');
+  static ItemModel kitchenAppliances = ItemModel(title: 'Kitchen Appliances');
+  static ItemModel houseAppliances = ItemModel(title: 'House Appliances');
+  static ItemModel garden = ItemModel(title: 'Garden');
 
-  static final List<ProductItems> all = [
+  static final List<ItemModel> all = [
     houseAccessories,
     furniture,
     kitchenAppliances,

@@ -1,5 +1,6 @@
 class CheckBoxItem {
   final String text;
+  bool value;
 
-  const CheckBoxItem({this.text});
+  CheckBoxItem({this.text, this.value = false});
 }

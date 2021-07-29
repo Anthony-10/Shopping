@@ -1,15 +1,16 @@
+import 'package:shopping_app/models/item_model.dart';
 import 'package:shopping_app/models/product_items.dart';
 
 class Vehicles {
-  static ProductItems cars = ProductItems(title: 'Cars');
-  static ProductItems vehicleParts = ProductItems(title: 'Vehicle Parts');
-  static ProductItems buses = ProductItems(title: 'Buses');
-  static ProductItems trucks = ProductItems(title: 'Trucks');
-  static ProductItems motorcycles = ProductItems(title: 'Motorcycles');
-  static ProductItems heavyEquipment = ProductItems(title: 'Heavy Equipment');
-  static ProductItems watercraft = ProductItems(title: 'Watercraft');
+  static ItemModel cars = ItemModel(title: 'Cars');
+  static ItemModel vehicleParts = ItemModel(title: 'Vehicle Parts');
+  static ItemModel buses = ItemModel(title: 'Buses');
+  static ItemModel trucks = ItemModel(title: 'Trucks');
+  static ItemModel motorcycles = ItemModel(title: 'Motorcycles');
+  static ItemModel heavyEquipment = ItemModel(title: 'Heavy Equipment');
+  static ItemModel watercraft = ItemModel(title: 'Watercraft');
 
-  static final List<ProductItems> all = [
+  static final List<ItemModel> all = [
     cars,
     vehicleParts,
     buses,

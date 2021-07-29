@@ -1,12 +1,13 @@
+import 'package:shopping_app/models/item_model.dart';
 import 'package:shopping_app/models/product_items.dart';
 
 class Agriculture {
-  static const farmMachinery = ProductItems(title: 'FarmMachinery');
-  static const liveStock = ProductItems(title: 'LiveStock');
-  static const meals = ProductItems(title: 'Meals');
-  static const feeds = ProductItems(title: 'Feeds & Seeds');
+  static ItemModel farmMachinery = ItemModel(title: 'FarmMachinery');
+  static ItemModel liveStock = ItemModel(title: 'LiveStock');
+  static ItemModel meals = ItemModel(title: 'Meals');
+  static ItemModel feeds = ItemModel(title: 'Feeds & Seeds');
 
-  static final List<ProductItems> all = [
+  static final List<ItemModel> all = [
     farmMachinery,
     liveStock,
     meals,

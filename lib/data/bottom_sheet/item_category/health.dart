@@ -1,14 +1,15 @@
+import 'package:shopping_app/models/item_model.dart';
 import 'package:shopping_app/models/product_items.dart';
 
 class Health {
-  static ProductItems bath = ProductItems(title: 'Bath & Body');
-  static ProductItems hairBeauty = ProductItems(title: 'Hair Beauty');
-  static ProductItems makeup = ProductItems(title: 'Makeup');
-  static ProductItems tools = ProductItems(title: 'Tools & Accessories');
-  static ProductItems vitamin = ProductItems(title: 'Vitamins & Supplements');
-  static ProductItems skinCare = ProductItems(title: 'Skin Care');
+  static ItemModel bath = ItemModel(title: 'Bath & Body');
+  static ItemModel hairBeauty = ItemModel(title: 'Hair Beauty');
+  static ItemModel makeup = ItemModel(title: 'Makeup');
+  static ItemModel tools = ItemModel(title: 'Tools & Accessories');
+  static ItemModel vitamin = ItemModel(title: 'Vitamins & Supplements');
+  static ItemModel skinCare = ItemModel(title: 'Skin Care');
 
-  static final List<ProductItems> all = [
+  static final List<ItemModel> all = [
     bath,
     hairBeauty,
     makeup,

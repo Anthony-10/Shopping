@@ -1,14 +1,15 @@
+import 'package:shopping_app/models/item_model.dart';
 import 'package:shopping_app/models/product_items.dart';
 
 class Pets {
-  static ProductItems petsAccessories = ProductItems(title: 'Pets Accessories');
-  static ProductItems dogs = ProductItems(title: 'Dogs & Puppies');
-  static ProductItems fish = ProductItems(title: 'Fish');
-  static ProductItems birds = ProductItems(title: 'Birds');
-  static ProductItems carts = ProductItems(title: 'Carts & Kittens');
-  static ProductItems otherAnimals = ProductItems(title: 'Other Animals');
+  static ItemModel petsAccessories = ItemModel(title: 'Pets Accessories');
+  static ItemModel dogs = ItemModel(title: 'Dogs & Puppies');
+  static ItemModel fish = ItemModel(title: 'Fish');
+  static ItemModel birds = ItemModel(title: 'Birds');
+  static ItemModel carts = ItemModel(title: 'Carts & Kittens');
+  static ItemModel otherAnimals = ItemModel(title: 'Other Animals');
 
-  static final List<ProductItems> all = [
+  static final List<ItemModel> all = [
     petsAccessories,
     dogs,
     fish,

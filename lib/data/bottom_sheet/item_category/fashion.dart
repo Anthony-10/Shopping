@@ -1,14 +1,14 @@
-import 'package:shopping_app/models/product_items.dart';
+import 'package:shopping_app/models/item_model.dart';
 
 class ClothItem {
-  static ProductItems clothing = ProductItems(title: 'Clothing');
-  static ProductItems shoes = ProductItems(title: 'Shoes');
-  static ProductItems watches = ProductItems(title: 'Watches');
-  static ProductItems clothingAccessories =
-      ProductItems(title: 'Clothing Accessories');
-  static ProductItems bugs = ProductItems(title: 'Bugs');
-  static ProductItems jewelry = ProductItems(title: 'Jewelry');
-  static final List<ProductItems> all = [
+  static ItemModel clothing = ItemModel(title: 'Clothing');
+  static ItemModel shoes = ItemModel(title: 'Shoes');
+  static ItemModel watches = ItemModel(title: 'Watches');
+  static ItemModel clothingAccessories =
+      ItemModel(title: 'Clothing Accessories');
+  static ItemModel bugs = ItemModel(title: 'Bugs');
+  static ItemModel jewelry = ItemModel(title: 'Jewelry');
+  static final List<ItemModel> all = [
     clothing,
     shoes,
     watches,

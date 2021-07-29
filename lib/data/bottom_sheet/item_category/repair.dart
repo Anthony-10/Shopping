@@ -1,12 +1,12 @@
+import 'package:shopping_app/models/item_model.dart';
 import 'package:shopping_app/models/product_items.dart';
 
 class Repair {
-  static ProductItems electricalTools = ProductItems(title: 'Electrical Tools');
-  static ProductItems handTools = ProductItems(title: 'Hand Tools');
-  static ProductItems buildingMaterials =
-      ProductItems(title: 'Building Materials');
+  static ItemModel electricalTools = ItemModel(title: 'Electrical Tools');
+  static ItemModel handTools = ItemModel(title: 'Hand Tools');
+  static ItemModel buildingMaterials = ItemModel(title: 'Building Materials');
 
-  static final List<ProductItems> all = [
+  static final List<ItemModel> all = [
     electricalTools,
     handTools,
     buildingMaterials,

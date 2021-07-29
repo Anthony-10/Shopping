@@ -1,13 +1,14 @@
+import 'package:shopping_app/models/item_model.dart';
 import 'package:shopping_app/models/product_items.dart';
 
 class Office {
-  static const officeAccessories = ProductItems(title: 'Office Accessories');
-  static const office = ProductItems(title: 'Office');
-  static const others = ProductItems(title: 'Others');
+  static ItemModel officeAccessories = ItemModel(title: 'Office Accessories');
+  static ItemModel offices = ItemModel(title: 'Office');
+  static ItemModel others = ItemModel(title: 'Others');
 
-  static final List<ProductItems> all = [
+  static final List<ItemModel> all = [
     officeAccessories,
-    office,
+    offices,
     others,
   ];
 }

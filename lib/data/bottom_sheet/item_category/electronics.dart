@@ -1,16 +1,17 @@
+import 'package:shopping_app/models/item_model.dart';
 import 'package:shopping_app/models/product_items.dart';
 
 class Electronics {
-  static ProductItems computerAccessories =
-      ProductItems(title: 'Computer Accessories');
-  static ProductItems laptops = ProductItems(title: 'Laptops & Computers');
-  static ProductItems tv = ProductItems(title: 'Tv');
-  static ProductItems security = ProductItems(title: 'Security');
-  static ProductItems network = ProductItems(title: 'Network');
-  static ProductItems printer = ProductItems(title: 'Printer & Scanner');
-  static ProductItems others = ProductItems(title: 'Others');
+  static ItemModel computerAccessories =
+      ItemModel(title: 'Computer Accessories');
+  static ItemModel laptops = ItemModel(title: 'Laptops & Computers');
+  static ItemModel tv = ItemModel(title: 'Tv');
+  static ItemModel security = ItemModel(title: 'Security');
+  static ItemModel network = ItemModel(title: 'Network');
+  static ItemModel printer = ItemModel(title: 'Printer & Scanner');
+  static ItemModel others = ItemModel(title: 'Others');
 
-  static final List<ProductItems> all = [
+  static final List<ItemModel> all = [
     computerAccessories,
     laptops,
     tv,

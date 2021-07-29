@@ -13,6 +13,8 @@ import 'package:shopping_app/data/bottom_sheet/item_category/repair.dart';
 import 'package:shopping_app/data/bottom_sheet/item_category/sports.dart';
 import 'package:shopping_app/data/bottom_sheet/item_category/vehicles.dart';
 import 'package:shopping_app/data/bottom_sheet/product_category.dart';
+import 'package:shopping_app/models/check_box_item.dart';
+import 'package:shopping_app/models/item_model.dart';
 import 'package:shopping_app/models/product_items.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/sell/add_products/widget/others.dart';
@@ -26,11 +28,17 @@ class BottomSheet2 extends StatefulWidget {
 
 class _BottomSheet2State extends State<BottomSheet2> {
   //ProductItems element = ProductCategories.all;
-  ProductItems element;
+  final TextEditingController _productName = TextEditingController();
+  final TextEditingController _productSize = TextEditingController();
+
+  ProductItems productElement;
+  ItemModel itemElement;
+
+  //CheckBoxItem value;
   int initialIndex1 = 0;
   AddProductsController addProductsController =
       Get.put(AddProductsController());
-  bool value = false;
+  //bool value = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -75,13 +83,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                               .map((element) => GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        this.element = element;
+                                        this.productElement = element;
                                         //addProductsController.initialIndex = 1;
                                       });
                                       print(element.obs);
                                       print(element.title);
                                       print(
-                                          '************************${this.element.title}');
+                                          '************************${this.productElement.title}');
                                     },
                                     child: Container(
                                       margin: EdgeInsets.all(10.0),
@@ -89,7 +97,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
                                       height: Get.height * 0.07,
                                       width: Get.width * 0.3,
                                       decoration: BoxDecoration(
-                                          color: this.element == element
+                                          color: this.productElement == element
                                               ? Colors.blue
                                               : Colors.grey,
                                           borderRadius:
@@ -104,7 +112,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
                               .toList(),
                         )
                       : addProductsController.initialIndex == 1
-                          ? getPage(element)
+                          ? getPage(productElement)
                           : SingleChildScrollView(
                               child: Container(
                                 width: Get.width * 0.4,
@@ -116,10 +124,10 @@ class _BottomSheet2State extends State<BottomSheet2> {
                                               ListTileControlAffinity.leading,
                                           activeColor: Colors.blue,
                                           title: Text(e.text),
-                                          value: value,
-                                          onChanged: (value) {
+                                          value: e.value,
+                                          onChanged: (unValue) {
                                             setState(() {
-                                              this.value = !value;
+                                              e.value = unValue;
                                             });
                                           },
                                         ),
@@ -138,17 +146,27 @@ class _BottomSheet2State extends State<BottomSheet2> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        addProductsController.initialIndex == 0
+                        addProductsController.initialIndex == 0 &&
+                                this.productElement != null
                             ? setState(() {
                                 addProductsController.initialIndex = 1;
                               })
-                            : addProductsController.initialIndex == 1
+                            : addProductsController.initialIndex == 1 &&
+                                    this.productElement != null &&
+                                    this.itemElement != null
                                 ? setState(() {
                                     addProductsController.initialIndex = 2;
                                   })
-                                : setState(() {
-                                    addProductsController.initialIndex = 0;
-                                  });
+                                : this.productElement == null
+                                    ? Get.snackbar('Massage', 'Select product',
+                                        snackPosition: SnackPosition.BOTTOM)
+                                    : this.itemElement == null
+                                        ? Get.snackbar('Massage', 'Select Item',
+                                            snackPosition: SnackPosition.BOTTOM)
+                                        : setState(() {
+                                            addProductsController.initialIndex =
+                                                0;
+                                          });
                       },
                       child: Text('save'),
                       style: ElevatedButton.styleFrom(
@@ -185,13 +203,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: Vehicles.all
-              .map((element1) => GestureDetector(
+              .map((vehiclesE) => GestureDetector(
                     onTap: () {
                       setState(() {
                         //addProductsController.initialIndex = 0;
-                        this.element = element1;
+                        this.itemElement = vehiclesE;
                         //TODO
-                        print(element1.title);
+                        print(vehiclesE.title);
                       });
                     },
                     child: Container(
@@ -200,13 +218,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                       height: Get.height * 0.07,
                       width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == element1
+                          color: this.itemElement == vehiclesE
                               ? Colors.blue
                               : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        element1.title,
+                        vehiclesE.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
@@ -217,13 +235,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: Sports.all
-              .map((element) => GestureDetector(
+              .map((sportsE) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        this.element = element;
+                        this.itemElement = sportsE;
                         //addProductsController.initialIndex = 0;
                         //TODO
-                        print(element.title);
+                        print(sportsE.title);
                       });
                     },
                     child: Container(
@@ -232,13 +250,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                       height: Get.height * 0.07,
                       width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == element
+                          color: this.itemElement == sportsE
                               ? Colors.blue
                               : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        element.title,
+                        sportsE.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
@@ -249,13 +267,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: Repair.all
-              .map((element) => GestureDetector(
+              .map((repairE) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        this.element = element;
+                        this.itemElement = repairE;
                         //addProductsController.initialIndex = 0;
                         //TODO
-                        print(element.title);
+                        print(repairE.title);
                       });
                     },
                     child: Container(
@@ -264,13 +282,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                       height: Get.height * 0.07,
                       width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == element
+                          color: this.itemElement == repairE
                               ? Colors.blue
                               : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        element.title,
+                        repairE.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
@@ -281,13 +299,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: House.all
-              .map((element) => GestureDetector(
+              .map((houseE) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        this.element = element;
+                        this.itemElement = houseE;
                         //addProductsController.initialIndex = 0;
                         //TODO
-                        print(element.title);
+                        print(houseE.title);
                       });
                     },
                     child: Container(
@@ -296,13 +314,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                       height: Get.height * 0.07,
                       width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == element
+                          color: this.itemElement == houseE
                               ? Colors.blue
                               : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        element.title,
+                        houseE.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
@@ -313,13 +331,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: Agriculture.all
-              .map((element) => GestureDetector(
+              .map((agricultureE) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        this.element = element;
+                        this.itemElement = agricultureE;
                         //addProductsController.initialIndex = 0;
                         //TODO
-                        print(element.title);
+                        print(agricultureE.title);
                       });
                     },
                     child: Container(
@@ -328,13 +346,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                       height: Get.height * 0.07,
                       width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == element
+                          color: this.itemElement == agricultureE
                               ? Colors.blue
                               : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        element.title,
+                        agricultureE.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
@@ -345,13 +363,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: Pets.all
-              .map((element) => GestureDetector(
+              .map((petsE) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        this.element = element;
+                        this.itemElement = petsE;
                         //addProductsController.initialIndex = 0;
                         //TODO
-                        print(element.title);
+                        print(petsE.title);
                       });
                     },
                     child: Container(
@@ -360,13 +378,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                       height: Get.height * 0.07,
                       width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == element
+                          color: this.itemElement == petsE
                               ? Colors.blue
                               : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        element.title,
+                        petsE.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
@@ -377,13 +395,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: Electronics.all
-              .map((element) => GestureDetector(
+              .map((electronicsE) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        this.element = element;
+                        this.itemElement = electronicsE;
                         //addProductsController.initialIndex = 0;
                         //TODO
-                        print(element.title);
+                        print(electronicsE.title);
                       });
                     },
                     child: Container(
@@ -392,13 +410,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                       height: Get.height * 0.07,
                       width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == element
+                          color: this.itemElement == electronicsE
                               ? Colors.blue
                               : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        element.title,
+                        electronicsE.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
@@ -409,13 +427,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: Health.all
-              .map((element) => GestureDetector(
+              .map((healthE) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        this.element = element;
+                        this.itemElement = healthE;
                         //addProductsController.initialIndex = 0;
                         //TODO
-                        print(element.title);
+                        print(healthE.title);
                       });
                     },
                     child: Container(
@@ -424,13 +442,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                       height: Get.height * 0.07,
                       width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == element
+                          color: this.itemElement == healthE
                               ? Colors.blue
                               : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        element.title,
+                        healthE.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
@@ -441,13 +459,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: Office.all
-              .map((element) => GestureDetector(
+              .map((officeE) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        this.element = element;
+                        this.itemElement = officeE;
                         //addProductsController.initialIndex = 0;
                         //TODO
-                        print(element.title);
+                        print(officeE.title);
                       });
                     },
                     child: Container(
@@ -456,13 +474,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                       height: Get.height * 0.07,
                       width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == element
-                              ? Colors.blue
-                              : Colors.grey,
+                          color: this.itemElement == officeE
+                              ? Colors.grey
+                              : Colors.blue,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        element.title,
+                        officeE.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
@@ -471,20 +489,54 @@ class _BottomSheet2State extends State<BottomSheet2> {
         );
       case ProductCategories.others:
         //TODO
-        return Others();
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Container(
+            //margin: EdgeInsets.only(left: 5),
+            padding: EdgeInsets.only(left: 5, bottom: 100),
+            //height: Get.height * 0.07,
+            width: Get.width * 0.4,
+            child: Column(
+              children: [
+                TextFormField(
+                  key: const ValueKey("ProductName"),
+                  textAlign: TextAlign.start,
+                  decoration: InputDecoration(
+                    hintText: "ProductName",
+                  ),
+                  controller: _productName,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  key: const ValueKey("ProductSize"),
+                  textAlign: TextAlign.start,
+                  decoration: InputDecoration(
+                    hintText: "ProductSize",
+                  ),
+                  controller: _productSize,
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                ElevatedButton(onPressed: () {}, child: Text('Add Product')),
+              ],
+            ),
+          )
+        ]);
 
       case ProductCategories.fashion:
       default:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: ClothItem.all
-              .map((e) => GestureDetector(
+              .map((clothItemE) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        this.element = e;
+                        this.itemElement = clothItemE;
                         //addProductsController.initialIndex = 0;
                         //TODO
-                        print(element.title);
+                        print(clothItemE.title);
                       });
                     },
                     child: Container(
@@ -493,11 +545,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                       height: Get.height * 0.07,
                       width: Get.width * 0.3,
                       decoration: BoxDecoration(
-                          color: this.element == e ? Colors.blue : Colors.grey,
+                          color: this.itemElement == clothItemE
+                              ? Colors.blue
+                              : Colors.grey,
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Center(
                           child: Text(
-                        e.title,
+                        clothItemE.title,
                         style: TextStyle(color: Colors.white),
                       )),
                     ),
