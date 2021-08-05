@@ -17,12 +17,9 @@ class AddProductsView extends StatefulWidget {
 }
 
 class _AddProductsViewState extends State<AddProductsView> {
-
   final addProductsController = Get.put(AddProductsController());
 
-
   final bottomSheetView = Get.put(BottomSheetView());
-
 
   bool value = false;
 

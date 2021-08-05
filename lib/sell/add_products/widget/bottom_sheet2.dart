@@ -26,7 +26,6 @@ class BottomSheet2 extends StatefulWidget {
 }
 
 class _BottomSheet2State extends State<BottomSheet2> {
-
   int initialIndex1 = 0;
   AddProductsController addProductsController =
       Get.put(AddProductsController());
