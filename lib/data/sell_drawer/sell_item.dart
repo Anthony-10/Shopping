@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/models/drawer_items.dart';
+import 'package:shopping_app/models/drawer_model.dart';
 
 class SellDrawerItems {
   static const sellPage = DrawerItem(title: 'Sell Page', icon: Icons.home);

@@ -15,10 +15,11 @@ class _LoginState extends State<Login> {
   final TextEditingController _userPassWord = TextEditingController();
 
   final authController = Get.find<AuthController>();
-  int initialindex = 0;
+
+  int initialindexPage = 0;
   @override
   Widget build(BuildContext context) {
-    return initialindex == 0
+    return initialindexPage == 0
         ? Container(
             height: Get.height * 0.5,
             width: Get.width * 0.8,
@@ -54,9 +55,10 @@ class _LoginState extends State<Login> {
                   TextButton(
                       onPressed: () {
                         setState(() {
-                          initialindex = 1;
+                          initialindexPage = 1;
+                          authController.initialIndexAuth = 2;
                         });
-                        print(authController.initialIndex);
+                        print(authController.initialIndexAuth);
                       },
                       child: Align(
                           alignment: Alignment.centerRight,
@@ -74,14 +76,6 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     height: 20.0,
                   ),
-                  /*TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          initialIndex = 1;
-                                        });
-                                        //Get.to(() => SignUp());
-                                      },
-                                      child: Text('Sign Up'))*/
                 ],
               ),
             ),

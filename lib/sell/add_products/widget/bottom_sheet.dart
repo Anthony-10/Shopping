@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/product_category/product_category.dart';
-import 'package:shopping_app/models/product_items.dart';
+import 'package:shopping_app/data/bottom_sheet/product_category.dart';
+import 'package:shopping_app/models/product_model.dart';
 import 'package:shopping_app/sell/add_products/widget/product_selection/car_view.dart';
 import 'package:shopping_app/sell/add_products/widget/product_selection/cloth_view.dart';
 
@@ -10,7 +10,7 @@ class BottomSheetView extends GetxController {
   //BottomSheetView({this.onClick});
 
   //ProductItems element = ProductCategories.clothes;
-  Rx<ProductItems> element = ProductCategories.car.obs;
+  Rx<ProductItems> element = ProductCategories.vehicle.obs;
 
   getBottomSheet() {
     Get.bottomSheet(Container(
@@ -78,9 +78,9 @@ class BottomSheetView extends GetxController {
     print('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL,${element.value.title}');
 
     Obx(
-      () => element.value == ProductCategories.clothes
+      () => element.value == ProductCategories.fashion
           ? ClothView()
-          : element.value == ProductCategories.car
+          : element.value == ProductCategories.vehicle
               ? CarView()
               : SizedBox(
                   child: Text("wewe"),
