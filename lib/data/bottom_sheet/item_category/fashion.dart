@@ -1,6 +1,6 @@
 import 'package:shopping_app/models/item_model.dart';
 
-class ClothItem {
+class Fashion {
   static ItemModel clothing = ItemModel(title: 'Clothing');
   static ItemModel shoes = ItemModel(title: 'Shoes');
   static ItemModel watches = ItemModel(title: 'Watches');

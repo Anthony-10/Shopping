@@ -14,7 +14,7 @@ class _ClothViewState extends State<ClothView> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: ClothItem.all
+      children: Fashion.all
           .map((element) => GestureDetector(
                 onTap: () {
                   setState(() {

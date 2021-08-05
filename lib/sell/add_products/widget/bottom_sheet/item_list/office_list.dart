@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/bottom_sheet/product_category.dart';
+import 'package:shopping_app/data/bottom_sheet/item_category/office.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 
-class CategoryList extends StatefulWidget {
-  const CategoryList({Key key}) : super(key: key);
+class OfficeList extends StatefulWidget {
+  const OfficeList({Key key}) : super(key: key);
 
   @override
-  _CategoryListState createState() => _CategoryListState();
+  _OfficeListState createState() => _OfficeListState();
 }
 
-class _CategoryListState extends State<CategoryList> {
-  //ProductItems element;
-
+class _OfficeListState extends State<OfficeList> {
   AddProductsController addProductsController =
       Get.put(AddProductsController());
 
@@ -20,17 +18,15 @@ class _CategoryListState extends State<CategoryList> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: ProductCategories.all
-          .map((element) => GestureDetector(
+      children: Office.all
+          .map((officeE) => GestureDetector(
                 onTap: () {
                   setState(() {
-                    addProductsController.productElement = element;
-                    //addProductsController.initialIndex = 1;
+                    addProductsController.itemElement = officeE;
+                    //addProductsController.initialIndex = 0;
+                    //TODO
+                    print(officeE.title);
                   });
-                  print(element.obs);
-                  print(element.title);
-                  print(
-                      '************************${addProductsController.productElement.title}');
                 },
                 child: Container(
                   margin: EdgeInsets.all(10.0),
@@ -38,13 +34,13 @@ class _CategoryListState extends State<CategoryList> {
                   height: Get.height * 0.07,
                   width: Get.width * 0.3,
                   decoration: BoxDecoration(
-                      color: addProductsController.productElement == element
-                          ? Colors.blue
-                          : Colors.grey,
+                      color: addProductsController.itemElement == officeE
+                          ? Colors.grey
+                          : Colors.blue,
                       borderRadius: BorderRadius.circular(10.0)),
                   child: Center(
                       child: Text(
-                    element.title,
+                    officeE.title,
                     style: TextStyle(color: Colors.white),
                   )),
                 ),

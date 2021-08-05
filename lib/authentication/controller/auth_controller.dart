@@ -2,15 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/view/auth_view.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Rxn<User> _firebaseUser = Rxn<User>();
   String get user => _firebaseUser.value.email;
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   int initialIndexAuth = 0;
+
+  DatabaseService databaseService = Get.put(DatabaseService());
 
   @override
   void onInit() {
@@ -27,31 +29,11 @@ class AuthController extends GetxController {
               email: email.trim(), password: password.trim())
           .then((value) => Get.off(() => DrawerView()));
       {
-        addUserInfo(email, firstName);
+        databaseService.addUserInfo(email, firstName);
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error creating account", e.message,
           snackPosition: SnackPosition.BOTTOM);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> addUserInfo(String email, String firstName) async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    try {
-      if (uid != null) {
-        await _fireStore
-            .collection("Users")
-            .doc()
-            .set({'email': email, 'firstName': firstName, 'userId': uid});
-      }
-    } on FirebaseAuthException catch (e) {
-      Get.snackbar(
-        "Error Adding User Info",
-        e.message,
-        snackPosition: SnackPosition.BOTTOM,
-      );
     } catch (e) {
       rethrow;
     }

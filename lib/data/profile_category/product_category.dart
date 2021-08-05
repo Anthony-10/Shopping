@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/models/profile_items.dart';
+import 'package:shopping_app/models/profile_model.dart';
 
 class ProductCategory {
   static const language = ProfileItems(

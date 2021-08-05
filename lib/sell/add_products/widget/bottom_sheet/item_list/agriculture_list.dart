@@ -1,36 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/bottom_sheet/product_category.dart';
+import 'package:shopping_app/data/bottom_sheet/item_category/agriculture.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 
-class CategoryList extends StatefulWidget {
-  const CategoryList({Key key}) : super(key: key);
+class AgricultureList extends StatefulWidget {
+  const AgricultureList({Key key}) : super(key: key);
 
   @override
-  _CategoryListState createState() => _CategoryListState();
+  _AgricultureListState createState() => _AgricultureListState();
 }
 
-class _CategoryListState extends State<CategoryList> {
-  //ProductItems element;
-
+class _AgricultureListState extends State<AgricultureList> {
   AddProductsController addProductsController =
       Get.put(AddProductsController());
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: ProductCategories.all
-          .map((element) => GestureDetector(
+      children: Agriculture.all
+          .map((agricultureE) => GestureDetector(
                 onTap: () {
                   setState(() {
-                    addProductsController.productElement = element;
-                    //addProductsController.initialIndex = 1;
+                    addProductsController.itemElement = agricultureE;
+                    //addProductsController.initialIndex = 0;
+                    //TODO
+                    print(agricultureE.title);
                   });
-                  print(element.obs);
-                  print(element.title);
-                  print(
-                      '************************${addProductsController.productElement.title}');
                 },
                 child: Container(
                   margin: EdgeInsets.all(10.0),
@@ -38,13 +33,13 @@ class _CategoryListState extends State<CategoryList> {
                   height: Get.height * 0.07,
                   width: Get.width * 0.3,
                   decoration: BoxDecoration(
-                      color: addProductsController.productElement == element
+                      color: addProductsController.itemElement == agricultureE
                           ? Colors.blue
                           : Colors.grey,
                       borderRadius: BorderRadius.circular(10.0)),
                   child: Center(
                       child: Text(
-                    element.title,
+                    agricultureE.title,
                     style: TextStyle(color: Colors.white),
                   )),
                 ),

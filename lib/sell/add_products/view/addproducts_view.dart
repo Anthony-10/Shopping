@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_app/data/add_product/add_product.dart';
-import 'package:shopping_app/models/product_items.dart';
+import 'package:shopping_app/models/product_model.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/sell/add_products/widget/bottom_sheet.dart';
 import 'package:shopping_app/sell/add_products/widget/bottom_sheet2.dart';
@@ -194,7 +194,10 @@ class _AddProductsViewState extends State<AddProductsView> {
                         ),*/
                         ElevatedButton(
                           onPressed: () {
-                            Get.bottomSheet(BottomSheet2());
+                            Get.bottomSheet(
+                              BottomSheet2(),
+                              isDismissible: false,
+                            );
                             /*if (_productName.text.isNotEmpty &&
                                 _productSize.text.isNotEmpty) {
                               Get.bottomSheet(BottomSheet2());

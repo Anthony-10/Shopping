@@ -1,5 +1,4 @@
 import 'package:shopping_app/models/item_model.dart';
-import 'package:shopping_app/models/product_items.dart';
 
 class House {
   static ItemModel houseAccessories = ItemModel(title: 'House Accessories');

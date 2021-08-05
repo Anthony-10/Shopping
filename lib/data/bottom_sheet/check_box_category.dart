@@ -1,4 +1,4 @@
-import 'package:shopping_app/models/check_box_item.dart';
+import 'package:shopping_app/models/check_box_model.dart';
 
 class CheckBoxCategories {
   static CheckBoxItem xl = CheckBoxItem(text: 'xl');

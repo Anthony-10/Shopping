@@ -1,4 +1,4 @@
-import 'package:shopping_app/models/product_items.dart';
+import 'package:shopping_app/models/product_model.dart';
 
 class ProductCategories {
   static const fashion = ProductItems(title: 'Fashion');

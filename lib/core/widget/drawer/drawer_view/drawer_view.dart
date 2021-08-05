@@ -6,7 +6,7 @@ import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dar
 import 'package:shopping_app/core/widget/tab_bar/new_tab.dart';
 import 'package:shopping_app/data/sell_drawer/sell_item.dart';
 import 'package:shopping_app/data/buy_drawer/buy_item.dart';
-import 'package:shopping_app/models/drawer_items.dart';
+import 'package:shopping_app/models/drawer_model.dart';
 import 'package:shopping_app/sell/add_products/view/addproducts_view.dart';
 import 'package:shopping_app/sell/orders/view/oders_view.dart';
 import 'package:shopping_app/sell/products/view/product_view.dart';

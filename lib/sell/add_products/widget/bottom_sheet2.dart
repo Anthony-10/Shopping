@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/bottom_sheet/check_box_category.dart';
+import 'package:shopping_app/data/bottom_sheet/color_data.dart';
 import 'package:shopping_app/data/bottom_sheet/item_category/agriculture.dart';
 import 'package:shopping_app/data/bottom_sheet/item_category/electronics.dart';
 import 'package:shopping_app/data/bottom_sheet/item_category/fashion.dart';
@@ -13,11 +12,25 @@ import 'package:shopping_app/data/bottom_sheet/item_category/repair.dart';
 import 'package:shopping_app/data/bottom_sheet/item_category/sports.dart';
 import 'package:shopping_app/data/bottom_sheet/item_category/vehicles.dart';
 import 'package:shopping_app/data/bottom_sheet/product_category.dart';
-import 'package:shopping_app/models/check_box_item.dart';
 import 'package:shopping_app/models/item_model.dart';
-import 'package:shopping_app/models/product_items.dart';
+import 'package:shopping_app/models/product_model.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
-import 'package:shopping_app/sell/add_products/widget/others.dart';
+
+import 'bottom_sheet/category_list.dart';
+import 'bottom_sheet/color_check_box.dart';
+import 'bottom_sheet/item_list/agriculture_list.dart';
+import 'bottom_sheet/item_list/electronics_list.dart';
+import 'bottom_sheet/item_list/fashion_item.dart';
+import 'bottom_sheet/item_list/health_list.dart';
+import 'bottom_sheet/item_list/house_list.dart';
+import 'bottom_sheet/item_list/office_list.dart';
+import 'bottom_sheet/item_list/other_list.dart';
+import 'bottom_sheet/item_list/pets_list.dart';
+import 'bottom_sheet/item_list/repair_list.dart';
+import 'bottom_sheet/item_list/sport_list.dart';
+import 'bottom_sheet/item_list/vehicle_list.dart';
+import 'bottom_sheet/price_section.dart';
+import 'bottom_sheet/size_check_box.dart';
 
 class BottomSheet2 extends StatefulWidget {
   const BottomSheet2({Key key}) : super(key: key);
@@ -30,15 +43,27 @@ class _BottomSheet2State extends State<BottomSheet2> {
   //ProductItems element = ProductCategories.all;
   final TextEditingController _productName = TextEditingController();
   final TextEditingController _productSize = TextEditingController();
+  final TextEditingController _productPrice = TextEditingController();
+  final TextEditingController _productDescription = TextEditingController();
+  final TextEditingController _otherProductPrice = TextEditingController();
+  final TextEditingController _otherProductDescription =
+      TextEditingController();
 
-  ProductItems productElement;
+  //ProductItems productElement;
   ItemModel itemElement;
+  //CheckBoxItem checkBoxElement;
+  /*var checkBoxElement;
+  bool checkBoxValue = false;*/
+
+  /*var colorElement;
+  bool colorValue = false;*/
 
   //CheckBoxItem value;
   int initialIndex1 = 0;
   AddProductsController addProductsController =
       Get.put(AddProductsController());
   //bool value = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,12 +79,10 @@ class _BottomSheet2State extends State<BottomSheet2> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  addProductsController.initialIndex == 0
+            Column(
+              children: [
+                Container(
+                  child: addProductsController.initialIndex == 0
                       ? Text(
                           'Select a category',
                           style: TextStyle(fontSize: 20.0),
@@ -69,75 +92,44 @@ class _BottomSheet2State extends State<BottomSheet2> {
                               'Select a item',
                               style: TextStyle(fontSize: 20.0),
                             )
-                          : Text(
-                              'Select size',
-                              style: TextStyle(fontSize: 20.0),
-                            ),
-                  SizedBox(
-                    height: 30.0,
-                  ),
-                  addProductsController.initialIndex == 0
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: ProductCategories.all
-                              .map((element) => GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        this.productElement = element;
-                                        //addProductsController.initialIndex = 1;
-                                      });
-                                      print(element.obs);
-                                      print(element.title);
-                                      print(
-                                          '************************${this.productElement.title}');
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.all(10.0),
-                                      padding: EdgeInsets.all(10.0),
-                                      height: Get.height * 0.07,
-                                      width: Get.width * 0.3,
-                                      decoration: BoxDecoration(
-                                          color: this.productElement == element
-                                              ? Colors.blue
-                                              : Colors.grey,
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      child: Center(
-                                          child: Text(
-                                        element.title,
-                                        style: TextStyle(color: Colors.white),
-                                      )),
+                          : addProductsController.initialIndex == 2
+                              ? Text(
+                                  'Select size',
+                                  style: TextStyle(fontSize: 20.0),
+                                )
+                              : addProductsController.initialIndex == 3
+                                  ? Text(
+                                      'Select Color',
+                                      style: TextStyle(fontSize: 20.0),
+                                    )
+                                  : Text(
+                                      'Select Price',
+                                      style: TextStyle(fontSize: 20.0),
                                     ),
-                                  ))
-                              .toList(),
-                        )
-                      : addProductsController.initialIndex == 1
-                          ? getPage(productElement)
-                          : SingleChildScrollView(
-                              child: Container(
-                                width: Get.width * 0.4,
-                                child: Wrap(
-                                  children: CheckBoxCategories.all
-                                      .map(
-                                        (e) => CheckboxListTile(
-                                          controlAffinity:
-                                              ListTileControlAffinity.leading,
-                                          activeColor: Colors.blue,
-                                          title: Text(e.text),
-                                          value: e.value,
-                                          onChanged: (unValue) {
-                                            setState(() {
-                                              e.value = unValue;
-                                            });
-                                          },
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                              ),
-                            )
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        addProductsController.initialIndex == 0
+                            ? CategoryList()
+                            : addProductsController.initialIndex == 1
+                                ? getPage(addProductsController.productElement)
+                                : addProductsController.initialIndex == 2
+                                    ? SizeCheckBox()
+                                    : addProductsController.initialIndex == 3
+                                        ? ColorChekBox()
+                                        : PriceSection()
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
             Align(
               alignment: Alignment.bottomRight,
@@ -147,26 +139,50 @@ class _BottomSheet2State extends State<BottomSheet2> {
                     ElevatedButton(
                       onPressed: () {
                         addProductsController.initialIndex == 0 &&
-                                this.productElement != null
+                                addProductsController.productElement != null
                             ? setState(() {
                                 addProductsController.initialIndex = 1;
                               })
                             : addProductsController.initialIndex == 1 &&
-                                    this.productElement != null &&
-                                    this.itemElement != null
+                                    addProductsController.productElement ==
+                                        ProductCategories.fashion
                                 ? setState(() {
                                     addProductsController.initialIndex = 2;
                                   })
-                                : this.productElement == null
-                                    ? Get.snackbar('Massage', 'Select product',
-                                        snackPosition: SnackPosition.BOTTOM)
-                                    : this.itemElement == null
-                                        ? Get.snackbar('Massage', 'Select Item',
-                                            snackPosition: SnackPosition.BOTTOM)
-                                        : setState(() {
+                                : addProductsController.initialIndex == 2 &&
+                                        addProductsController.productElement !=
+                                            null &&
+                                        addProductsController.itemElement !=
+                                            null
+                                    ? setState(() {
+                                        addProductsController.initialIndex = 3;
+                                      })
+                                    : addProductsController.initialIndex == 3 ||
+                                            addProductsController
+                                                        .initialIndex ==
+                                                    1 &&
+                                                addProductsController
+                                                        .productElement !=
+                                                    ProductCategories.others
+                                        ? setState(() {
                                             addProductsController.initialIndex =
-                                                0;
-                                          });
+                                                4;
+                                          })
+                                        : addProductsController
+                                                    .productElement ==
+                                                null
+                                            ? Get.snackbar(
+                                                'Massage', 'Select product',
+                                                snackPosition:
+                                                    SnackPosition.BOTTOM)
+                                            : addProductsController
+                                                        .itemElement ==
+                                                    null
+                                                ? Get.snackbar(
+                                                    'Massage', 'Select Item',
+                                                    snackPosition:
+                                                        SnackPosition.BOTTOM)
+                                                : Get.back();
                       },
                       child: Text('save'),
                       style: ElevatedButton.styleFrom(
@@ -200,364 +216,29 @@ class _BottomSheet2State extends State<BottomSheet2> {
   Widget getPage(element) {
     switch (element) {
       case ProductCategories.vehicle:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: Vehicles.all
-              .map((vehiclesE) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        //addProductsController.initialIndex = 0;
-                        this.itemElement = vehiclesE;
-                        //TODO
-                        print(vehiclesE.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      padding: EdgeInsets.all(10.0),
-                      height: Get.height * 0.07,
-                      width: Get.width * 0.3,
-                      decoration: BoxDecoration(
-                          color: this.itemElement == vehiclesE
-                              ? Colors.blue
-                              : Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        vehiclesE.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
+        return VehicleList();
       case ProductCategories.sports:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: Sports.all
-              .map((sportsE) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        this.itemElement = sportsE;
-                        //addProductsController.initialIndex = 0;
-                        //TODO
-                        print(sportsE.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      padding: EdgeInsets.all(10.0),
-                      height: Get.height * 0.07,
-                      width: Get.width * 0.3,
-                      decoration: BoxDecoration(
-                          color: this.itemElement == sportsE
-                              ? Colors.blue
-                              : Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        sportsE.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
+        return SportList();
       case ProductCategories.repair:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: Repair.all
-              .map((repairE) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        this.itemElement = repairE;
-                        //addProductsController.initialIndex = 0;
-                        //TODO
-                        print(repairE.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      padding: EdgeInsets.all(10.0),
-                      height: Get.height * 0.07,
-                      width: Get.width * 0.3,
-                      decoration: BoxDecoration(
-                          color: this.itemElement == repairE
-                              ? Colors.blue
-                              : Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        repairE.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
+        return RepairList();
       case ProductCategories.house:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: House.all
-              .map((houseE) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        this.itemElement = houseE;
-                        //addProductsController.initialIndex = 0;
-                        //TODO
-                        print(houseE.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      padding: EdgeInsets.all(10.0),
-                      height: Get.height * 0.07,
-                      width: Get.width * 0.3,
-                      decoration: BoxDecoration(
-                          color: this.itemElement == houseE
-                              ? Colors.blue
-                              : Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        houseE.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
+        return HouseList();
       case ProductCategories.agriculture:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: Agriculture.all
-              .map((agricultureE) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        this.itemElement = agricultureE;
-                        //addProductsController.initialIndex = 0;
-                        //TODO
-                        print(agricultureE.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      padding: EdgeInsets.all(10.0),
-                      height: Get.height * 0.07,
-                      width: Get.width * 0.3,
-                      decoration: BoxDecoration(
-                          color: this.itemElement == agricultureE
-                              ? Colors.blue
-                              : Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        agricultureE.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
+        return AgricultureList();
       case ProductCategories.pets:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: Pets.all
-              .map((petsE) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        this.itemElement = petsE;
-                        //addProductsController.initialIndex = 0;
-                        //TODO
-                        print(petsE.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      padding: EdgeInsets.all(10.0),
-                      height: Get.height * 0.07,
-                      width: Get.width * 0.3,
-                      decoration: BoxDecoration(
-                          color: this.itemElement == petsE
-                              ? Colors.blue
-                              : Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        petsE.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
+        return PetsList();
       case ProductCategories.electronics:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: Electronics.all
-              .map((electronicsE) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        this.itemElement = electronicsE;
-                        //addProductsController.initialIndex = 0;
-                        //TODO
-                        print(electronicsE.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      padding: EdgeInsets.all(10.0),
-                      height: Get.height * 0.07,
-                      width: Get.width * 0.3,
-                      decoration: BoxDecoration(
-                          color: this.itemElement == electronicsE
-                              ? Colors.blue
-                              : Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        electronicsE.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
+        return ElectronicsList();
       case ProductCategories.health:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: Health.all
-              .map((healthE) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        this.itemElement = healthE;
-                        //addProductsController.initialIndex = 0;
-                        //TODO
-                        print(healthE.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      padding: EdgeInsets.all(10.0),
-                      height: Get.height * 0.07,
-                      width: Get.width * 0.3,
-                      decoration: BoxDecoration(
-                          color: this.itemElement == healthE
-                              ? Colors.blue
-                              : Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        healthE.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
+        return HealthList();
       case ProductCategories.office:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: Office.all
-              .map((officeE) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        this.itemElement = officeE;
-                        //addProductsController.initialIndex = 0;
-                        //TODO
-                        print(officeE.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      padding: EdgeInsets.all(10.0),
-                      height: Get.height * 0.07,
-                      width: Get.width * 0.3,
-                      decoration: BoxDecoration(
-                          color: this.itemElement == officeE
-                              ? Colors.grey
-                              : Colors.blue,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        officeE.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
+        return OfficeList();
       case ProductCategories.others:
-        //TODO
-        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Container(
-            //margin: EdgeInsets.only(left: 5),
-            padding: EdgeInsets.only(left: 5, bottom: 100),
-            //height: Get.height * 0.07,
-            width: Get.width * 0.4,
-            child: Column(
-              children: [
-                TextFormField(
-                  key: const ValueKey("ProductName"),
-                  textAlign: TextAlign.start,
-                  decoration: InputDecoration(
-                    hintText: "ProductName",
-                  ),
-                  controller: _productName,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  key: const ValueKey("ProductSize"),
-                  textAlign: TextAlign.start,
-                  decoration: InputDecoration(
-                    hintText: "ProductSize",
-                  ),
-                  controller: _productSize,
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                ElevatedButton(onPressed: () {}, child: Text('Add Product')),
-              ],
-            ),
-          )
-        ]);
+        return OtherList();
 
       case ProductCategories.fashion:
       default:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: ClothItem.all
-              .map((clothItemE) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        this.itemElement = clothItemE;
-                        //addProductsController.initialIndex = 0;
-                        //TODO
-                        print(clothItemE.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      padding: EdgeInsets.all(10.0),
-                      height: Get.height * 0.07,
-                      width: Get.width * 0.3,
-                      decoration: BoxDecoration(
-                          color: this.itemElement == clothItemE
-                              ? Colors.blue
-                              : Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        clothItemE.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
+        return FashionList();
     }
   }
 }

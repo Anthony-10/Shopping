@@ -1,5 +1,4 @@
 import 'package:shopping_app/models/item_model.dart';
-import 'package:shopping_app/models/product_items.dart';
 
 class Office {
   static ItemModel officeAccessories = ItemModel(title: 'Office Accessories');
