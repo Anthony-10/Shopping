@@ -1,21 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/bottom_sheet/color_data.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/agriculture.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/electronics.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/fashion.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/health.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/house.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/office.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/pets.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/repair.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/sports.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/vehicles.dart';
 import 'package:shopping_app/data/bottom_sheet/product_category.dart';
-import 'package:shopping_app/models/item_model.dart';
-import 'package:shopping_app/models/product_model.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
-
 import 'bottom_sheet/category_list.dart';
 import 'bottom_sheet/color_check_box.dart';
 import 'bottom_sheet/item_list/agriculture_list.dart';
@@ -40,29 +26,10 @@ class BottomSheet2 extends StatefulWidget {
 }
 
 class _BottomSheet2State extends State<BottomSheet2> {
-  //ProductItems element = ProductCategories.all;
-  final TextEditingController _productName = TextEditingController();
-  final TextEditingController _productSize = TextEditingController();
-  final TextEditingController _productPrice = TextEditingController();
-  final TextEditingController _productDescription = TextEditingController();
-  final TextEditingController _otherProductPrice = TextEditingController();
-  final TextEditingController _otherProductDescription =
-      TextEditingController();
 
-  //ProductItems productElement;
-  ItemModel itemElement;
-  //CheckBoxItem checkBoxElement;
-  /*var checkBoxElement;
-  bool checkBoxValue = false;*/
-
-  /*var colorElement;
-  bool colorValue = false;*/
-
-  //CheckBoxItem value;
   int initialIndex1 = 0;
   AddProductsController addProductsController =
       Get.put(AddProductsController());
-  //bool value = false;
 
   @override
   Widget build(BuildContext context) {

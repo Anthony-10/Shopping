@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shopping_app/data/bottom_sheet/check_box_category.dart';
 
 class CheckBoxView extends StatefulWidget {

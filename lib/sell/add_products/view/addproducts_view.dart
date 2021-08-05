@@ -17,25 +17,12 @@ class AddProductsView extends StatefulWidget {
 }
 
 class _AddProductsViewState extends State<AddProductsView> {
-  final TextEditingController _productName = TextEditingController();
-  final TextEditingController _productSize = TextEditingController();
-
-  //final addProductsController = Get.find<AddProductsController>();
 
   final addProductsController = Get.put(AddProductsController());
 
-  //Rx<ProductItems> element = ProductCategories.car.obs;
 
   final bottomSheetView = Get.put(BottomSheetView());
 
-  //final bottomSheet = Get.put(BottomSheet());
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    /* bottomSheetTimer();*/
-    super.initState();
-  }
 
   bool value = false;
 
@@ -43,7 +30,6 @@ class _AddProductsViewState extends State<AddProductsView> {
 
   @override
   Widget build(BuildContext context) {
-    //bottomSheetTimer();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
@@ -165,52 +151,12 @@ class _AddProductsViewState extends State<AddProductsView> {
                     width: Get.width * 0.6,
                     child: Column(
                       children: [
-                        /*TextFormField(
-                          key: const ValueKey("productName"),
-                          textAlign: TextAlign.start,
-                          decoration: InputDecoration(
-                            hintText: "ProductName",
-                          ),
-                          keyboardType: TextInputType.text,
-                          controller: _productName,
-                        ),
-                        SizedBox(
-                          height: 30.0,
-                        ),
-                        TextFormField(
-                          key: const ValueKey("productSize"),
-                          textAlign: TextAlign.start,
-                          decoration: InputDecoration(
-                            hintText: "ProductSize",
-                          ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          controller: _productSize,
-                        ),*/
-                        /* SizedBox(
-                          height: 30.0,
-                        ),*/
                         ElevatedButton(
                           onPressed: () {
                             Get.bottomSheet(
                               BottomSheet2(),
                               isDismissible: false,
                             );
-                            /*if (_productName.text.isNotEmpty &&
-                                _productSize.text.isNotEmpty) {
-                              Get.bottomSheet(BottomSheet2());
-                              */ /*addProductsController.addProducts(
-                                    _productName.text, _productSize.text);*/ /*
-                              Get.snackbar('message', 'product details added');
-                            } else if (_productName.text.isEmpty) {
-                              Get.snackbar('message', 'Enter ProductName');
-                            } else {
-                              if (_productSize.text.isEmpty) {
-                                Get.snackbar('message', 'Enter ProductSize');
-                              }
-                            }*/
                           },
                           child: Text('Continue'),
                           style: ElevatedButton.styleFrom(
@@ -224,73 +170,4 @@ class _AddProductsViewState extends State<AddProductsView> {
           )),
     );
   }
-
-  /*void bottomSheetTimer() async {
-    final timer = Timer(Duration(microseconds: 1), () async {
-      getBottomSheet();
-    });
-  }*/
-
-  /*Widget getPage() {
-    switch (element) {
-      case ProductCategories.car:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: CarItem.all
-              .map((element) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        Get.back();
-                        //TODO
-                        print(element.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
-                      decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        element.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
-
-      case ProductCategories.clothes:
-      default:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: ClothItem.all
-              .map((element) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        Get.back();
-                        //TODO
-                        print(element.title);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10.0),
-                      height: Get.height * 0.05,
-                      width: Get.width * 0.2,
-                      decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                          child: Text(
-                        element.title,
-                        style: TextStyle(color: Colors.white),
-                      )),
-                    ),
-                  ))
-              .toList(),
-        );
-    }
-  }*/
 }
