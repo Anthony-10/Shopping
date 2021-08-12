@@ -11,8 +11,6 @@ class CategoryList extends StatefulWidget {
 }
 
 class _CategoryListState extends State<CategoryList> {
-  //ProductItems element;
-
   AddProductsController addProductsController =
       Get.put(AddProductsController());
 

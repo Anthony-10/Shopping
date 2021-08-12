@@ -38,7 +38,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  authController.sendpasswordresetemil(email: _userEmail.text);
+                  authController.sendPassWordResetEmil(email: _userEmail.text);
                 },
                 child: Text('Reset Password')),
           ],
