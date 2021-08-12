@@ -219,7 +219,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
                         addProductsController.initialIndex = 4;
                       })
                     : addProductsController.initialIndex == 4
-                        ? addProductsController.userProducts(
+                        ? addProductsController.userImage(
                             productElement: addProductsController
                                 .productElement.title
                                 .toString(),
