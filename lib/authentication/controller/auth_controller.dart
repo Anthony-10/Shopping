@@ -23,12 +23,12 @@ class AuthController extends GetxController {
   Future<void> createUser(
       {String email, String password, String firstName}) async {
     try {
-      await _auth
-          .createUserWithEmailAndPassword(
-              email: email.trim(), password: password.trim())
-          .then((value) => Get.off(() => DrawerView()));
+      await _auth.createUserWithEmailAndPassword(
+          email: email.trim(), password: password.trim());
       {
-        databaseService.addUserInfo(email, firstName);
+        databaseService
+            .addUserInfo(email, firstName)
+            .then((value) => Get.off(() => DrawerView()));
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error creating account", e.message,
@@ -63,7 +63,7 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> sendpasswordresetemil({String email}) async {
+  Future<void> sendPassWordResetEmil({String email}) async {
     try {
       await _auth
           .sendPasswordResetEmail(email: email)

@@ -42,137 +42,122 @@ class _BottomSheet2State extends State<BottomSheet2> {
       child: Padding(
         padding:
             const EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: [
-            Column(
-              children: [
-                Container(
-                  child: addProductsController.initialIndex == 0
-                      ? Text(
-                          'Select a category',
-                          style: TextStyle(fontSize: 20.0),
-                        )
-                      : addProductsController.initialIndex == 1
-                          ? Text(
-                              'Select a item',
-                              style: TextStyle(fontSize: 20.0),
-                            )
-                          : addProductsController.initialIndex == 2
-                              ? Text(
-                                  'Select size',
-                                  style: TextStyle(fontSize: 20.0),
-                                )
-                              : addProductsController.initialIndex == 3
-                                  ? Text(
-                                      'Select Color',
-                                      style: TextStyle(fontSize: 20.0),
-                                    )
-                                  : Text(
-                                      'Select Price',
-                                      style: TextStyle(fontSize: 20.0),
-                                    ),
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        addProductsController.initialIndex == 0
-                            ? CategoryList()
-                            : addProductsController.initialIndex == 1
-                                ? getPage(addProductsController.productElement)
-                                : addProductsController.initialIndex == 2
-                                    ? SizeCheckBox()
-                                    : addProductsController.initialIndex == 3
-                                        ? ColorChekBox()
-                                        : PriceSection()
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                child: Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        addProductsController.initialIndex == 0 &&
-                                addProductsController.productElement != null
-                            ? setState(() {
-                                addProductsController.initialIndex = 1;
-                              })
-                            : addProductsController.initialIndex == 1 &&
-                                    addProductsController.productElement ==
-                                        ProductCategories.fashion
-                                ? setState(() {
-                                    addProductsController.initialIndex = 2;
-                                  })
-                                : addProductsController.initialIndex == 2 &&
-                                        addProductsController.productElement !=
-                                            null &&
-                                        addProductsController.itemElement !=
-                                            null
-                                    ? setState(() {
-                                        addProductsController.initialIndex = 3;
-                                      })
-                                    : addProductsController.initialIndex == 3 ||
-                                            addProductsController
-                                                        .initialIndex ==
-                                                    1 &&
-                                                addProductsController
-                                                        .productElement !=
-                                                    ProductCategories.others
-                                        ? setState(() {
-                                            addProductsController.initialIndex =
-                                                4;
-                                          })
-                                        : addProductsController
-                                                    .productElement ==
-                                                null
-                                            ? Get.snackbar(
-                                                'Massage', 'Select product',
-                                                snackPosition:
-                                                    SnackPosition.BOTTOM)
-                                            : addProductsController
-                                                        .itemElement ==
-                                                    null
-                                                ? Get.snackbar(
-                                                    'Massage', 'Select Item',
-                                                    snackPosition:
-                                                        SnackPosition.BOTTOM)
-                                                : Get.back();
-                      },
-                      child: Text('save'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.black,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 30.0,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          addProductsController.initialIndex = 0;
-                        });
-                      },
-                      child: Text('back'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                      ),
-                    )
-                  ],
-                ),
+            Container(
+              height: Get.height * 0.06,
+              child: Icon(
+                Icons.keyboard_arrow_up,
+                size: 40,
               ),
-            )
+            ),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        child: addProductsController.initialIndex == 0
+                            ? Text(
+                                'Select a category',
+                                style: TextStyle(fontSize: 20.0),
+                              )
+                            : addProductsController.initialIndex == 1 &&
+                                    addProductsController.productElement !=
+                                        ProductCategories.others
+                                ? Text(
+                                    'Select a item',
+                                    style: TextStyle(fontSize: 20.0),
+                                  )
+                                : addProductsController.initialIndex == 1 &&
+                                        addProductsController.productElement ==
+                                            ProductCategories.others
+                                    ? Text(
+                                        'Write',
+                                        style: TextStyle(fontSize: 20.0),
+                                      )
+                                    : addProductsController.initialIndex == 2
+                                        ? Text(
+                                            'Select size',
+                                            style: TextStyle(fontSize: 20.0),
+                                          )
+                                        : addProductsController.initialIndex ==
+                                                3
+                                            ? Text(
+                                                'Select Color',
+                                                style:
+                                                    TextStyle(fontSize: 20.0),
+                                              )
+                                            : Text(
+                                                'Select Price',
+                                                style:
+                                                    TextStyle(fontSize: 20.0),
+                                              ),
+                      ),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              addProductsController.initialIndex == 0
+                                  ? CategoryList()
+                                  : addProductsController.initialIndex == 1
+                                      ? getPage(
+                                          addProductsController.productElement)
+                                      : addProductsController.initialIndex == 2
+                                          ? SizeCheckBox()
+                                          : addProductsController
+                                                      .initialIndex ==
+                                                  3
+                                              ? ColorChekBox()
+                                              : PriceSection()
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      child: Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              //addProductsController.userImage();
+                              validation();
+                            },
+                            child: Text('save'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.black,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 30.0,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                addProductsController.initialIndex = 0;
+                              });
+                            },
+                            child: Text('back'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -206,5 +191,53 @@ class _BottomSheet2State extends State<BottomSheet2> {
       default:
         return FashionList();
     }
+  }
+
+  void validation() {
+    addProductsController.initialIndex == 0 &&
+            addProductsController.productElement != null
+        ? setState(() {
+            addProductsController.initialIndex = 1;
+          })
+        : addProductsController.initialIndex == 1 &&
+                addProductsController.productElement ==
+                    ProductCategories.fashion
+            ? setState(() {
+                addProductsController.initialIndex = 2;
+              })
+            : addProductsController.initialIndex == 2 &&
+                    addProductsController.productElement != null &&
+                    addProductsController.itemElement != null
+                ? setState(() {
+                    addProductsController.initialIndex = 3;
+                  })
+                : addProductsController.initialIndex == 3 ||
+                        addProductsController.initialIndex == 1 &&
+                            addProductsController.productElement !=
+                                ProductCategories.others
+                    ? setState(() {
+                        addProductsController.initialIndex = 4;
+                      })
+                    : addProductsController.initialIndex == 4
+                        ? addProductsController.userImage(
+                            productElement: addProductsController
+                                .productElement.title
+                                .toString(),
+                            itemElement: addProductsController.itemElement.title
+                                .toString(),
+                            checkBoxElement: addProductsController
+                                .checkBoxElement
+                                .toString(),
+                            colorElement:
+                                addProductsController.colorElement.toString())
+                        //addProductsController.userImage().toString()
+                        : addProductsController.productElement == null
+                            ? Get.snackbar('Massage', 'Select product',
+                                snackPosition: SnackPosition.BOTTOM)
+                            : addProductsController.itemElement == null
+                                ? Get.snackbar('Massage', 'Select Item',
+                                    snackPosition: SnackPosition.BOTTOM)
+                                : Get.snackbar('Massage', 'Select product',
+                                    snackPosition: SnackPosition.BOTTOM);
   }
 }

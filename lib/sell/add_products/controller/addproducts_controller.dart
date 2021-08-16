@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_app/models/item_model.dart';
@@ -9,10 +11,13 @@ import 'package:shopping_app/models/product_model.dart';
 class AddProductsController extends GetxController {
   final picker = ImagePicker();
   final image = [].obs;
-  //File image;
-  // File image = ''.obs as File;
   var imageSize = ''.obs;
   int initialIndex = 0;
+
+  firebase_storage.Reference ref;
+  CollectionReference imgRef;
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+
   ProductItems productElement;
   ItemModel itemElement;
   var checkBoxElement;
@@ -65,6 +70,74 @@ class AddProductsController extends GetxController {
     } else {
       Get.snackbar('Error', 'No image selected',
           snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
+  Future<void> userImage({
+    String productElement,
+    String itemElement,
+    String checkBoxElement,
+    String colorElement,
+  }) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    try {
+      if (uid != null) {
+        image.forEach((file) async {
+          ref = firebase_storage.FirebaseStorage.instance
+              .ref()
+              .child("images/${DateTime.now().toString()}");
+          await ref.putFile(file).whenComplete(() => ref
+              .getDownloadURL()
+              .then((imageUrl) => _fireStore.collection("Products").doc().set({
+                    'productElement': productElement,
+                    'itemElement': itemElement,
+                    'checkBoxElement': checkBoxElement,
+                    'colorElement': colorElement,
+                    'Url': imageUrl,
+                    'userId': uid
+                  })));
+          /*_fireStore.collection("image").add({"url": imageUrl}))
+              .whenComplete(() => print("image imewekwa")));*/
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar(
+        "Uploading Image",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> userProducts({
+    String productElement,
+    String itemElement,
+    String checkBoxElement,
+    String colorElement,
+    imageUrl,
+  }) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    try {
+      if (uid != null) {
+        await _fireStore.collection("Products").doc().set({
+          'productElement': productElement,
+          'itemElement': itemElement,
+          'checkBoxElement': checkBoxElement,
+          'colorElement': colorElement,
+          'Url': imageUrl,
+          'userId': uid
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
     }
   }
 

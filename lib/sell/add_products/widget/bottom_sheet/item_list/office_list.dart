@@ -35,8 +35,8 @@ class _OfficeListState extends State<OfficeList> {
                   width: Get.width * 0.3,
                   decoration: BoxDecoration(
                       color: addProductsController.itemElement == officeE
-                          ? Colors.grey
-                          : Colors.blue,
+                          ? Colors.blue
+                          : Colors.grey,
                       borderRadius: BorderRadius.circular(10.0)),
                   child: Center(
                       child: Text(
