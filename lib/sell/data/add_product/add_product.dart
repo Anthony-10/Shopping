@@ -1,4 +1,4 @@
-import 'package:shopping_app/models/add_product.dart';
+import 'package:shopping_app/sell/models/add_product.dart';
 
 class AddProductItems {
   static const image1 = AddProducts(name: 'AddProduct');

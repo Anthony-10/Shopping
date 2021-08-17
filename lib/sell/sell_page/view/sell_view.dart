@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/sell_view_category/sell_view_category.dart';
+import 'package:shopping_app/sell/data/sell_view_category/sell_view_category.dart';
 
 class SellView extends StatefulWidget {
   const SellView({Key key}) : super(key: key);
@@ -70,8 +70,8 @@ class _SellViewState extends State<SellView> {
                               subtitle: Text(
                                 element.subtitle,
                                 textAlign: TextAlign.center,
-                                style:
-                                    TextStyle(color: Colors.red, fontSize: 40.0),
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 40.0),
                               )),
                           elevation: 20.0,
                           color: Colors.white,

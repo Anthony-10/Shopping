@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/profile_category/product_category.dart';
+import 'package:shopping_app/sell/data/profile_category/product_category.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({Key key}) : super(key: key);

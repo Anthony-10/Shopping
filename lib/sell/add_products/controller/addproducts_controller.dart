@@ -3,10 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shopping_app/models/item_model.dart';
-import 'package:shopping_app/models/product_model.dart';
+import 'package:shopping_app/sell/models/item_model.dart';
+import 'package:shopping_app/sell/models/product_model.dart';
 
 class AddProductsController extends GetxController {
   final picker = ImagePicker();
@@ -17,6 +18,7 @@ class AddProductsController extends GetxController {
   firebase_storage.Reference ref;
   CollectionReference imgRef;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+  final FirebaseStorage _firebaseStoraqe = FirebaseStorage.instance;
 
   ProductItems productElement;
   ItemModel itemElement;
@@ -25,6 +27,8 @@ class AddProductsController extends GetxController {
 
   var colorElement;
   bool colorValue = false;
+
+  String fileURL;
 
   getImageGallery(ImageSource imageSource) async {
     image.clear();
@@ -80,24 +84,19 @@ class AddProductsController extends GetxController {
     String colorElement,
   }) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
+    print(
+        '????????????????????????????????userImage>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     try {
       if (uid != null) {
         image.forEach((file) async {
-          ref = firebase_storage.FirebaseStorage.instance
+          final ref = firebase_storage.FirebaseStorage.instance
               .ref()
               .child("images/${DateTime.now().toString()}");
-          await ref.putFile(file).whenComplete(() => ref
-              .getDownloadURL()
-              .then((imageUrl) => _fireStore.collection("Products").doc().set({
-                    'productElement': productElement,
-                    'itemElement': itemElement,
-                    'checkBoxElement': checkBoxElement,
-                    'colorElement': colorElement,
-                    'Url': imageUrl,
-                    'userId': uid
-                  })));
-          /*_fireStore.collection("image").add({"url": imageUrl}))
-              .whenComplete(() => print("image imewekwa")));*/
+          final result = await ref.putFile(file);
+          fileURL = await result.ref.getDownloadURL();
+
+          print(
+              '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
         });
       }
     } on FirebaseAuthException catch (e) {
@@ -116,7 +115,6 @@ class AddProductsController extends GetxController {
     String itemElement,
     String checkBoxElement,
     String colorElement,
-    imageUrl,
   }) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
@@ -126,9 +124,11 @@ class AddProductsController extends GetxController {
           'itemElement': itemElement,
           'checkBoxElement': checkBoxElement,
           'colorElement': colorElement,
-          'Url': imageUrl,
+          'Url': fileURL,
           'userId': uid
         });
+        print(
+            '?????????????????????????????????????????????????????????????????????????????????????????/$fileURL');
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/fashion.dart';
+import 'package:shopping_app/sell/data/bottom_sheet/item_category/fashion.dart';
 
 class ClothView extends StatefulWidget {
   const ClothView({Key key}) : super(key: key);

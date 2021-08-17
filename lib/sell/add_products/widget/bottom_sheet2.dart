@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/bottom_sheet/product_category.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
+import 'package:shopping_app/sell/data/bottom_sheet/product_category.dart';
 import 'bottom_sheet/category_list.dart';
 import 'bottom_sheet/color_check_box.dart';
 import 'bottom_sheet/item_list/agriculture_list.dart';
@@ -219,25 +219,32 @@ class _BottomSheet2State extends State<BottomSheet2> {
                         addProductsController.initialIndex = 4;
                       })
                     : addProductsController.initialIndex == 4
-                        ? addProductsController.userImage(
-                            productElement: addProductsController
-                                .productElement.title
-                                .toString(),
-                            itemElement: addProductsController.itemElement.title
-                                .toString(),
-                            checkBoxElement: addProductsController
-                                .checkBoxElement
-                                .toString(),
-                            colorElement:
-                                addProductsController.colorElement.toString())
+                        ? addProductsController
+                            .userImage(
+                                productElement: addProductsController
+                                    .productElement.title
+                                    .toString(),
+                                itemElement: addProductsController
+                                    .itemElement.title
+                                    .toString(),
+                                checkBoxElement: addProductsController
+                                    .checkBoxElement
+                                    .toString(),
+                                colorElement: addProductsController.colorElement
+                                    .toString())
+                            .whenComplete(() => addProductsController.userProducts(
+                                productElement: addProductsController
+                                    .productElement.title
+                                    .toString(),
+                                itemElement:
+                                    addProductsController.itemElement.title.toString(),
+                                checkBoxElement: addProductsController.checkBoxElement.toString(),
+                                colorElement: addProductsController.colorElement.toString()))
                         //addProductsController.userImage().toString()
                         : addProductsController.productElement == null
-                            ? Get.snackbar('Massage', 'Select product',
-                                snackPosition: SnackPosition.BOTTOM)
+                            ? Get.snackbar('Massage', 'Select product', snackPosition: SnackPosition.BOTTOM)
                             : addProductsController.itemElement == null
-                                ? Get.snackbar('Massage', 'Select Item',
-                                    snackPosition: SnackPosition.BOTTOM)
-                                : Get.snackbar('Massage', 'Select product',
-                                    snackPosition: SnackPosition.BOTTOM);
+                                ? Get.snackbar('Massage', 'Select Item', snackPosition: SnackPosition.BOTTOM)
+                                : Get.snackbar('Massage', 'Select product', snackPosition: SnackPosition.BOTTOM);
   }
 }

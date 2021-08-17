@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/data/buy_drawer/buy_item.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
-import 'package:shopping_app/data/buy_drawer/buy_item.dart';
-import 'package:shopping_app/data/sell_drawer/sell_item.dart';
-import 'package:shopping_app/models/drawer_model.dart';
+import 'package:shopping_app/sell/data/sell_drawer/sell_item.dart';
+import 'package:shopping_app/sell/models/drawer_model.dart';
 
 class DrawerWidget extends StatelessWidget {
   final ValueChanged<DrawerItem> onSelectedItem;

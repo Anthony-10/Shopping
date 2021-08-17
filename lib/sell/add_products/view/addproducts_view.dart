@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shopping_app/data/add_product/add_product.dart';
-import 'package:shopping_app/models/product_model.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/sell/add_products/widget/bottom_sheet.dart';
 import 'package:shopping_app/sell/add_products/widget/bottom_sheet2.dart';
+import 'package:shopping_app/sell/data/add_product/add_product.dart';
+import 'package:shopping_app/sell/models/product_model.dart';
 
 class AddProductsView extends StatefulWidget {
   AddProductsView({

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/models/sell_view_model.dart';
+import 'package:shopping_app/sell/models/sell_view_model.dart';
 
 class SellViewCategory {
   static SellViewItems users = SellViewItems(
