@@ -19,9 +19,6 @@ class _BuyViewState extends State<BuyView> {
         body: Stack(
           children: [
             Container(
-              decoration: BoxDecoration(
-                  color: Colors.indigo[50],
-                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
               height: Get.height * 0.3,
               width: Get.width,
               child: PageView.builder(
@@ -29,15 +26,15 @@ class _BuyViewState extends State<BuyView> {
                   onPageChanged: controller.selectedPageIndex,
                   itemCount: controller.homePageData.length,
                   itemBuilder: (context, index) {
-                    return Card(
-                      child: Image.asset(
-                        controller.homePageData[index].imageAsset,
-                        fit: BoxFit.fill,
-                        height: Get.height,
-                        width: Get.width,
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
+                    return Container(
+                      margin: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                                controller.homePageData[index].imageAsset),
+                            fit: BoxFit.fill,
+                          ),
+                          borderRadius: BorderRadius.circular(20)),
                     );
                   }),
             ),
