@@ -1,12 +1,19 @@
+import 'dart:ffi';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/data/buy_drawer/buy_item.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
+import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
+import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/sell/data/sell_drawer/sell_item.dart';
 import 'package:shopping_app/sell/models/drawer_model.dart';
 
-class DrawerWidget extends StatelessWidget {
+class DrawerWidget extends StatefulWidget {
   final ValueChanged<DrawerItem> onSelectedItem;
 
   DrawerWidget({
@@ -14,7 +21,18 @@ class DrawerWidget extends StatelessWidget {
     this.onSelectedItem,
   }) : super(key: key);
 
+  @override
+  _DrawerWidgetState createState() => _DrawerWidgetState();
+}
+
+class _DrawerWidgetState extends State<DrawerWidget> {
   final initialindex = Get.put(InitialIndex());
+
+  final DatabaseService databaseService = Get.put(DatabaseService());
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+
+  final AddProductsController addProductsController =
+      Get.put(AddProductsController());
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +67,7 @@ class DrawerWidget extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    onTap: () => onSelectedItem(item),
+                    onTap: () => widget.onSelectedItem(item),
                   ))
               .toList()
           : SellDrawerItems.all
@@ -66,7 +84,7 @@ class DrawerWidget extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    onTap: () => onSelectedItem(item),
+                    onTap: () => widget.onSelectedItem(item),
                   ))
               .toList());
 
@@ -91,17 +109,61 @@ class DrawerWidget extends StatelessWidget {
                       Icons.camera_alt,
                       size: 30.0,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        addProductsController.bottomIndex = 1;
+                      });
+                      Get.bottomSheet(BottomSheetChose(
+                          addProductsController: addProductsController));
+                      addProductsController
+                          .userImage()
+                          .whenComplete(() => databaseService.addUserInfo());
+                    },
                   ))
             ],
           ),
-          SizedBox(
-            width: 20.0,
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection("Users")
+                .where("userId",
+                    isEqualTo: FirebaseAuth.instance.currentUser.uid)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: Text("Check your connection"),
+                  );
+                } else {
+                  if (snapshot.hasData) {
+                    return SizedBox(
+                      height: Get.height * 0.1,
+                      width: Get.width * 0.5,
+                      child: ListView.builder(
+                        itemCount: snapshot.data.size,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(
+                              snapshot.data.docs[index]['firstName'].toString(),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                                snapshot.data.docs[index]['email'].toString()),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                }
+                return null;
+              } else {
+                return const Center(
+                  child: Text("loading..."),
+                );
+              }
+            },
           ),
-          Column(children: [
-            Text('Ambros Kim', style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('Aweru@gmail.com'),
-          ]),
         ]),
       );
 }

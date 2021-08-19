@@ -11,7 +11,7 @@ class AuthController extends GetxController {
 
   int initialIndexAuth = 0;
 
-  DatabaseService databaseService = Get.put(DatabaseService());
+  final DatabaseService databaseService = Get.put(DatabaseService());
 
   @override
   void onInit() {
@@ -27,7 +27,7 @@ class AuthController extends GetxController {
           email: email.trim(), password: password.trim());
       {
         databaseService
-            .addUserInfo(email, firstName)
+            .addUserInfo(email: email, firstName: firstName)
             .then((value) => Get.off(() => DrawerView()));
       }
     } on FirebaseAuthException catch (e) {

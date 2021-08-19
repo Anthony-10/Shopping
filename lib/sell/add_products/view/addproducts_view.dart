@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/sell/add_products/widget/bottom_sheet.dart';
 import 'package:shopping_app/sell/add_products/widget/bottom_sheet2.dart';
@@ -32,35 +32,9 @@ class _AddProductsViewState extends State<AddProductsView> {
         backgroundColor: Colors.black,
         child: Icon(Icons.add),
         onPressed: () {
-          Get.bottomSheet(Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20))),
-            height: 100.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                    icon: const Icon(
-                      Icons.camera_alt,
-                      size: 30.0,
-                    ),
-                    onPressed: () {
-                      addProductsController.getImageCamera(ImageSource.camera);
-                      Get.back();
-                    }),
-                IconButton(
-                    icon: const Icon(Icons.camera_roll_sharp, size: 30.0),
-                    onPressed: () {
-                      addProductsController
-                          .getImageGallery(ImageSource.gallery);
-                      Get.back();
-                    })
-              ],
-            ),
-          ));
+          addProductsController.bottomIndex = 0;
+          Get.bottomSheet(
+              BottomSheetChose(addProductsController: addProductsController));
         },
       ),
       body: SafeArea(

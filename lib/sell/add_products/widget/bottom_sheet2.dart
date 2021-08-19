@@ -27,7 +27,7 @@ class BottomSheet2 extends StatefulWidget {
 
 class _BottomSheet2State extends State<BottomSheet2> {
   int initialIndex1 = 0;
-  AddProductsController addProductsController =
+  final AddProductsController addProductsController =
       Get.put(AddProductsController());
 
   @override
@@ -219,32 +219,26 @@ class _BottomSheet2State extends State<BottomSheet2> {
                         addProductsController.initialIndex = 4;
                       })
                     : addProductsController.initialIndex == 4
-                        ? addProductsController
-                            .userImage(
+                        ? addProductsController.userImage().whenComplete(() =>
+                            addProductsController.userProducts(
                                 productElement: addProductsController
                                     .productElement.title
                                     .toString(),
-                                itemElement: addProductsController
-                                    .itemElement.title
+                                itemElement: addProductsController.itemElement.title
                                     .toString(),
                                 checkBoxElement: addProductsController
                                     .checkBoxElement
                                     .toString(),
                                 colorElement: addProductsController.colorElement
-                                    .toString())
-                            .whenComplete(() => addProductsController.userProducts(
-                                productElement: addProductsController
-                                    .productElement.title
-                                    .toString(),
-                                itemElement:
-                                    addProductsController.itemElement.title.toString(),
-                                checkBoxElement: addProductsController.checkBoxElement.toString(),
-                                colorElement: addProductsController.colorElement.toString()))
+                                    .toString()))
                         //addProductsController.userImage().toString()
                         : addProductsController.productElement == null
-                            ? Get.snackbar('Massage', 'Select product', snackPosition: SnackPosition.BOTTOM)
+                            ? Get.snackbar('Massage', 'Select product',
+                                snackPosition: SnackPosition.BOTTOM)
                             : addProductsController.itemElement == null
-                                ? Get.snackbar('Massage', 'Select Item', snackPosition: SnackPosition.BOTTOM)
-                                : Get.snackbar('Massage', 'Select product', snackPosition: SnackPosition.BOTTOM);
+                                ? Get.snackbar('Massage', 'Select Item',
+                                    snackPosition: SnackPosition.BOTTOM)
+                                : Get.snackbar('Massage', 'Select product',
+                                    snackPosition: SnackPosition.BOTTOM);
   }
 }

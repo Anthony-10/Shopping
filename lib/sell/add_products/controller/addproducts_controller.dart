@@ -12,8 +12,10 @@ import 'package:shopping_app/sell/models/product_model.dart';
 class AddProductsController extends GetxController {
   final picker = ImagePicker();
   final image = [].obs;
+  final drawerImage = [].obs;
   var imageSize = ''.obs;
   int initialIndex = 0;
+  int bottomIndex = 0;
 
   firebase_storage.Reference ref;
   CollectionReference imgRef;
@@ -37,19 +39,26 @@ class AddProductsController extends GetxController {
       allowMultiple: true,
     );
     if (pickedFile != null) {
-      if (pickedFile.count > 3) {
-        Get.snackbar('Error', 'More than 3 items selected',
-            snackPosition: SnackPosition.BOTTOM);
-        return;
-      } else if (pickedFile.count < 3) {
-        Get.snackbar('Error', 'Less than 3 items selected',
-            snackPosition: SnackPosition.BOTTOM);
-        return;
+      if (bottomIndex == 0) {
+        if (pickedFile.count > 3) {
+          Get.snackbar('Error', 'More than 3 items selected',
+              snackPosition: SnackPosition.BOTTOM);
+          return;
+        } else if (pickedFile.count < 3) {
+          Get.snackbar('Error', 'Less than 3 items selected',
+              snackPosition: SnackPosition.BOTTOM);
+          return;
+        }
+        pickedFile.files.forEach((selectedFile) {
+          final File file = File(selectedFile.path);
+          image.add(file);
+        });
+      } else {
+        pickedFile.files.forEach((selectedFile) {
+          final File file = File(selectedFile.path);
+          drawerImage.add(file);
+        });
       }
-      pickedFile.files.forEach((selectedFile) {
-        final File file = File(selectedFile.path);
-        image.add(file);
-      });
     } else {
       Get.snackbar('Error', 'No image selected',
           snackPosition: SnackPosition.BOTTOM);
@@ -61,43 +70,55 @@ class AddProductsController extends GetxController {
 
     final pickedFile = await ImagePicker().getImage(source: imageSource);
     if (pickedFile != null) {
-      image.add(File(pickedFile.path));
-      if (image.length == 3) {
-        return;
-      } else if (image.length > 3) {
-        image.removeLast();
-        Get.snackbar('Error', 'More than 3 items selected',
-            snackPosition: SnackPosition.BOTTOM);
+      if (bottomIndex == 0) {
+        image.add(File(pickedFile.path));
+        if (image.length == 3) {
+          return;
+        } else if (image.length > 3) {
+          image.removeLast();
+          Get.snackbar('Error', 'More than 3 items selected',
+              snackPosition: SnackPosition.BOTTOM);
+        } else {
+          this.getImageCamera(imageSource);
+        }
       } else {
-        this.getImageCamera(imageSource);
+        Get.snackbar('Error', 'No image selected',
+            snackPosition: SnackPosition.BOTTOM);
       }
     } else {
-      Get.snackbar('Error', 'No image selected',
-          snackPosition: SnackPosition.BOTTOM);
+      drawerImage.add(File(pickedFile.path));
     }
   }
 
-  Future<void> userImage({
-    String productElement,
-    String itemElement,
-    String checkBoxElement,
-    String colorElement,
-  }) async {
+  Future<void> userImage() async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     print(
         '????????????????????????????????userImage>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     try {
       if (uid != null) {
-        image.forEach((file) async {
-          final ref = firebase_storage.FirebaseStorage.instance
-              .ref()
-              .child("images/${DateTime.now().toString()}");
-          final result = await ref.putFile(file);
-          fileURL = await result.ref.getDownloadURL();
+        if (image.isNotEmpty && drawerImage.isEmpty) {
+          image.forEach((file) async {
+            final ref = firebase_storage.FirebaseStorage.instance
+                .ref()
+                .child("images/${DateTime.now().toString()}");
+            final result = await ref.putFile(file);
+            fileURL = await result.ref.getDownloadURL();
 
-          print(
-              '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
-        });
+            print(
+                '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
+          });
+        } else {
+          drawerImage.forEach((file) async {
+            final ref = firebase_storage.FirebaseStorage.instance
+                .ref()
+                .child("images/${DateTime.now().toString()}");
+            final result = await ref.putFile(file);
+            fileURL = await result.ref.getDownloadURL();
+
+            print(
+                '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
+          });
+        }
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
