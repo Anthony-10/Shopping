@@ -75,6 +75,184 @@ class _BuyViewState extends State<BuyView> {
                           borderRadius: BorderRadius.circular(30))),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Expanded(
+              child: GridView.count(
+                  primary: false,
+                  padding: const EdgeInsets.all(15),
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  crossAxisCount: 2,
+                  physics: BouncingScrollPhysics(),
+                  children: [
+                    SizedBox(
+                      height: 90,
+                      child: Card(
+                        child: ListTile(
+                            title: TextButton(
+                              onPressed: () {},
+                            ),
+                            subtitle: Text(
+                              'wewe',
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 40.0),
+                            )),
+                        elevation: 20.0,
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton(
+                            onPressed: () {},
+                          ),
+                          subtitle: Text(
+                            'wewe',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton(
+                            onPressed: () {},
+                          ),
+                          subtitle: Text(
+                            'wewe',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton(
+                            onPressed: () {},
+                          ),
+                          subtitle: Text(
+                            'wewe',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton(
+                            onPressed: () {},
+                          ),
+                          subtitle: Text(
+                            'wewe',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton(
+                            onPressed: () {},
+                          ),
+                          subtitle: Text(
+                            'wewe',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton(
+                            onPressed: () {},
+                          ),
+                          subtitle: Text(
+                            'wewe',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton(
+                            onPressed: () {},
+                          ),
+                          subtitle: Text(
+                            'wewe',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton(
+                            onPressed: () {},
+                          ),
+                          subtitle: Text(
+                            'wewe',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton(
+                            onPressed: () {},
+                          ),
+                          subtitle: Text(
+                            'wewe',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ]),
             )
           ],
         ),

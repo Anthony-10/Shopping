@@ -34,6 +34,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   final AddProductsController addProductsController =
       Get.put(AddProductsController());
 
+  var name;
+  var gmail;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -114,10 +117,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         addProductsController.bottomIndex = 1;
                       });
                       Get.bottomSheet(BottomSheetChose(
-                          addProductsController: addProductsController));
-                      addProductsController
-                          .userImage()
-                          .whenComplete(() => databaseService.addUserInfo());
+                              addProductsController: addProductsController))
+                          .whenComplete(() => addProductsController
+                                  .drawerImage.isNotEmpty
+                              ? addProductsController.userImage().whenComplete(
+                                  () => databaseService.updateUserInfo(
+                                      email: gmail, firstName: name))
+                              : Get.snackbar(
+                                  "Error Massage",
+                                  'No image Selected',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                ));
                     },
                   ))
             ],
@@ -145,10 +155,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         itemBuilder: (context, index) {
                           return ListTile(
                             title: Text(
-                              snapshot.data.docs[index]['firstName'].toString(),
+                              name = snapshot.data.docs[index]['firstName']
+                                  .toString(),
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            subtitle: Text(
+                            subtitle: Text(gmail =
                                 snapshot.data.docs[index]['email'].toString()),
                           );
                         },

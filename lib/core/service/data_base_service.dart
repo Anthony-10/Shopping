@@ -19,6 +19,27 @@ class DatabaseService extends GetxController {
           'email': email,
           'firstName': firstName,
           'userId': uid,
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateUserInfo({String email, String firstName}) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    try {
+      if (uid != null) {
+        await _fireStore.collection("Users").doc().update({
+          'email': email,
+          'firstName': firstName,
+          'userId': uid,
           'Url': addProductsController.fileURL
         });
       }
