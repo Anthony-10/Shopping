@@ -42,6 +42,7 @@ class DatabaseService extends GetxController {
           'userId': uid,
           'Url': addProductsController.fileURL
         });
+        print('wwwwwwwwwwwww$email$firstName');
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar(

@@ -105,7 +105,7 @@ class AddProductsController extends GetxController {
             fileURL = await result.ref.getDownloadURL();
 
             print(
-                '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
+                '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<not drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
           });
         } else {
           drawerImage.forEach((file) async {
@@ -116,7 +116,7 @@ class AddProductsController extends GetxController {
             fileURL = await result.ref.getDownloadURL();
 
             print(
-                '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
+                '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
           });
         }
       }

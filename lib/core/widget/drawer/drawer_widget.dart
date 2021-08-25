@@ -120,9 +120,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               addProductsController: addProductsController))
                           .whenComplete(() => addProductsController
                                   .drawerImage.isNotEmpty
-                              ? addProductsController.userImage().whenComplete(
+                              ? addProductsController.userImage()
+                              /*.whenComplete(
                                   () => databaseService.updateUserInfo(
-                                      email: gmail, firstName: name))
+                                      email: gmail, firstName: name))*/
                               : Get.snackbar(
                                   "Error Massage",
                                   'No image Selected',
