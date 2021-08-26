@@ -53,7 +53,7 @@ class _DrawerViewState extends State<DrawerView> {
         isDrawerOpen = true;
       });
 
-  final initialindex = Get.put(InitialIndex());
+  final drawerFunctions = Get.put(DrawerFunctions());
   final authController = Get.find<AuthController>();
 
   @override
@@ -130,7 +130,7 @@ class _DrawerViewState extends State<DrawerView> {
                 borderRadius: BorderRadius.circular(isDrawerOpen ? 20 : 0),
                 child: Container(
                     color: isDrawerOpen ? Colors.grey[200] : Colors.white,
-                    child: initialindex.initialIndex == 0
+                    child: drawerFunctions.initialIndex == 0
                         ? getBuyPage()
                         : getSellPage()),
               ),

@@ -7,11 +7,13 @@ import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Rxn<User> _firebaseUser = Rxn<User>();
-  String get user => _firebaseUser.value.email;
+  User get user => _firebaseUser.value;
 
   int initialIndexAuth = 0;
 
   final DatabaseService databaseService = Get.put(DatabaseService());
+
+  //String uid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   void onInit() {

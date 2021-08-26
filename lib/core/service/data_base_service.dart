@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 
 class DatabaseService extends GetxController {
   final addProductsController = Get.put(AddProductsController());
+  final drawerFunctions = Get.put(DrawerFunctions());
 
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
@@ -15,9 +17,10 @@ class DatabaseService extends GetxController {
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       if (uid != null) {
-        await _fireStore.collection("Users").doc().set({
+        await _fireStore.collection("Users").doc(uid).set({
           'email': email,
           'firstName': firstName,
+          'Url': addProductsController.fileURL,
           'userId': uid,
         });
       }
@@ -32,17 +35,21 @@ class DatabaseService extends GetxController {
     }
   }
 
-  Future<void> updateUserInfo({String email, String firstName}) async {
+  Future<void> updateUserInfo() async {
+    print('111111111111111111111111111${addProductsController.fileURL}');
+    print(
+        '222222222222222222222222222222${drawerFunctions.gmail}${drawerFunctions.name}');
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       if (uid != null) {
-        await _fireStore.collection("Users").doc().update({
-          'email': email,
-          'firstName': firstName,
+        await _fireStore.collection("Users").doc(uid).update({
+          'email': drawerFunctions.gmail,
+          'firstName': drawerFunctions.name,
           'userId': uid,
           'Url': addProductsController.fileURL
         });
-        print('wwwwwwwwwwwww$email$firstName');
+        print(
+            'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww${drawerFunctions.gmail}${drawerFunctions.name}');
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar(

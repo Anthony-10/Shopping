@@ -8,6 +8,7 @@ import 'package:shopping_app/sell/add_products/view/addproducts_view.dart';
 import 'package:shopping_app/sell/sell_page/view/sell_view.dart';
 
 import 'authentication/binding/binding.dart';
+import 'authentication/register_status/register_statuse.dart';
 import 'authentication/view/auth_view.dart';
 import 'buy/buy_page/view/buy_view.dart';
 import 'core/widget/drawer/drawer_view/drawer_view.dart';
@@ -52,8 +53,12 @@ class MyApp extends StatelessWidget {
         GetPage(name: "/login", page: () => Login(), binding: AuthBinding()),
         GetPage(
             name: "/register", page: () => Register(), binding: AuthBinding()),
+        GetPage(
+            name: "/register_status",
+            page: () => RegisterStatus(),
+            binding: AuthBinding()),
       ],
-      initialRoute: "/auth_view",
+      initialRoute: "/register_status",
     );
   }
 }

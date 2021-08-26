@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/data/buy_drawer/buy_item.dart';
@@ -26,7 +23,7 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  final initialindex = Get.put(InitialIndex());
+  final drawerFunctions = Get.put(DrawerFunctions());
 
   final DatabaseService databaseService = Get.put(DatabaseService());
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -34,8 +31,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   final AddProductsController addProductsController =
       Get.put(AddProductsController());
 
-  var name;
-  var gmail;
+  @override
+  void initState() {
+    drawerFunctions.buildStreamBuilder();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   }
 
   buildDrawerItems(BuildContext context) => Column(
-      children: initialindex.initialIndex == 0
+      children: drawerFunctions.initialIndex == 0
           ? BuyDrawerItems.all
               .map((item) => ListTile(
                     contentPadding:
@@ -115,67 +115,29 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     onPressed: () {
                       setState(() {
                         addProductsController.bottomIndex = 1;
+                        print(
+                            '????????????????????????????????????????????????????');
                       });
                       Get.bottomSheet(BottomSheetChose(
                               addProductsController: addProductsController))
                           .whenComplete(() => addProductsController
                                   .drawerImage.isNotEmpty
-                              ? addProductsController.userImage()
-                              /*.whenComplete(
-                                  () => databaseService.updateUserInfo(
-                                      email: gmail, firstName: name))*/
+                              ? addProductsController.userImage().whenComplete(
+                                  () => addProductsController.fileURL != null
+                                      ? databaseService.updateUserInfo()
+                                      : addProductsController.userImage())
                               : Get.snackbar(
                                   "Error Massage",
                                   'No image Selected',
                                   snackPosition: SnackPosition.BOTTOM,
                                 ));
+                      print(
+                          'OOOOOOOOOOOOOOOOOOOOOO ${drawerFunctions.name} ${drawerFunctions.gmail} 0000000000000000');
                     },
                   ))
             ],
           ),
-          StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection("Users")
-                .where("userId",
-                    isEqualTo: FirebaseAuth.instance.currentUser.uid)
-                .snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.connectionState == ConnectionState.active) {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: Text("Check your connection"),
-                  );
-                } else {
-                  if (snapshot.hasData) {
-                    return SizedBox(
-                      height: Get.height * 0.1,
-                      width: Get.width * 0.5,
-                      child: ListView.builder(
-                        itemCount: snapshot.data.size,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(
-                              name = snapshot.data.docs[index]['firstName']
-                                  .toString(),
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(gmail =
-                                snapshot.data.docs[index]['email'].toString()),
-                          );
-                        },
-                      ),
-                    );
-                  }
-                }
-                return null;
-              } else {
-                return const Center(
-                  child: Text("loading..."),
-                );
-              }
-            },
-          ),
+          drawerFunctions.buildStreamBuilder(),
         ]),
       );
 }
