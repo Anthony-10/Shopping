@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/sell/models/item_model.dart';
 import 'package:shopping_app/sell/models/product_model.dart';
 
@@ -30,7 +31,8 @@ class AddProductsController extends GetxController {
   var colorElement;
   bool colorValue = false;
 
-  String fileURL;
+  var fileURL;
+  var imageUrl = [];
 
   getImageGallery(ImageSource imageSource) async {
     image.clear();
@@ -54,6 +56,7 @@ class AddProductsController extends GetxController {
           image.add(file);
         });
       } else {
+        drawerImage.clear();
         pickedFile.files.forEach((selectedFile) {
           final File file = File(selectedFile.path);
           drawerImage.add(file);
@@ -103,6 +106,7 @@ class AddProductsController extends GetxController {
                 .child("images/${DateTime.now().toString()}");
             final result = await ref.putFile(file);
             fileURL = await result.ref.getDownloadURL();
+            //imageUrl = fileURL;
 
             print(
                 '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<not drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
@@ -114,6 +118,8 @@ class AddProductsController extends GetxController {
                 .child("images/${DateTime.now().toString()}");
             final result = await ref.putFile(file);
             fileURL = await result.ref.getDownloadURL();
+            print(
+                'vvvvvvvvvvvv UserImage vvvvvvvvvvv $fileURL, vvvvvvvvvvvvvvvvvvvvvvvvv');
 
             print(
                 '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
@@ -145,11 +151,11 @@ class AddProductsController extends GetxController {
           'itemElement': itemElement,
           'checkBoxElement': checkBoxElement,
           'colorElement': colorElement,
-          'Url': fileURL,
+          'Url': imageUrl,
           'userId': uid
         });
         print(
-            '?????????????????????????????????????????????????????????????????????????????????????????/$fileURL');
+            '???????????????????????????????????????????? UserProducts ?????????????????????????????????????????????/$fileURL');
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
@@ -161,24 +167,4 @@ class AddProductsController extends GetxController {
       rethrow;
     }
   }
-
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  //String uid = FirebaseAuth.instance.currentUser.uid;
-
-/*  Future<void> addProducts(String name, var size) async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    try {
-      if (uid != null) {
-        await _firestore
-            .collection("Products")
-            .doc()
-            .set({'name': name, 'size': size, 'userId': uid});
-      }
-    } on FirebaseAuthException catch (e) {
-      Get.snackbar("Error creating account", e.message,
-          snackPosition: SnackPosition.BOTTOM);
-    } catch (e) {
-      rethrow;
-    }
-  }*/
 }

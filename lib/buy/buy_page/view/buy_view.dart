@@ -1,7 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
+import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
+import 'package:shopping_app/sell/data/bottom_sheet/check_box_category.dart';
 
 class BuyView extends StatefulWidget {
   @override
@@ -10,6 +15,9 @@ class BuyView extends StatefulWidget {
 
 class _BuyViewState extends State<BuyView> {
   final controller = SlideController();
+  final drawerFunctions = Get.put(DrawerFunctions());
+
+  var me = FirebaseFirestore.instance.collection("Users").snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -80,180 +88,57 @@ class _BuyViewState extends State<BuyView> {
               height: 15,
             ),
             Expanded(
-              child: GridView.count(
-                  primary: false,
-                  padding: const EdgeInsets.all(15),
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
-                  crossAxisCount: 2,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    SizedBox(
-                      height: 90,
-                      child: Card(
-                        child: ListTile(
-                            title: TextButton(
-                              onPressed: () {},
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection("Users")
+                      .where("userId",
+                          isNotEqualTo: FirebaseAuth.instance.currentUser.uid)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      if (!snapshot.hasData) {
+                        return const Center(
+                          child: Text("Check your connection"),
+                        );
+                      } else {
+                        if (snapshot.hasData) {
+                          return GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10.0,
+                              mainAxisSpacing: 10.0,
                             ),
-                            subtitle: Text(
-                              'wewe',
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(color: Colors.red, fontSize: 40.0),
-                            )),
-                        elevation: 20.0,
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                          title: TextButton(
-                            onPressed: () {},
-                          ),
-                          subtitle: Text(
-                            'wewe',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
-                      elevation: 20.0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                          title: TextButton(
-                            onPressed: () {},
-                          ),
-                          subtitle: Text(
-                            'wewe',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
-                      elevation: 20.0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                          title: TextButton(
-                            onPressed: () {},
-                          ),
-                          subtitle: Text(
-                            'wewe',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
-                      elevation: 20.0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                          title: TextButton(
-                            onPressed: () {},
-                          ),
-                          subtitle: Text(
-                            'wewe',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
-                      elevation: 20.0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                          title: TextButton(
-                            onPressed: () {},
-                          ),
-                          subtitle: Text(
-                            'wewe',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
-                      elevation: 20.0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                          title: TextButton(
-                            onPressed: () {},
-                          ),
-                          subtitle: Text(
-                            'wewe',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
-                      elevation: 20.0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                          title: TextButton(
-                            onPressed: () {},
-                          ),
-                          subtitle: Text(
-                            'wewe',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
-                      elevation: 20.0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                          title: TextButton(
-                            onPressed: () {},
-                          ),
-                          subtitle: Text(
-                            'wewe',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
-                      elevation: 20.0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                          title: TextButton(
-                            onPressed: () {},
-                          ),
-                          subtitle: Text(
-                            'wewe',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
-                      elevation: 20.0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                  ]),
-            )
+                            primary: false,
+                            padding: const EdgeInsets.all(15),
+                            physics: BouncingScrollPhysics(),
+                            itemCount: snapshot.data.size,
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                height: 90,
+                                child: Card(
+                                  child: Image.network(
+                                    snapshot.data.docs[index]['Url'].toString(),
+                                    fit: BoxFit.fill,
+                                  ),
+                                  elevation: 20.0,
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      }
+                      return null;
+                    } else {
+                      return Text('Loading.........');
+                    }
+                  }),
+            ),
           ],
         ),
       ),

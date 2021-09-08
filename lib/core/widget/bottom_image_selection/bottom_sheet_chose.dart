@@ -13,6 +13,8 @@ class BottomSheetChose extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        '////////////////////// BottomSheetChose ////////////////////////////');
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
