@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
@@ -11,8 +12,8 @@ class DatabaseService extends GetxController {
 
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-  final CollectionReference ref =
-      FirebaseFirestore.instance.collection('Users');
+  var defaulImage =
+      "https://firebasestorage.googleapis.com/v0/b/shopping-643cc.appspot.com/o/images%2F2021-09-10%2012%3A55%3A08.346550?alt=media&token=afa6d29a-45de-462f-bc37-523604e86342";
 
   final drawerImage = [].obs;
 
@@ -23,8 +24,8 @@ class DatabaseService extends GetxController {
         await _fireStore.collection("Users").doc(uid).set({
           'email': email,
           'firstName': firstName,
-          'Url': addProductsController.fileURL,
-          'userId': uid,
+          'Url': defaulImage,
+          'userId': uid
         });
       }
     } on FirebaseAuthException catch (e) {

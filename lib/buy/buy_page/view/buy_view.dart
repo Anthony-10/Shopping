@@ -115,19 +115,22 @@ class _BuyViewState extends State<BuyView> {
                             physics: BouncingScrollPhysics(),
                             itemCount: snapshot.data.size,
                             itemBuilder: (context, index) {
-                              return SizedBox(
-                                height: 90,
+                              return Container(
+                                color: Colors.blue,
                                 child: Card(
                                   child: Image.network(
                                     snapshot.data.docs[index]['Url'].toString(),
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.cover,
                                   ),
+                                  semanticContainer: true,
+                                  clipBehavior: Clip.antiAlias,
                                   elevation: 20.0,
                                   color: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
                                 ),
+                                height: 200,
                               );
                             },
                           );
@@ -135,7 +138,7 @@ class _BuyViewState extends State<BuyView> {
                       }
                       return null;
                     } else {
-                      return Text('Loading.........');
+                      return Center(child: Text('Loading.........'));
                     }
                   }),
             ),

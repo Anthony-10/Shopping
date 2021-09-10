@@ -173,10 +173,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                 CircleAvatar(
                                     backgroundColor: Colors.grey,
                                     radius: 50.0,
-                                    child: Image.network(
-                                      snapshot.data.docs[index]['Url']
-                                          .toString(),
-                                      fit: BoxFit.fill,
+                                    child: ClipOval(
+                                      child: Image.network(
+                                        snapshot.data.docs[index]['Url']
+                                            .toString(),
+                                        fit: BoxFit.cover,
+                                        width: 100,
+                                        height: 100,
+                                      ),
                                     )),
                                 Positioned(
                                     bottom: -3,
@@ -247,6 +251,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     );
                   }
                 }
+                print(
+                    '###############################${snapshot.data.docs}##########################');
                 return null;
               } else {
                 return Stack(
@@ -254,6 +260,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     CircleAvatar(
                       backgroundColor: Colors.grey,
                       radius: 50.0,
+                      child: Icon(
+                        Icons.person,
+                        size: 90,
+                        color: Colors.grey[800],
+                      ),
                     ),
                     Positioned(
                         bottom: -3,

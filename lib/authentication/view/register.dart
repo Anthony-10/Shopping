@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/controller/auth_controller.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 
 class Register extends StatefulWidget {
   const Register({Key key}) : super(key: key);
@@ -15,6 +16,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _userPassWord = TextEditingController();
 
   final authController = Get.find<AuthController>();
+  final DatabaseService databaseService = Get.put(DatabaseService());
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +74,6 @@ class _RegisterState extends State<Register> {
             SizedBox(
               height: 20.0,
             ),
-            /*TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      initialIndex = 0;
-                                    });
-                                  },
-                                  child: Text('Sign In'))*/
           ],
         ),
       ),
