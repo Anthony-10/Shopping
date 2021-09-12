@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/sell/data/bottom_sheet/check_box_category.dart';
+import 'package:like_button/like_button.dart';
 
 class BuyView extends StatefulWidget {
   @override
@@ -18,6 +20,9 @@ class _BuyViewState extends State<BuyView> {
   final drawerFunctions = Get.put(DrawerFunctions());
 
   var me = FirebaseFirestore.instance.collection("Users").snapshots();
+
+  bool isLiked = false;
+  int likeCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -87,61 +92,89 @@ class _BuyViewState extends State<BuyView> {
             SizedBox(
               height: 15,
             ),
-            Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection("Users")
-                      .where("userId",
-                          isNotEqualTo: FirebaseAuth.instance.currentUser.uid)
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.active) {
-                      if (!snapshot.hasData) {
-                        return const Center(
-                          child: Text("Check your connection"),
-                        );
-                      } else {
-                        if (snapshot.hasData) {
-                          return GridView.builder(
+            StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("Users")
+                    .where("userId",
+                        isNotEqualTo: FirebaseAuth.instance.currentUser.uid)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: Text("Check your connection"),
+                      );
+                    } else {
+                      if (snapshot.hasData) {
+                        return Expanded(
+                          child: GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 10.0,
-                              mainAxisSpacing: 10.0,
-                            ),
+                                    crossAxisCount: 2, childAspectRatio: 0.75),
                             primary: false,
                             padding: const EdgeInsets.all(15),
                             physics: BouncingScrollPhysics(),
                             itemCount: snapshot.data.size,
                             itemBuilder: (context, index) {
                               return Container(
-                                color: Colors.blue,
-                                child: Card(
-                                  child: Image.network(
-                                    snapshot.data.docs[index]['Url'].toString(),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  semanticContainer: true,
-                                  clipBehavior: Clip.antiAlias,
-                                  elevation: 20.0,
-                                  color: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
+                                height: 100,
+                                child: Column(
+                                  children: [
+                                    Card(
+                                      child: Image.network(
+                                        snapshot.data.docs[index]['Url']
+                                            .toString(),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      semanticContainer: true,
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      elevation: 20.0,
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 5, top: 10),
+                                          child: Text(
+                                            snapshot
+                                                .data.docs[index]['firstName']
+                                                .toString(),
+                                          ),
+                                        ),
+                                        LikeButton(
+                                          size: 40,
+                                          isLiked: isLiked,
+                                          likeCount: likeCount,
+                                          likeBuilder: (isLiked) {
+                                            final color = Colors.red;
+                                            return Icon(
+                                              Icons.favorite,
+                                              color: color,
+                                              size: 25,
+                                            );
+                                          },
+                                        )
+                                      ],
+                                    )
+                                  ],
                                 ),
-                                height: 200,
                               );
                             },
-                          );
-                        }
+                          ),
+                        );
                       }
-                      return null;
-                    } else {
-                      return Center(child: Text('Loading.........'));
                     }
-                  }),
-            ),
+                    return null;
+                  } else {
+                    return Center(child: Text('Loading.........'));
+                  }
+                }),
           ],
         ),
       ),

@@ -197,11 +197,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                           print(
                                               '????????????????????????????????????????????????????');
                                         });
-                                        Get.bottomSheet(
-                                                BottomSheetChose(
+                                        Get
+                                                .bottomSheet(BottomSheetChose(
                                                     addProductsController:
                                                         addProductsController))
-                                            .whenComplete(() =>
+                                            .then((drawerImage) =>
                                                 addProductsController
                                                         .drawerImage.isNotEmpty
                                                     ? addProductsController

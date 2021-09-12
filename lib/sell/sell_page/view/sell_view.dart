@@ -51,7 +51,6 @@ class _SellViewState extends State<SellView> {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20.0),
                       topRight: Radius.circular(20.0))),
-              //color: Colors.indigo[50],
               child: GridView.count(
                   primary: false,
                   padding: const EdgeInsets.all(20),
