@@ -5,10 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/sell/data/bottom_sheet/check_box_category.dart';
 import 'package:like_button/like_button.dart';
+import 'package:shimmer/shimmer.dart';
 
 class BuyView extends StatefulWidget {
   @override
@@ -111,36 +113,44 @@ class _BuyViewState extends State<BuyView> {
                           child: GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2, childAspectRatio: 0.75),
+                                    crossAxisCount: 2, childAspectRatio: 0.65),
                             primary: false,
                             padding: const EdgeInsets.all(15),
                             physics: BouncingScrollPhysics(),
                             itemCount: snapshot.data.size,
                             itemBuilder: (context, index) {
-                              return Container(
-                                height: 100,
-                                child: Column(
-                                  children: [
-                                    Card(
-                                      child: Image.network(
-                                        snapshot.data.docs[index]['Url']
-                                            .toString(),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      semanticContainer: true,
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      elevation: 20.0,
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
+                              return Column(
+                                children: [
+                                  SizedBox(
+                                    height: Get.height * 0.28,
+                                    width: Get.width * 0.5,
+                                    child: GestureDetector(
+                                      onTap: () => Get.to(SellerAccount()),
+                                      child: Card(
+                                        child: Image.network(
+                                          snapshot.data.docs[index]['Url']
+                                              .toString(),
+                                          fit: BoxFit.fill,
+                                        ),
+                                        semanticContainer: true,
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                        elevation: 20.0,
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
                                       ),
                                     ),
-                                    Row(
+                                  ),
+                                  Container(
+                                    width: Get.width * 0.4,
+                                    child: Row(
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              right: 5, top: 10),
+                                              right: 20, top: 10),
                                           child: Text(
                                             snapshot
                                                 .data.docs[index]['firstName']
@@ -161,9 +171,9 @@ class _BuyViewState extends State<BuyView> {
                                           },
                                         )
                                       ],
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  )
+                                ],
                               );
                             },
                           ),
@@ -172,7 +182,7 @@ class _BuyViewState extends State<BuyView> {
                     }
                     return null;
                   } else {
-                    return Center(child: Text('Loading.........'));
+                    return Center(child: Text('Loading.....'));
                   }
                 }),
           ],

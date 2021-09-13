@@ -152,10 +152,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           //????????????????????????????????????????????????????????????
           Container(
         height: 100,
-        child: FutureBuilder(
-            future: me.get(),
-            builder: (BuildContext context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
+        child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection("Users")
+                .where("userId",
+                    isEqualTo: FirebaseAuth.instance.currentUser.uid)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
                 if (!snapshot.hasData) {
                   return const Center(
                     child: Text("Check your connection"),

@@ -1,6 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/controller/auth_controller.dart';
 import 'package:shopping_app/authentication/view/register.dart';
@@ -39,7 +38,7 @@ class _AuthViewState extends State<AuthView> {
               child: Column(
                 children: [
                   Container(
-                      height: Get.height * 0.5,
+                      height: Get.height * 0.4,
                       width: Get.width,
                       child: authController.initialIndexAuth == 0
                           ? Align(
@@ -131,7 +130,7 @@ class _AuthViewState extends State<AuthView> {
                               ],
                             ),
                             SizedBox(
-                              height: 10.0,
+                              height: Get.height * 0.001,
                             ),
                             Row(
                               children: [
@@ -170,33 +169,6 @@ class _AuthViewState extends State<AuthView> {
                 ],
               ),
             ),
-            /*Container(
-              height: Get.height * 0.5,
-              width: Get.width,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20.0),
-                      topLeft: Radius.circular(20.0))),
-            ),*/
-            /*Image.asset(
-              "assets/login.jpg",
-              fit: BoxFit.cover,
-              height: Get.height,
-              width: Get.width,
-            ),*/
-            /* Positioned(
-                top: 80.0,
-                left: 120.0,
-                child: initialIndex == 0
-                    ? Text(
-                        'Sign In',
-                        style: TextStyle(color: Colors.white, fontSize: 35.0),
-                      )
-                    : Text(
-                        'Sign Up',
-                        style: TextStyle(color: Colors.white, fontSize: 35.0),
-                      )),*/
             Positioned(
                 bottom: 140.0,
                 left: 50.0,
