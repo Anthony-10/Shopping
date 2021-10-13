@@ -29,14 +29,15 @@ class BottomSheetChose extends StatelessWidget {
                 Icons.camera_alt,
                 size: 30.0,
               ),
-              onPressed: () {
-                addProductsController.getImageCamera(ImageSource.camera);
+              onPressed: () async {
+                await addProductsController.getImageCamera(ImageSource.camera);
                 Get.back();
               }),
           IconButton(
               icon: const Icon(Icons.camera_roll_sharp, size: 30.0),
-              onPressed: () {
-                addProductsController.getImageGallery(ImageSource.gallery);
+              onPressed: () async {
+                await addProductsController
+                    .getImageGallery(ImageSource.gallery);
                 Get.back();
               })
         ],

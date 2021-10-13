@@ -5,9 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
+import 'package:shopping_app/sell/add_products/widget/bottom_sheet/size_check_box.dart';
 import 'package:shopping_app/sell/data/bottom_sheet/check_box_category.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shimmer/shimmer.dart';
@@ -18,13 +20,13 @@ class BuyView extends StatefulWidget {
 }
 
 class _BuyViewState extends State<BuyView> {
+  final buyController = Get.put(BuyController());
   final controller = SlideController();
   final drawerFunctions = Get.put(DrawerFunctions());
 
-  var me = FirebaseFirestore.instance.collection("Users").snapshots();
-
   bool isLiked = false;
   int likeCount = 0;
+  var name;
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +127,16 @@ class _BuyViewState extends State<BuyView> {
                                     height: Get.height * 0.28,
                                     width: Get.width * 0.5,
                                     child: GestureDetector(
-                                      onTap: () => Get.to(SellerAccount()),
+                                      onTap: () {
+                                        buyController.name = snapshot
+                                            .data.docs[index]['firstName'];
+                                        buyController.id =
+                                            snapshot.data.docs[index]['userId'];
+
+                                        Get.to(SellerAccount());
+                                        print(
+                                            '{{{{{{{{{{{{{{{{{{${buyController.name}, ${buyController.id}}}}}}}}}}}}}}}}}');
+                                      },
                                       child: Card(
                                         child: Image.network(
                                           snapshot.data.docs[index]['Url']
@@ -144,32 +155,29 @@ class _BuyViewState extends State<BuyView> {
                                       ),
                                     ),
                                   ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                   Container(
                                     width: Get.width * 0.4,
-                                    child: Row(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 20, top: 10),
-                                          child: Text(
-                                            snapshot
-                                                .data.docs[index]['firstName']
-                                                .toString(),
-                                          ),
+                                        Text(
+                                          snapshot.data.docs[index]['firstName']
+                                              .toString(),
                                         ),
-                                        LikeButton(
-                                          size: 40,
-                                          isLiked: isLiked,
-                                          likeCount: likeCount,
-                                          likeBuilder: (isLiked) {
-                                            final color = Colors.red;
-                                            return Icon(
-                                              Icons.favorite,
-                                              color: color,
-                                              size: 25,
-                                            );
-                                          },
-                                        )
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text('30'),
+                                              Icon(Icons.favorite),
+                                            ])
                                       ],
                                     ),
                                   )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/sell/data/bottom_sheet/product_category.dart';
 import 'bottom_sheet/category_list.dart';
@@ -29,6 +30,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
   int initialIndex1 = 0;
   final AddProductsController addProductsController =
       Get.put(AddProductsController());
+  final DatabaseService databaseService = Get.put(DatabaseService());
 
   @override
   Widget build(BuildContext context) {
@@ -219,12 +221,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                         addProductsController.initialIndex = 4;
                       })
                     : addProductsController.initialIndex == 4
-                        ? addProductsController.userImage().whenComplete(() =>
-                            addProductsController.userProducts(
+                        ? databaseService.userImage().whenComplete(() =>
+                            databaseService.userProducts(
                                 productElement: addProductsController
                                     .productElement.title
                                     .toString(),
-                                itemElement: addProductsController.itemElement.title
+                                itemElement: addProductsController
+                                    .itemElement.title
                                     .toString(),
                                 checkBoxElement: addProductsController
                                     .checkBoxElement

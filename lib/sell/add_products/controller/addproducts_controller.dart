@@ -31,13 +31,10 @@ class AddProductsController extends GetxController {
   var colorElement;
   bool colorValue = false;
 
-  var fileURL;
-  var imageUrl = [];
-
   getImageGallery(ImageSource imageSource) async {
     image.clear();
     final FilePickerResult pickedFile = await FilePicker.platform.pickFiles(
-      type: FileType.any,
+      type: FileType.image,
       allowMultiple: true,
     );
     if (pickedFile != null) {
@@ -56,15 +53,18 @@ class AddProductsController extends GetxController {
           image.add(file);
         });
       } else {
+        print('At the drawerImage');
         drawerImage.clear();
         pickedFile.files.forEach((selectedFile) {
           final File file = File(selectedFile.path);
           drawerImage.add(file);
+          print('At the drawerImage$drawerImage');
         });
       }
     } else {
       Get.snackbar('Error', 'No image selected',
           snackPosition: SnackPosition.BOTTOM);
+      print('Error' 'No image selected');
     }
   }
 
@@ -90,81 +90,6 @@ class AddProductsController extends GetxController {
       }
     } else {
       drawerImage.add(File(pickedFile.path));
-    }
-  }
-
-  Future<void> userImage() async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    print(
-        '????????????????????????????????userImage>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-    try {
-      if (uid != null) {
-        if (image.isNotEmpty && drawerImage.isEmpty) {
-          image.forEach((file) async {
-            final ref = firebase_storage.FirebaseStorage.instance
-                .ref()
-                .child("images/${DateTime.now().toString()}");
-            final result = await ref.putFile(file);
-            fileURL = await result.ref.getDownloadURL();
-            //imageUrl = fileURL;
-
-            print(
-                '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<not drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
-          });
-        } else {
-          drawerImage.forEach((file) async {
-            final ref = firebase_storage.FirebaseStorage.instance
-                .ref()
-                .child("images/${DateTime.now().toString()}");
-            final result = await ref.putFile(file);
-            fileURL = await result.ref.getDownloadURL();
-            print(
-                'vvvvvvvvvvvv UserImage vvvvvvvvvvv $fileURL, vvvvvvvvvvvvvvvvvvvvvvvvv');
-
-            print(
-                '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
-          });
-        }
-      }
-    } on FirebaseAuthException catch (e) {
-      Get.snackbar(
-        "Uploading Image",
-        e.message,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> userProducts({
-    String productElement,
-    String itemElement,
-    String checkBoxElement,
-    String colorElement,
-  }) async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    try {
-      if (uid != null) {
-        await _fireStore.collection("Products").doc().set({
-          'productElement': productElement,
-          'itemElement': itemElement,
-          'checkBoxElement': checkBoxElement,
-          'colorElement': colorElement,
-          'Url': imageUrl,
-          'userId': uid
-        });
-        print(
-            '???????????????????????????????????????????? UserProducts ?????????????????????????????????????????????/$fileURL');
-      }
-    } on FirebaseAuthException catch (e) {
-      Get.snackbar(
-        "Error Adding User Info",
-        e.message,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } catch (e) {
-      rethrow;
     }
   }
 }

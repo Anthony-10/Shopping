@@ -15,7 +15,7 @@ class DatabaseService extends GetxController {
   var defaulImage =
       "https://firebasestorage.googleapis.com/v0/b/shopping-643cc.appspot.com/o/images%2F2021-09-10%2012%3A55%3A08.346550?alt=media&token=afa6d29a-45de-462f-bc37-523604e86342";
 
-  final drawerImage = [].obs;
+  var fileURL;
 
   Future<void> addUserInfo({String email, String firstName}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
@@ -45,22 +45,70 @@ class DatabaseService extends GetxController {
         '????????????????????????????????userImage>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     try {
       if (uid != null) {
-        drawerImage.forEach((file) async {
-          final ref = firebase_storage.FirebaseStorage.instance
-              .ref()
-              .child("images/${DateTime.now().toString()}");
-          final result = await ref.putFile(file);
-          addProductsController.fileURL = await result.ref.getDownloadURL();
-          print(
-              'vvvvvvvvvvvv UserImage vvvvvvvvvvv ${addProductsController.fileURL}, vvvvvvvvvvvvvvvvvvvvvvvvv');
+        if (addProductsController.image.isNotEmpty &&
+            addProductsController.drawerImage.isEmpty) {
+          addProductsController.image.forEach((file) async {
+            final ref = firebase_storage.FirebaseStorage.instance
+                .ref()
+                .child("images/${DateTime.now().toString()}");
+            final result = await ref.putFile(file);
+            fileURL = await result.ref.getDownloadURL();
+            print(
+                '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<not drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
+          });
+        } else {
+          print('userImage in drawerImage${addProductsController.drawerImage}');
+          addProductsController.drawerImage.forEach((file) async {
+            final ref = firebase_storage.FirebaseStorage.instance
+                .ref()
+                .child("images/${DateTime.now().toString()}");
+            final result = await ref.putFile(file);
+            fileURL = await result.ref.getDownloadURL();
+            updateUserInfo();
+            print(
+                'vvvvvvvvvvvv UserImage vvvvvvvvvvv $fileURL, vvvvvvvvvvvvvvvvvvvvvvvvv');
 
-          print(
-              '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${addProductsController.fileURL}');
+            print(
+                '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
+          });
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      print("---------------------- Uploading Image ----------------------");
+      Get.snackbar(
+        "Uploading Image",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> userProducts({
+    String productElement,
+    String itemElement,
+    String checkBoxElement,
+    String colorElement,
+  }) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    try {
+      if (uid != null) {
+        await _fireStore.collection("Products").doc().set({
+          'productElement': productElement,
+          'itemElement': itemElement,
+          'checkBoxElement': checkBoxElement,
+          'colorElement': colorElement,
+          'Url': fileURL,
+          'userId': uid
         });
+        print(
+            '???????????????????????????????????????????? UserProducts ?????????????????????????????????????????????/$fileURL');
+        addProductsController.image.clear();
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
-        "Uploading Image",
+        "Error Adding User Info",
         e.message,
         snackPosition: SnackPosition.BOTTOM,
       );
@@ -73,8 +121,7 @@ class DatabaseService extends GetxController {
     if (drawerFunctions.emails.isNotEmpty || drawerFunctions.names.isNotEmpty) {
       print(
           '2222222222222 GetData Called 22222222222222222${drawerFunctions.emails}${drawerFunctions.names}');
-      print(
-          '11111111111 UpdateUserInfo 1111111111111111${addProductsController.fileURL}');
+      print('11111111111 UpdateUserInfo 1111111111111111$fileURL');
       String uid = FirebaseAuth.instance.currentUser.uid;
       try {
         if (uid != null) {
@@ -82,7 +129,7 @@ class DatabaseService extends GetxController {
             'email': drawerFunctions.emails,
             'firstName': drawerFunctions.names,
             'userId': uid,
-            'Url': addProductsController.fileURL
+            'Url': fileURL
           });
           print(
               'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww${drawerFunctions.emails}, ${drawerFunctions.names}');

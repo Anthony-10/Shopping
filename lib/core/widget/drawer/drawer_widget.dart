@@ -32,10 +32,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   final AddProductsController addProductsController =
       Get.put(AddProductsController());
 
-  var me = FirebaseFirestore.instance
-      .collection("Users")
-      .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid);
-
   @override
   void initState() {
     // TODO: implement initState
@@ -202,18 +198,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                           print(
                                               '????????????????????????????????????????????????????');
                                         });
-                                        Get
-                                                .bottomSheet(BottomSheetChose(
-                                                    addProductsController:
-                                                        addProductsController))
-                                            .then((drawerImage) =>
+                                        Get.bottomSheet(BottomSheetChose(
+                                                addProductsController:
+                                                    addProductsController))
+                                            .whenComplete(() =>
                                                 addProductsController
                                                         .drawerImage.isNotEmpty
-                                                    ? addProductsController
+                                                    ? databaseService
                                                         .userImage()
-                                                        .whenComplete(() =>
-                                                            databaseService
-                                                                .updateUserInfo())
                                                     : Get.snackbar(
                                                         "Error Massage",
                                                         'No image Selected',
@@ -221,6 +213,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                                             SnackPosition
                                                                 .BOTTOM,
                                                       ));
+
                                         print(
                                             'OOOOOOOOO BottomSheet OOOOOOOOOOOOO ${drawerFunctions.names} ${drawerFunctions.emails} 0000000000000000');
                                       },
@@ -291,10 +284,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                         addProductsController))
                                 .whenComplete(() => addProductsController
                                         .drawerImage.isNotEmpty
-                                    ? addProductsController
-                                        .userImage()
-                                        .whenComplete(() =>
-                                            databaseService.updateUserInfo())
+                                    ? databaseService.userImage().whenComplete(
+                                        () => databaseService.updateUserInfo())
                                     : Get.snackbar(
                                         "Error Massage",
                                         'No image Selected',
