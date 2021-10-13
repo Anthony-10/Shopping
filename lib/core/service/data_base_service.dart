@@ -52,7 +52,9 @@ class DatabaseService extends GetxController {
                 .ref()
                 .child("images/${DateTime.now().toString()}");
             final result = await ref.putFile(file);
+            print('weewewewewewewew $result');
             fileURL = await result.ref.getDownloadURL();
+            userProducts();
             print(
                 '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<not drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
           });

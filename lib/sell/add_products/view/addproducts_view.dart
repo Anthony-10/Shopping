@@ -124,10 +124,18 @@ class _AddProductsViewState extends State<AddProductsView> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            Get.bottomSheet(
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) => BottomSheet2(),
+                                isScrollControlled: true,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                )));
+                            /*Get.bottomSheet(
                               BottomSheet2(),
                               isDismissible: false,
-                            );
+                            );*/
                           },
                           child: Text('Continue'),
                           style: ElevatedButton.styleFrom(

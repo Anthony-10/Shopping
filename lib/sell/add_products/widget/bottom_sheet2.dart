@@ -221,19 +221,21 @@ class _BottomSheet2State extends State<BottomSheet2> {
                         addProductsController.initialIndex = 4;
                       })
                     : addProductsController.initialIndex == 4
-                        ? databaseService.userImage().whenComplete(() =>
-                            databaseService.userProducts(
+                        ? databaseService
+                            .userImage()
+                            .whenComplete(() => databaseService.userProducts(
                                 productElement: addProductsController
                                     .productElement.title
                                     .toString(),
-                                itemElement: addProductsController
-                                    .itemElement.title
+                                itemElement: addProductsController.itemElement.title
                                     .toString(),
                                 checkBoxElement: addProductsController
                                     .checkBoxElement
                                     .toString(),
                                 colorElement: addProductsController.colorElement
                                     .toString()))
+                            .whenComplete(() => Navigator.pop(context))
+
                         //addProductsController.userImage().toString()
                         : addProductsController.productElement == null
                             ? Get.snackbar('Massage', 'Select product',
