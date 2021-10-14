@@ -7,6 +7,7 @@ import 'package:shopping_app/buy/data/buy_drawer/buy_item.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
+import 'package:shopping_app/core/widget/profile_page/profile_page.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/sell/data/sell_drawer/sell_item.dart';
 import 'package:shopping_app/sell/models/drawer_model.dart';
@@ -169,56 +170,32 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Stack(
-                              children: [
-                                CircleAvatar(
+                            GestureDetector(
+                              onTap: () {
+                                drawerFunctions.images =
+                                    snapshot.data.docs[index]['Url'];
+                                drawerFunctions.names =
+                                    snapshot.data.docs[index]['firstName'];
+                                Get.to(ProfilePage());
+                                print(
+                                    'xxxxxxxxx${drawerFunctions.images}, ${drawerFunctions.names}');
+                              },
+                              child: Hero(
+                                tag: "image_1",
+                                child: CircleAvatar(
                                     backgroundColor: Colors.grey,
                                     radius: 50.0,
                                     child: ClipOval(
                                       child: Image.network(
-                                        snapshot.data.docs[index]['Url']
+                                        drawerFunctions.images = snapshot
+                                            .data.docs[index]['Url']
                                             .toString(),
                                         fit: BoxFit.cover,
                                         width: 100,
                                         height: 100,
                                       ),
                                     )),
-                                Positioned(
-                                    bottom: -3,
-                                    right: -3,
-                                    child: IconButton(
-                                      icon: Icon(
-                                        Icons.camera_alt,
-                                        size: 30.0,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          addProductsController.bottomIndex = 1;
-                                          print(
-                                              '????????????????????????????????????????????????????');
-                                        });
-                                        Get.bottomSheet(BottomSheetChose(
-                                                addProductsController:
-                                                    addProductsController))
-                                            .whenComplete(() =>
-                                                addProductsController
-                                                        .drawerImage.isNotEmpty
-                                                    ? databaseService
-                                                        .userImage()
-                                                    : Get.snackbar(
-                                                        "Error Massage",
-                                                        'No image Selected',
-                                                        snackPosition:
-                                                            SnackPosition
-                                                                .BOTTOM,
-                                                      ));
-
-                                        print(
-                                            'OOOOOOOOO BottomSheet OOOOOOOOOOOOO ${drawerFunctions.names} ${drawerFunctions.emails} 0000000000000000');
-                                      },
-                                    ))
-                              ],
+                              ),
                             ),
                             SizedBox(
                               width: 20,
@@ -253,49 +230,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     '###############################${snapshot.data.docs}##########################');
                 return null;
               } else {
-                return Stack(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      radius: 50.0,
-                      child: Icon(
-                        Icons.person,
-                        size: 90,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                    Positioned(
-                        bottom: -3,
-                        right: -3,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.camera_alt,
-                            size: 30.0,
-                            color: Colors.red,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              addProductsController.bottomIndex = 1;
-                              print(
-                                  '????????????????????????????????????????????????????');
-                            });
-                            Get.bottomSheet(BottomSheetChose(
-                                    addProductsController:
-                                        addProductsController))
-                                .whenComplete(() => addProductsController
-                                        .drawerImage.isNotEmpty
-                                    ? databaseService.userImage().whenComplete(
-                                        () => databaseService.updateUserInfo())
-                                    : Get.snackbar(
-                                        "Error Massage",
-                                        'No image Selected',
-                                        snackPosition: SnackPosition.BOTTOM,
-                                      ));
-                            print(
-                                'OOOOOOOOO BottomSheet OOOOOOOOOOOOO ${drawerFunctions.names} ${drawerFunctions.emails} 0000000000000000');
-                          },
-                        ))
-                  ],
+                return CircleAvatar(
+                  backgroundColor: Colors.grey,
+                  radius: 50.0,
+                  child: Icon(
+                    Icons.person,
+                    size: 90,
+                    color: Colors.grey[800],
+                  ),
                 );
               }
             }),
@@ -392,18 +334,5 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     } catch (e) {
       print(e);
     }
-  }
-
-  Future<String> userData() async {
-    print('<<<<<<<<<<<<<<<<<<<< UserData called >>>>>>>>>>>>>>>>>>>>>>>>');
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    var snapshot;
-    snapshot = FirebaseFirestore.instance
-        .collection("Users")
-        .doc(uid)
-        .snapshots()
-        .toList();
-    print('&&&&&&&&&&&&&&& UserData &&&&&&&&&&&& $snapshot &&&&&&&&&&&&&&7');
-    return snapshot;
   }
 }
