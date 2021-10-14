@@ -19,23 +19,18 @@ class _ProfilePageState extends State<ProfilePage> {
   final DatabaseService databaseService = Get.put(DatabaseService());
   final AddProductsController addProductsController =
       Get.put(AddProductsController());
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    drawerFunctions.getData();
-    super.initState();
-  }
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    drawerFunctions.getData();
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+        padding: const EdgeInsets.only(top: 30, right: 10, left: 10),
         child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection("Users")
@@ -57,94 +52,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Stack(
-                              children: [
-                                Hero(
-                                  tag: "image_1",
-                                  child: CircleAvatar(
-                                      backgroundColor: Colors.grey,
-                                      radius: 80.0,
-                                      child: ClipOval(
-                                        child: Image.network(
-                                          drawerFunctions.images = snapshot
-                                              .data.docs[index]['Url']
-                                              .toString(),
-                                          fit: BoxFit.cover,
-                                          width: 180,
-                                          height: 180,
-                                        ),
-                                      )),
-                                ),
-                                Positioned(
-                                    bottom: -0.1,
-                                    right: -0.1,
-                                    child: CircleAvatar(
-                                      radius: 25,
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.camera_alt,
-                                          size: 25.0,
-                                          color: Colors.white,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            addProductsController.bottomIndex =
-                                                1;
-                                            print(
-                                                '????????????????????????????????????????????????????');
-                                          });
-                                          Get.bottomSheet(BottomSheetChose(
-                                                  addProductsController:
-                                                      addProductsController))
-                                              .whenComplete(() =>
-                                                  addProductsController
-                                                          .drawerImage
-                                                          .isNotEmpty
-                                                      ? databaseService
-                                                          .userImage()
-                                                      : Get.snackbar(
-                                                          "Error Massage",
-                                                          'No image Selected',
-                                                          snackPosition:
-                                                              SnackPosition
-                                                                  .BOTTOM,
-                                                        ));
-
-                                          print(
-                                              'OOOOOOOOO BottomSheet OOOOOOOOOOOOO ${drawerFunctions.names} ${drawerFunctions.emails} 0000000000000000');
-                                        },
-                                      ),
-                                    ))
-                              ],
-                            ),
+                            buildProfilePick(snapshot, index),
                             SizedBox(
                               height: 30,
                             ),
-                            Align(
-                              alignment: Alignment.bottomLeft,
-                              child: ListTile(
-                                leading: Icon(Icons.person),
-                                title: Text(
-                                  'Name',
-                                ),
-                                subtitle: Text(
-                                    snapshot.data.docs[index]['firstName']
-                                        .toString(),
-                                    style: TextStyle(fontSize: 16)),
-                                trailing: Icon(Icons.edit),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: ListTile(
-                                leading: Icon(Icons.email),
-                                title: Text('Email'),
-                                subtitle: Text(
-                                  snapshot.data.docs[index]['email'].toString(),
-                                ),
-                                trailing: Icon(Icons.edit),
-                              ),
-                            )
+                            buildProfileTexts(context, snapshot, index)
                           ],
                         );
                       },
@@ -255,6 +167,184 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),*/
       ),
+    );
+  }
+
+  Column buildProfileTexts(BuildContext context,
+      AsyncSnapshot<QuerySnapshot<Object>> snapshot, int index) {
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.topLeft,
+          child: GestureDetector(
+            onTap: () => showDialog(
+              context: context,
+              builder: (context) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: AlertDialog(
+                    content: Form(
+                      key: _globalKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextFormField(
+                            validator: (value) {
+                              return value.isNotEmpty ? null : "Invalid Field";
+                            },
+                            key: const ValueKey("Name"),
+                            textAlign: TextAlign.start,
+                            decoration: InputDecoration(
+                              hintText: "Name",
+                            ),
+                            controller: _email,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      Container(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_globalKey.currentState.validate()) {
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: Text('Save'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.black,
+                          ),
+                        ),
+                      )
+                    ]),
+              ),
+            ),
+            child: ListTile(
+              leading: Icon(Icons.email),
+              title: Text('Name'),
+              subtitle: Text(
+                snapshot.data.docs[index]['firstName'].toString(),
+              ),
+              trailing: Icon(Icons.edit),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: GestureDetector(
+            onTap: () => showDialog(
+              context: context,
+              builder: (context) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: AlertDialog(
+                    content: Form(
+                      key: _globalKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextFormField(
+                            validator: (value) {
+                              return value.isNotEmpty ? null : "Invalid Field";
+                            },
+                            key: const ValueKey("Email"),
+                            textAlign: TextAlign.start,
+                            decoration: InputDecoration(
+                              hintText: "Email",
+                            ),
+                            controller: _email,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      Container(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_globalKey.currentState.validate()) {
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: Text('Save'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.black,
+                          ),
+                        ),
+                      )
+                    ]),
+              ),
+            ),
+            child: ListTile(
+              leading: Icon(Icons.email),
+              title: Text('Email'),
+              subtitle: Text(
+                snapshot.data.docs[index]['email'].toString(),
+              ),
+              trailing: Icon(Icons.edit),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Stack buildProfilePick(
+      AsyncSnapshot<QuerySnapshot<Object>> snapshot, int index) {
+    return Stack(
+      children: [
+        Hero(
+          tag: "image_1",
+          child: CircleAvatar(
+              backgroundColor: Colors.grey,
+              radius: 80.0,
+              child: ClipOval(
+                child: Image.network(
+                  drawerFunctions.images =
+                      snapshot.data.docs[index]['Url'].toString(),
+                  fit: BoxFit.cover,
+                  width: 180,
+                  height: 180,
+                ),
+              )),
+        ),
+        Positioned(
+            bottom: -0.1,
+            right: -0.1,
+            child: CircleAvatar(
+              radius: 25,
+              child: IconButton(
+                icon: Icon(
+                  Icons.camera_alt,
+                  size: 25.0,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  setState(() {
+                    addProductsController.bottomIndex = 1;
+                    print(
+                        '????????????????????????????????????????????????????');
+                  });
+                  Get.bottomSheet(BottomSheetChose(
+                          addProductsController: addProductsController))
+                      .whenComplete(
+                          () => addProductsController.drawerImage.isNotEmpty
+                              ? databaseService.userImage()
+                              : Get.snackbar(
+                                  "Error Massage",
+                                  'No image Selected',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                ));
+
+                  print(
+                      'OOOOOOOOO BottomSheet OOOOOOOOOOOOO ${drawerFunctions.names} ${drawerFunctions.emails} 0000000000000000');
+                },
+              ),
+            ))
+      ],
     );
   }
 }
