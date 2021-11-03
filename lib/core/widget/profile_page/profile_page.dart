@@ -23,6 +23,8 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _email = TextEditingController();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
+  var names;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -196,7 +198,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             decoration: InputDecoration(
                               hintText: "Name",
                             ),
-                            controller: _email,
+                            controller: _name,
                           ),
                           SizedBox(
                             height: 20,
@@ -208,9 +210,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       Container(
                         child: ElevatedButton(
                           onPressed: () {
+                            getData();
                             if (_globalKey.currentState.validate()) {
                               Navigator.of(context).pop();
                             }
+
+                            databaseService.updateUserInfo(
+                                firstName: _name.text,
+                                email: drawerFunctions.emails,
+                                Url: drawerFunctions.images);
                           },
                           child: Text('Save'),
                           style: ElevatedButton.styleFrom(
@@ -265,9 +273,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       Container(
                         child: ElevatedButton(
                           onPressed: () {
+                            getData();
                             if (_globalKey.currentState.validate()) {
                               Navigator.of(context).pop();
                             }
+                            databaseService.updateUserInfo(
+                                firstName: drawerFunctions.names,
+                                email: _email.text,
+                                Url: drawerFunctions.images);
                           },
                           child: Text('Save'),
                           style: ElevatedButton.styleFrom(
@@ -323,6 +336,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: Colors.white,
                 ),
                 onPressed: () {
+                  getData();
                   setState(() {
                     addProductsController.bottomIndex = 1;
                     print(
@@ -346,5 +360,27 @@ class _ProfilePageState extends State<ProfilePage> {
             ))
       ],
     );
+  }
+
+  Future<void> getData() async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    try {
+      DocumentSnapshot documentSnapshot =
+          await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+      if (documentSnapshot.exists) {
+        setState(() {
+          drawerFunctions.images = documentSnapshot.get('Url');
+          drawerFunctions.names = documentSnapshot.get('firstName');
+          drawerFunctions.emails = documentSnapshot.get('email');
+          drawerFunctions.url = documentSnapshot.get('userId');
+        });
+        print(
+            '<<<<<<<<<<<<<<<<<<<<<<<<<<< ${drawerFunctions.images}, ${drawerFunctions.names}, ${drawerFunctions.emails}, ${drawerFunctions.url} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.');
+      } else {
+        print('wewe');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

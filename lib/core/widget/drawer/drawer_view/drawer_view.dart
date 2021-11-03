@@ -143,8 +143,8 @@ class _DrawerViewState extends State<DrawerView> {
     switch (item) {
       case BuyDrawerItems.favourites:
         return Favourites();
-      case BuyDrawerItems.location:
-        return BuyerLocation();
+      /* case BuyDrawerItems.location:
+        return BuyerLocation();*/
       case BuyDrawerItems.home:
       default:
         return NewTab();
@@ -161,8 +161,8 @@ class _DrawerViewState extends State<DrawerView> {
         return AddProductsView();
       case SellDrawerItems.orders:
         return OrdersView();
-      case SellDrawerItems.location:
-        return SellLocation();
+      /*case SellDrawerItems.location:
+        return SellLocation();*/
       case SellDrawerItems.sellPage:
       default:
         return NewTab();

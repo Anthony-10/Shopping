@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/*import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -46,7 +46,7 @@ class _BuyerLocationState extends State<BuyerLocation> {
 
   @override
   Widget build(BuildContext context) {
-    /*Set<Marker> getMarker() {
+    */ /*Set<Marker> getMarker() {
       return <Marker>[
         Marker(
             markerId: MarkerId('Place'),
@@ -54,7 +54,7 @@ class _BuyerLocationState extends State<BuyerLocation> {
             icon: BitmapDescriptor.defaultMarker,
             infoWindow: InfoWindow(title: 'Shop'))
       ].toSet();
-    }*/
+    }*/ /*
 
     return Scaffold(
       body: Stack(
@@ -116,4 +116,4 @@ class _BuyerLocationState extends State<BuyerLocation> {
       ),
     );
   }
-}
+}*/

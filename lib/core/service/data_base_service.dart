@@ -66,7 +66,10 @@ class DatabaseService extends GetxController {
                 .child("images/${DateTime.now().toString()}");
             final result = await ref.putFile(file);
             fileURL = await result.ref.getDownloadURL();
-            updateUserInfo();
+            updateUserInfo(
+                email: drawerFunctions.emails,
+                firstName: drawerFunctions.names,
+                Url: fileURL);
             print(
                 'vvvvvvvvvvvv UserImage vvvvvvvvvvv $fileURL, vvvvvvvvvvvvvvvvvvvvvvvvv');
 
@@ -119,7 +122,11 @@ class DatabaseService extends GetxController {
     }
   }
 
-  Future<void> updateUserInfo() async {
+  Future<void> updateUserInfo({
+    var email,
+    var firstName,
+    var Url,
+  }) async {
     if (drawerFunctions.emails.isNotEmpty || drawerFunctions.names.isNotEmpty) {
       print(
           '2222222222222 GetData Called 22222222222222222${drawerFunctions.emails}${drawerFunctions.names}');
@@ -128,10 +135,10 @@ class DatabaseService extends GetxController {
       try {
         if (uid != null) {
           await _fireStore.collection("Users").doc(uid).update({
-            'email': drawerFunctions.emails,
-            'firstName': drawerFunctions.names,
+            'email': email,
+            'firstName': firstName,
             'userId': uid,
-            'Url': fileURL
+            'Url': Url,
           });
           print(
               'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww${drawerFunctions.emails}, ${drawerFunctions.names}');

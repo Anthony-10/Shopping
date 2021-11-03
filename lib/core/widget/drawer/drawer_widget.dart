@@ -34,13 +34,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       Get.put(AddProductsController());
 
   @override
-  void initState() {
-    // TODO: implement initState
-    getData();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
@@ -314,25 +307,4 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           )*/
       );
-  Future<void> getData() async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    try {
-      DocumentSnapshot documentSnapshot =
-          await FirebaseFirestore.instance.collection('Users').doc(uid).get();
-      if (documentSnapshot.exists) {
-        setState(() {
-          drawerFunctions.images = documentSnapshot.get('Url');
-          drawerFunctions.names = documentSnapshot.get('firstName');
-          drawerFunctions.emails = documentSnapshot.get('email');
-          drawerFunctions.url = documentSnapshot.get('userId');
-        });
-        print(
-            '<<<<<<<<<<<<<<<<<<<<<<<<<<< ${drawerFunctions.images}, ${drawerFunctions.names}, ${drawerFunctions.emails}, ${drawerFunctions.url} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.');
-      } else {
-        print('wewe');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
 }
