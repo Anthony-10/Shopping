@@ -160,60 +160,64 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     return ListView.builder(
                       itemCount: snapshot.data.size,
                       itemBuilder: (context, index) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                drawerFunctions.images =
-                                    snapshot.data.docs[index]['Url'];
-                                drawerFunctions.names =
-                                    snapshot.data.docs[index]['firstName'];
-                                Get.to(ProfilePage());
-                                print(
-                                    'xxxxxxxxx${drawerFunctions.images}, ${drawerFunctions.names}');
-                              },
-                              child: Hero(
-                                tag: "image_1",
-                                child: CircleAvatar(
-                                    backgroundColor: Colors.grey,
-                                    radius: 50.0,
-                                    child: ClipOval(
-                                      child: Image.network(
-                                        drawerFunctions.images = snapshot
-                                            .data.docs[index]['Url']
-                                            .toString(),
-                                        fit: BoxFit.cover,
-                                        width: 100,
-                                        height: 100,
-                                      ),
-                                    )),
+                        return SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  drawerFunctions.images =
+                                      snapshot.data.docs[index]['Url'];
+                                  drawerFunctions.names =
+                                      snapshot.data.docs[index]['firstName'];
+                                  Get.to(ProfilePage());
+                                  print(
+                                      'xxxxxxxxx${drawerFunctions.images}, ${drawerFunctions.names}');
+                                },
+                                child: Hero(
+                                  tag: "image_1",
+                                  child: CircleAvatar(
+                                      backgroundColor: Colors.grey,
+                                      radius: 50.0,
+                                      child: ClipOval(
+                                        child: Image.network(
+                                          drawerFunctions.images = snapshot
+                                              .data.docs[index]['Url']
+                                              .toString(),
+                                          fit: BoxFit.cover,
+                                          width: 100,
+                                          height: 100,
+                                        ),
+                                      )),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Column(children: [
-                              Text(
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Column(children: [
+                                Text(
+                                    snapshot.data.docs[index]['firstName']
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)),
+                                Text(
+                                  snapshot.data.docs[index]['email'].toString(),
+                                ),
+                              ])
+                              /*ListTile(
+                                title: Text(
                                   snapshot.data.docs[index]['firstName']
                                       .toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18)),
-                              Text(
-                                snapshot.data.docs[index]['email'].toString(),
-                              ),
-                            ])
-                            /*ListTile(
-                              title: Text(
-                                snapshot.data.docs[index]['firstName']
-                                    .toString(),
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(snapshot.data.docs[index]['email']
-                                  .toString()),
-                            )*/
-                          ],
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(snapshot.data.docs[index]['email']
+                                    .toString()),
+                              )*/
+                            ],
+                          ),
                         );
                       },
                     );

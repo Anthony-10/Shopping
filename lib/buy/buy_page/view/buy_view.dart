@@ -1,18 +1,12 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
-import 'package:shopping_app/sell/add_products/widget/bottom_sheet/size_check_box.dart';
-import 'package:shopping_app/sell/data/bottom_sheet/check_box_category.dart';
-import 'package:like_button/like_button.dart';
-import 'package:shimmer/shimmer.dart';
 
 class BuyView extends StatefulWidget {
   @override
@@ -23,10 +17,19 @@ class _BuyViewState extends State<BuyView> {
   final buyController = Get.put(BuyController());
   final controller = SlideController();
   final drawerFunctions = Get.put(DrawerFunctions());
+  final uid = FirebaseAuth.instance.currentUser;
+  final DatabaseService databaseService = Get.put(DatabaseService());
 
   bool isLiked = false;
   int likeCount = 0;
   var name;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getGoogleAuth();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -197,5 +200,11 @@ class _BuyViewState extends State<BuyView> {
         ),
       ),
     );
+  }
+
+  getGoogleAuth() {
+    databaseService.addUserInfo(email: uid.email, firstName: uid.displayName);
+    print(
+        "wewewewewerererererwewe ${uid.email}, ${uid.photoURL}, ${uid.displayName}");
   }
 }

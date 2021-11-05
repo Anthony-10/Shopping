@@ -65,8 +65,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     );
                   }
                 }
-                print(
-                    '###############################${snapshot.data.docs}##########################');
                 return null;
               } else {
                 return Align(
@@ -110,9 +108,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                             'No image Selected',
                                             snackPosition: SnackPosition.BOTTOM,
                                           ));
-
-                                print(
-                                    'OOOOOOOOO BottomSheet OOOOOOOOOOOOO ${drawerFunctions.names} ${drawerFunctions.emails} 0000000000000000');
                               },
                             ),
                           ))
@@ -121,53 +116,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               }
             }),
-        /*Stack(
-              children: [
-                Hero(
-                  tag: "image_1",
-                  child: CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    radius: 80,
-                    child: ClipOval(
-                      child: Image.network(
-                        drawerFunctions.images,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                    bottom: -3,
-                    right: -3,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.camera_alt,
-                        size: 30.0,
-                        color: Colors.red,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          addProductsController.bottomIndex = 1;
-                          print(
-                              '????????????????????????????????????????????????????');
-                        });
-                        Get.bottomSheet(BottomSheetChose(
-                                addProductsController: addProductsController))
-                            .whenComplete(() =>
-                                addProductsController.drawerImage.isNotEmpty
-                                    ? databaseService.userImage().whenComplete(
-                                        () => databaseService.updateUserInfo())
-                                    : Get.snackbar(
-                                        "Error Massage",
-                                        'No image Selected',
-                                        snackPosition: SnackPosition.BOTTOM,
-                                      ));
-                        print(
-                            'OOOOOOOOO BottomSheet OOOOOOOOOOOOO ${drawerFunctions.names} ${drawerFunctions.emails} 0000000000000000');
-                      },
-                    ))
-              ],
-            ),*/
       ),
     );
   }
@@ -339,8 +287,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   getData();
                   setState(() {
                     addProductsController.bottomIndex = 1;
-                    print(
-                        '????????????????????????????????????????????????????');
                   });
                   Get.bottomSheet(BottomSheetChose(
                           addProductsController: addProductsController))
@@ -352,9 +298,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   'No image Selected',
                                   snackPosition: SnackPosition.BOTTOM,
                                 ));
-
-                  print(
-                      'OOOOOOOOO BottomSheet OOOOOOOOOOOOO ${drawerFunctions.names} ${drawerFunctions.emails} 0000000000000000');
                 },
               ),
             ))
@@ -374,8 +317,6 @@ class _ProfilePageState extends State<ProfilePage> {
           drawerFunctions.emails = documentSnapshot.get('email');
           drawerFunctions.url = documentSnapshot.get('userId');
         });
-        print(
-            '<<<<<<<<<<<<<<<<<<<<<<<<<<< ${drawerFunctions.images}, ${drawerFunctions.names}, ${drawerFunctions.emails}, ${drawerFunctions.url} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.');
       } else {
         print('wewe');
       }

@@ -65,7 +65,7 @@ class _SellViewState extends State<SellView> {
                               title: TextButton.icon(
                                   onPressed: () {},
                                   icon: Icon(element.icon),
-                                  label: Expanded(child: Text(element.label))),
+                                  label: Text(element.label)),
                               subtitle: Text(
                                 element.subtitle,
                                 textAlign: TextAlign.center,

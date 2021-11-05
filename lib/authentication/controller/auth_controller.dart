@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shopping_app/authentication/view/auth_view.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
@@ -9,15 +10,17 @@ class AuthController extends GetxController {
   Rxn<User> _firebaseUser = Rxn<User>();
   User get user => _firebaseUser.value;
 
+  final _googleSignIn = GoogleSignIn();
+  GoogleSignInAccount _users;
+  GoogleSignInAccount get users => _users;
+  //var googleAccount = Rx<GoogleSignInAccount>(null);
+
   int initialIndexAuth = 0;
 
   final DatabaseService databaseService = Get.put(DatabaseService());
 
-  //String uid = FirebaseAuth.instance.currentUser.uid;
-
   @override
   void onInit() {
-    // TODO: implement onInit
     _firebaseUser.bindStream(_auth.authStateChanges());
     //super.onInit();
   }
@@ -54,9 +57,31 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<void> googleLogin() async {
+    try {
+      final googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return;
+      _users = googleUser;
+
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
+      await FirebaseAuth.instance
+          .signInWithCredential(credential)
+          .then((value) => Get.off(() => DrawerView()));
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar("Error signOut account", e.message,
+          snackPosition: SnackPosition.BOTTOM);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> signOut() async {
     try {
-      await _auth.signOut().then((value) => Get.off(() => AuthView()));
+      await _auth.signOut();
+      _googleSignIn.disconnect().then((value) => Get.off(() => AuthView()));
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error signOut account", e.message,
           snackPosition: SnackPosition.BOTTOM);
@@ -78,9 +103,9 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> deleteuseraccount({String email, String password}) async {
+  Future<void> deleteUserAccount({String email, String password}) async {
     try {
-      User user = await _auth.currentUser;
+      User user = _auth.currentUser;
       AuthCredential credential =
           EmailAuthProvider.credential(email: email, password: password);
       await user.reauthenticateWithCredential(credential).then((value) =>
