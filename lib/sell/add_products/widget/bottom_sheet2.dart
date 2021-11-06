@@ -31,23 +31,25 @@ class _BottomSheet2State extends State<BottomSheet2> {
   final AddProductsController addProductsController =
       Get.put(AddProductsController());
   final DatabaseService databaseService = Get.put(DatabaseService());
+  var height = Get.height;
+  var width = Get.width;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 550,
-      width: Get.width,
+      height: height * .9,
+      width: width,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       child: Padding(
         padding:
-            const EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
+            const EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 30),
         child: Column(
           children: [
             Container(
-              height: Get.height * 0.06,
+              height: height * 0.06,
               child: Icon(
                 Icons.keyboard_arrow_up,
                 size: 40,
@@ -98,7 +100,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
                                               ),
                       ),
                       SizedBox(
-                        height: 30.0,
+                        height: height * .04,
                       ),
                       Expanded(
                         child: SingleChildScrollView(
@@ -140,7 +142,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
                             ),
                           ),
                           SizedBox(
-                            width: 30.0,
+                            width: width * .05,
                           ),
                           ElevatedButton(
                             onPressed: () {
@@ -195,7 +197,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
     }
   }
 
-  void validation() {
+  Future<void> validation() async {
     addProductsController.initialIndex == 0 &&
             addProductsController.productElement != null
         ? setState(() {
@@ -216,27 +218,31 @@ class _BottomSheet2State extends State<BottomSheet2> {
                 : addProductsController.initialIndex == 3 ||
                         addProductsController.initialIndex == 1 &&
                             addProductsController.productElement !=
-                                ProductCategories.others
+                                ProductCategories.others &&
+                            addProductsController.productName != null &&
+                            addProductsController.otherProductPrice != null &&
+                            addProductsController.otherProductDescription !=
+                                null
                     ? setState(() {
                         addProductsController.initialIndex = 4;
                       })
                     : addProductsController.initialIndex == 4
-                        ? databaseService
+                        ? await databaseService
                             .userImage()
-                            .whenComplete(() => databaseService.userProducts(
+                            .then((value) async => await databaseService.userProducts(
                                 productElement: addProductsController
                                     .productElement.title
                                     .toString(),
-                                itemElement: addProductsController.itemElement.title
+                                itemElement: addProductsController
+                                    .itemElement.title
                                     .toString(),
                                 checkBoxElement: addProductsController
                                     .checkBoxElement
                                     .toString(),
                                 colorElement: addProductsController.colorElement
-                                    .toString()))
+                                    .toString(),
+                                url: databaseService.fileURLList))
                             .whenComplete(() => Navigator.pop(context))
-
-                        //addProductsController.userImage().toString()
                         : addProductsController.productElement == null
                             ? Get.snackbar('Massage', 'Select product',
                                 snackPosition: SnackPosition.BOTTOM)

@@ -17,6 +17,8 @@ class DatabaseService extends GetxController {
 
   var fileURL;
 
+  List fileURLList = [];
+
   Future<void> addUserInfo({String email, String firstName}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
@@ -52,12 +54,14 @@ class DatabaseService extends GetxController {
                 .ref()
                 .child("images/${DateTime.now().toString()}");
             final result = await ref.putFile(file);
-            print('weewewewewewewew $result');
             fileURL = await result.ref.getDownloadURL();
-            userProducts();
+            fileURLList.add(fileURL);
+            print('Image Url$fileURLList');
             print(
                 '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<not drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
           });
+
+          print('Image Url 2$fileURLList');
         } else {
           print('userImage in drawerImage${addProductsController.drawerImage}');
           addProductsController.drawerImage.forEach((file) async {
@@ -95,8 +99,11 @@ class DatabaseService extends GetxController {
     String itemElement,
     String checkBoxElement,
     String colorElement,
+    var url,
   }) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
+    print(
+        '............................................userProducts$fileURLList');
     try {
       if (uid != null) {
         await _fireStore.collection("Products").doc().set({
@@ -104,7 +111,7 @@ class DatabaseService extends GetxController {
           'itemElement': itemElement,
           'checkBoxElement': checkBoxElement,
           'colorElement': colorElement,
-          'Url': fileURL,
+          'Url': url,
           'userId': uid
         });
         addProductsController.image.clear();

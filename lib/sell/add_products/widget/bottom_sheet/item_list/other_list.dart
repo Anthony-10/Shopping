@@ -10,11 +10,6 @@ class OtherList extends StatefulWidget {
 }
 
 class _OtherListState extends State<OtherList> {
-  final TextEditingController _productName = TextEditingController();
-  final TextEditingController _otherProductPrice = TextEditingController();
-  final TextEditingController _otherProductDescription =
-      TextEditingController();
-
   AddProductsController addProductsController =
       Get.put(AddProductsController());
 
@@ -34,7 +29,7 @@ class _OtherListState extends State<OtherList> {
               decoration: InputDecoration(
                 hintText: "ProductName",
               ),
-              controller: _productName,
+              controller: addProductsController.productName,
             ),
             SizedBox(
               height: 20,
@@ -45,7 +40,7 @@ class _OtherListState extends State<OtherList> {
               decoration: InputDecoration(
                 hintText: "ProductPrice",
               ),
-              controller: _otherProductPrice,
+              controller: addProductsController.otherProductPrice,
             ),
             SizedBox(
               height: 20,
@@ -56,7 +51,7 @@ class _OtherListState extends State<OtherList> {
               decoration: InputDecoration(
                 hintText: "ProductDescription",
               ),
-              controller: _otherProductDescription,
+              controller: addProductsController.otherProductDescription,
             ),
           ],
         ),

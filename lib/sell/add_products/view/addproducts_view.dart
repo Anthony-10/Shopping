@@ -24,6 +24,8 @@ class _AddProductsViewState extends State<AddProductsView> {
   bool value = false;
 
   ValueChanged<ProductItems> onClickProduct;
+  var height = Get.height;
+  var width = Get.width;
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +45,6 @@ class _AddProductsViewState extends State<AddProductsView> {
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                Container(
-                  child: Center(
-                      /*child: Text(
-                      "Add Product",
-                      style: TextStyle(fontSize: 20.0),
-                    ),*/
-                      ),
-                  height: 30.0,
-                ),
                 Obx(() => addProductsController.image.isNotEmpty
                     ? SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -59,8 +52,8 @@ class _AddProductsViewState extends State<AddProductsView> {
                         child: Row(
                           children: addProductsController.image
                               .map((element) => SizedBox(
-                                    height: Get.height * 0.5,
-                                    width: Get.width * 0.7,
+                                    height: height * 0.7,
+                                    width: width,
                                     child: Card(
                                       semanticContainer: true,
                                       clipBehavior: Clip.antiAlias,
@@ -69,11 +62,11 @@ class _AddProductsViewState extends State<AddProductsView> {
                                               BorderRadius.circular(10.0)),
                                       child: Image.file(element,
                                           fit: BoxFit.fill,
-                                          height: Get.height * 0.5,
-                                          width: Get.width * 0.7),
+                                          height: height * 0.5,
+                                          width: width * 0.7),
                                       color: Colors.white70,
                                       elevation: 3.0,
-                                      margin: EdgeInsets.all(5.0),
+                                      margin: EdgeInsets.all(9.0),
                                     ),
                                   ))
                               .toList(),
@@ -86,8 +79,8 @@ class _AddProductsViewState extends State<AddProductsView> {
                             children: AddProductItems.all
                                 .map(
                                   (item) => SizedBox(
-                                    height: Get.height * 0.5,
-                                    width: Get.width * 0.7,
+                                    height: height * 0.7,
+                                    width: width,
                                     child: Card(
                                       semanticContainer: true,
                                       clipBehavior: Clip.antiAlias,
@@ -102,24 +95,24 @@ class _AddProductsViewState extends State<AddProductsView> {
                                       )),
                                       color: Colors.white70,
                                       elevation: 3.0,
-                                      margin: EdgeInsets.all(5.0),
+                                      margin: EdgeInsets.all(9.0),
                                     ),
                                   ),
                                 )
                                 .toList()),
                       )),
                 SizedBox(
-                  height: 30.0,
+                  height: height * .03,
                 ),
                 Text(
                   'Enter Three Dimension Of Your Products',
                   style: TextStyle(color: Colors.red),
                 ),
                 SizedBox(
-                  height: 60.0,
+                  height: height * .04,
                 ),
                 SizedBox(
-                    width: Get.width * 0.6,
+                    width: width * 0.6,
                     child: Column(
                       children: [
                         ElevatedButton(
@@ -132,10 +125,6 @@ class _AddProductsViewState extends State<AddProductsView> {
                                     borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(20),
                                 )));
-                            /*Get.bottomSheet(
-                              BottomSheet2(),
-                              isDismissible: false,
-                            );*/
                           },
                           child: Text('Continue'),
                           style: ElevatedButton.styleFrom(

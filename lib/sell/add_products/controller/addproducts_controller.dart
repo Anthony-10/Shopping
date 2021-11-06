@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
@@ -31,6 +32,10 @@ class AddProductsController extends GetxController {
   var colorElement;
   bool colorValue = false;
 
+  final TextEditingController productName = TextEditingController();
+  final TextEditingController otherProductPrice = TextEditingController();
+  final TextEditingController otherProductDescription = TextEditingController();
+
   getImageGallery(ImageSource imageSource) async {
     image.clear();
     final FilePickerResult pickedFile = await FilePicker.platform.pickFiles(
@@ -51,6 +56,7 @@ class AddProductsController extends GetxController {
         pickedFile.files.forEach((selectedFile) {
           final File file = File(selectedFile.path);
           image.add(file);
+          print('At the drawerImage$image');
         });
       } else {
         print('At the drawerImage');
