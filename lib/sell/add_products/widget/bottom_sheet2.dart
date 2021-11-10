@@ -227,21 +227,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
                         addProductsController.initialIndex = 4;
                       })
                     : addProductsController.initialIndex == 4
-                        ? await databaseService
-                            .userImage()
-                            .then((value) async => await databaseService.userProducts(
-                                productElement: addProductsController
-                                    .productElement.title
-                                    .toString(),
-                                itemElement: addProductsController
-                                    .itemElement.title
-                                    .toString(),
-                                checkBoxElement: addProductsController
-                                    .checkBoxElement
-                                    .toString(),
-                                colorElement: addProductsController.colorElement
-                                    .toString(),
-                                url: databaseService.fileURLList))
+                        ? uploadPicks()
                             .whenComplete(() => Navigator.pop(context))
                         : addProductsController.productElement == null
                             ? Get.snackbar('Massage', 'Select product',
@@ -251,5 +237,17 @@ class _BottomSheet2State extends State<BottomSheet2> {
                                     snackPosition: SnackPosition.BOTTOM)
                                 : Get.snackbar('Massage', 'Select product',
                                     snackPosition: SnackPosition.BOTTOM);
+  }
+
+  Future<void> uploadPicks() async {
+    databaseService.fileURLList.isNotEmpty
+        ? databaseService.userProducts(
+            productElement:
+                addProductsController.productElement.title.toString(),
+            itemElement: addProductsController.itemElement.title.toString(),
+            checkBoxElement: addProductsController.checkBoxElement.toString(),
+            colorElement: addProductsController.colorElement.toString(),
+            url: databaseService.fileURLList)
+        : print('fileURLList null');
   }
 }

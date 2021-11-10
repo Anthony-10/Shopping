@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
@@ -18,6 +22,10 @@ class DatabaseService extends GetxController {
   var fileURL;
 
   List fileURLList = [];
+
+  List<UploadTask> uploadedTasks = [];
+
+  List<File> selectedFiles = [];
 
   Future<void> addUserInfo({String email, String firstName}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
@@ -41,27 +49,58 @@ class DatabaseService extends GetxController {
     }
   }
 
+  uploadFileToStorage(File file) {
+    UploadTask task = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child("images/${DateTime.now().toString()}")
+        .putFile(file);
+    return task;
+  }
+
+  saveImageUrlToFirebase(UploadTask task) {
+    task.snapshotEvents.listen((snapShot) {
+      if (snapShot.state == TaskState.success) {
+        snapShot.ref.getDownloadURL().then((imageUrl) => userProducts(
+            productElement:
+                addProductsController.productElement.title.toString(),
+            itemElement: addProductsController.itemElement.title.toString(),
+            checkBoxElement: addProductsController.checkBoxElement.toString(),
+            colorElement: addProductsController.colorElement.toString(),
+            url: imageUrl));
+      }
+    });
+  }
+
   Future<void> userImage() async {
     String uid = FirebaseAuth.instance.currentUser.uid;
+    fileURLList.clear();
     print(
         '????????????????????????????????userImage>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     try {
       if (uid != null) {
+        print('"""""""""""""""""""""""""""""""""""""""""""""""""at userImage');
         if (addProductsController.image.isNotEmpty &&
             addProductsController.drawerImage.isEmpty) {
+          print('______________________________________________at userImage');
           addProductsController.image.forEach((file) async {
+            print(
+                'vvvvvvvvvvvvvvvvvvvvvvvv${addProductsController.image} userImage');
             final ref = firebase_storage.FirebaseStorage.instance
                 .ref()
                 .child("images/${DateTime.now().toString()}");
+            print(
+                '<<<<<<<<<<<<<<<<<<<<<<<<<<<$ref>>>>>>>>>>>>>>>>>>>>>>>>>>>> userImage');
             final result = await ref.putFile(file);
+            print(
+                'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm$result userImage');
             fileURL = await result.ref.getDownloadURL();
+            print(
+                'ttttttttttttttttttttttttttttttttttttttttttttt$fileURL userImage');
             fileURLList.add(fileURL);
             print('Image Url$fileURLList');
             print(
                 '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<not drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
           });
-
-          print('Image Url 2$fileURLList');
         } else {
           print('userImage in drawerImage${addProductsController.drawerImage}');
           addProductsController.drawerImage.forEach((file) async {
@@ -81,6 +120,8 @@ class DatabaseService extends GetxController {
                 '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
           });
         }
+      } else {
+        print("Uid null");
       }
     } on FirebaseAuthException catch (e) {
       print("---------------------- Uploading Image ----------------------");
@@ -115,6 +156,8 @@ class DatabaseService extends GetxController {
           'userId': uid
         });
         addProductsController.image.clear();
+      } else {
+        print('Uid null');
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar(

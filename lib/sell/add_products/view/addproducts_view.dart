@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/sell/add_products/widget/bottom_sheet.dart';
@@ -18,6 +19,7 @@ class AddProductsView extends StatefulWidget {
 
 class _AddProductsViewState extends State<AddProductsView> {
   final addProductsController = Get.put(AddProductsController());
+  final DatabaseService databaseService = Get.put(DatabaseService());
 
   final bottomSheetView = Get.put(BottomSheetView());
 
@@ -116,7 +118,9 @@ class _AddProductsViewState extends State<AddProductsView> {
                     child: Column(
                       children: [
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            //adding Await
+                            await databaseService.userImage();
                             showModalBottomSheet(
                                 context: context,
                                 builder: (context) => BottomSheet2(),
