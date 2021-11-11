@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/controller/auth_controller.dart';
@@ -66,12 +67,13 @@ class _RegisterState extends State<Register> {
               ),
               ElevatedButton(
                   onPressed: () {
+                    getData();
                     authController.createUser(
                         firstName: _userName.text,
                         email: _userEmail.text,
                         password: _userPassWord.text);
                   },
-                  child: Text('Sign In')),
+                  child: Text('Sign up')),
               SizedBox(
                 height: 20.0,
               ),
@@ -80,5 +82,23 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
+  }
+
+  Future<void> getData() async {
+    try {
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection('DefaultPhoto')
+          .doc('Yl6gJHGOMNblFLE4WhAp')
+          .get();
+      if (documentSnapshot.exists) {
+        setState(() {
+          authController.defaulImage = documentSnapshot.get('DefUrl');
+        });
+      } else {
+        print('wewe');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

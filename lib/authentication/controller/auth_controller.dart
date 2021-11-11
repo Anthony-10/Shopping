@@ -13,11 +13,12 @@ class AuthController extends GetxController {
   final _googleSignIn = GoogleSignIn();
   GoogleSignInAccount _users;
   GoogleSignInAccount get users => _users;
-  //var googleAccount = Rx<GoogleSignInAccount>(null);
 
   int initialIndexAuth = 0;
 
   final DatabaseService databaseService = Get.put(DatabaseService());
+  final uid = FirebaseAuth.instance.currentUser;
+  var defaulImage;
 
   @override
   void onInit() {
@@ -32,7 +33,7 @@ class AuthController extends GetxController {
           email: email.trim(), password: password.trim());
       {
         databaseService
-            .addUserInfo(email: email, firstName: firstName)
+            .addUserInfo(email: email, firstName: firstName, url: defaulImage)
             .then((value) => Get.off(() => DrawerView()));
       }
     } on FirebaseAuthException catch (e) {
@@ -67,9 +68,15 @@ class AuthController extends GetxController {
       final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
-      await FirebaseAuth.instance
-          .signInWithCredential(credential)
-          .then((value) => Get.off(() => DrawerView()));
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      {
+        databaseService
+            .addUserInfo(
+                email: uid.email, firstName: uid.displayName, url: uid.photoURL)
+            .then((value) => Get.off(() => DrawerView()));
+      }
+      print(
+          "wewewewewerererererwewe ${uid.email}, ${uid.photoURL}, ${uid.displayName}");
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error signOut account", e.message,
           snackPosition: SnackPosition.BOTTOM);

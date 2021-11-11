@@ -61,11 +61,16 @@ class AddProductsController extends GetxController {
       } else {
         print('At the drawerImage');
         drawerImage.clear();
-        pickedFile.files.forEach((selectedFile) {
-          final File file = File(selectedFile.path);
-          drawerImage.add(file);
-          print('At the drawerImage$drawerImage');
-        });
+        if (pickedFile.count > 1) {
+          Get.snackbar('Error', 'More than 1 items selected',
+              snackPosition: SnackPosition.BOTTOM);
+        } else {
+          pickedFile.files.forEach((selectedFile) {
+            final File file = File(selectedFile.path);
+            drawerImage.add(file);
+            print('At the drawerImage$drawerImage');
+          });
+        }
       }
     } else {
       Get.snackbar('Error', 'No image selected',

@@ -24,12 +24,8 @@ class _BuyViewState extends State<BuyView> {
   int likeCount = 0;
   var name;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    getGoogleAuth();
-    super.initState();
-  }
+  var height = Get.height;
+  var width = Get.width;
 
   @override
   Widget build(BuildContext context) {
@@ -118,73 +114,82 @@ class _BuyViewState extends State<BuyView> {
                           child: GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2, childAspectRatio: 0.65),
+                              childAspectRatio: 1 / 1.7,
+                              mainAxisSpacing: 9,
+                              crossAxisSpacing: 5,
+                              crossAxisCount: 2,
+                            ),
                             primary: false,
                             padding: const EdgeInsets.all(15),
                             physics: BouncingScrollPhysics(),
                             itemCount: snapshot.data.size,
                             itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  SizedBox(
-                                    height: Get.height * 0.28,
-                                    width: Get.width * 0.5,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        buyController.name = snapshot
-                                            .data.docs[index]['firstName'];
-                                        buyController.id =
-                                            snapshot.data.docs[index]['userId'];
+                              return Container(
+                                height: height * 0.9,
+                                width: width * 0.5,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: Get.height * 0.30,
+                                      width: Get.width * 0.4,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Get.to(SellerAccount());
+                                          buyController.name = snapshot
+                                              .data.docs[index]['firstName'];
+                                          buyController.id = snapshot
+                                              .data.docs[index]['userId'];
 
-                                        Get.to(SellerAccount());
-                                        print(
-                                            '{{{{{{{{{{{{{{{{{{${buyController.name}, ${buyController.id}}}}}}}}}}}}}}}}}');
-                                      },
-                                      child: Card(
-                                        child: Image.network(
-                                          snapshot.data.docs[index]['Url']
-                                              .toString(),
-                                          fit: BoxFit.fill,
-                                        ),
-                                        semanticContainer: true,
-                                        clipBehavior:
-                                            Clip.antiAliasWithSaveLayer,
-                                        elevation: 20.0,
-                                        color: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                          print(
+                                              '{{{{{{{{{{{{{{{{{{${buyController.name}, ${buyController.id}}}}}}}}}}}}}}}}}');
+                                        },
+                                        child: Card(
+                                          child: Image.network(
+                                            snapshot.data.docs[index]['Url']
+                                                .toString(),
+                                            fit: BoxFit.fill,
+                                          ),
+                                          semanticContainer: true,
+                                          clipBehavior:
+                                              Clip.antiAliasWithSaveLayer,
+                                          elevation: 20.0,
+                                          color: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    width: Get.width * 0.4,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          snapshot.data.docs[index]['firstName']
-                                              .toString(),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text('30'),
-                                              Icon(Icons.favorite),
-                                            ])
-                                      ],
+                                    SizedBox(
+                                      height: 10,
                                     ),
-                                  )
-                                ],
+                                    Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            snapshot
+                                                .data.docs[index]['firstName']
+                                                .toString(),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text('30'),
+                                                Icon(Icons.favorite),
+                                              ])
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               );
                             },
                           ),
@@ -200,11 +205,5 @@ class _BuyViewState extends State<BuyView> {
         ),
       ),
     );
-  }
-
-  getGoogleAuth() {
-    databaseService.addUserInfo(email: uid.email, firstName: uid.displayName);
-    print(
-        "wewewewewerererererwewe ${uid.email}, ${uid.photoURL}, ${uid.displayName}");
   }
 }
