@@ -5,7 +5,7 @@ class BuyDrawerItems {
   static const home = DrawerItem(title: 'Home', icon: Icons.home);
   static const favourites =
       DrawerItem(title: 'Favourites', icon: Icons.favorite);
-  static const cart = DrawerItem(title: 'Home', icon: Icons.shopping_cart);
+  static const cart = DrawerItem(title: 'Cart', icon: Icons.shopping_cart);
   static const bought = DrawerItem(title: 'Bought', icon: Icons.shop);
   static const tryIt = DrawerItem(title: 'Try It', icon: Icons.favorite);
   static const location = DrawerItem(title: 'Location', icon: Icons.map);

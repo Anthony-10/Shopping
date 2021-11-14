@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BuyView extends StatefulWidget {
   @override
@@ -26,7 +28,7 @@ class _BuyViewState extends State<BuyView> {
 
   var height = Get.height;
   var width = Get.width;
-
+  int activeIndex = 0;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,44 +41,49 @@ class _BuyViewState extends State<BuyView> {
                 Container(
                   height: Get.height * 0.3,
                   width: Get.width,
-                  child: PageView.builder(
-                      physics: BouncingScrollPhysics(),
-                      onPageChanged: controller.selectedPageIndex,
-                      itemCount: controller.homePageData.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    controller.homePageData[index].imageAsset),
-                                fit: BoxFit.fill,
-                              ),
-                              borderRadius: BorderRadius.circular(20)),
-                        );
-                      }),
+                  child: CarouselSlider.builder(
+                    options: CarouselOptions(
+                        onPageChanged: (index, reason) =>
+                            setState(() => activeIndex = index),
+                        viewportFraction: 1,
+                        height: height * 0.6,
+                        enlargeCenterPage: true,
+                        autoPlay: true,
+                        autoPlayAnimationDuration: Duration(seconds: 2),
+                        autoPlayInterval: Duration(seconds: 5),
+                        aspectRatio: 18 / 8),
+                    itemCount: controller.homePageData.length,
+                    itemBuilder: (context, index, realIndex) {
+                      final image = controller.homePageData[index].imageAsset;
+                      return Container(
+                        height: height * 0.6,
+                        width: width,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(image),
+                              fit: BoxFit.fill,
+                            ),
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: const EdgeInsets.all(15),
+                      );
+                    },
+                  ),
                 ),
                 Positioned(
-                  bottom: 20,
-                  right: 150,
-                  child: Row(
-                      children: List.generate(
-                          controller.homePageData.length,
-                          (index) => Obx(
-                                () => Container(
-                                  margin: EdgeInsets.all(4),
-                                  height: 12,
-                                  width: 12,
-                                  decoration: BoxDecoration(
-                                      color:
-                                          controller.selectedPageIndex.value ==
-                                                  index
-                                              ? Colors.red
-                                              : Colors.white,
-                                      shape: BoxShape.circle),
-                                ),
-                              ))),
-                ),
+                    bottom: 20,
+                    right: 150,
+                    child: AnimatedSmoothIndicator(
+                      activeIndex: activeIndex,
+                      count: controller.homePageData.length,
+                      effect: JumpingDotEffect(
+                        activeDotColor: Colors.red,
+                        dotColor: Colors.white,
+                        dotHeight: 10,
+                        dotWidth: 10,
+                        spacing: 16,
+                        verticalOffset: 10,
+                      ),
+                    )),
               ],
             ),
             Padding(
@@ -134,14 +141,11 @@ class _BuyViewState extends State<BuyView> {
                                       width: Get.width * 0.4,
                                       child: GestureDetector(
                                         onTap: () {
-                                          Get.to(SellerAccount());
+                                          Get.to(() => SellerAccount());
                                           buyController.name = snapshot
                                               .data.docs[index]['firstName'];
                                           buyController.id = snapshot
                                               .data.docs[index]['userId'];
-
-                                          print(
-                                              '{{{{{{{{{{{{{{{{{{${buyController.name}, ${buyController.id}}}}}}}}}}}}}}}}}');
                                         },
                                         child: Card(
                                           child: Image.network(

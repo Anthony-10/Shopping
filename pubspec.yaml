@@ -49,6 +49,8 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   google_maps_flutter: ^2.0.6
   location: ^4.3.0
+  carousel_slider: ^4.0.0
+  smooth_page_indicator: ^1.0.0+2
   #geolocator: ^7.1.1
   #geocoder: ^0.2.1
 

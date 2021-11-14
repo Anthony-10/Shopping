@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/buy/buy_page/view/seller_items.dart';
 import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
 
 class SellerAccount extends StatefulWidget {
@@ -27,7 +28,8 @@ class _SellerAccountState extends State<SellerAccount> {
     // TODO: implement initState
     /*getData();*/
     super.initState();
-    print('<<<<<<<<<<<<<<<<<<<<<<<<<<< $item >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.');
+    print(
+        '<<<<<<<<<<<<<<<<<<<<<<<<<<< ${buyController.productElement} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.');
   }
 
   @override
@@ -136,7 +138,7 @@ class _SellerAccountState extends State<SellerAccount> {
                                     print(
                                         '(((((((((((((((((((${buyController.id}))))))))))))))))))');
                                     print(
-                                        '((((((((((((((((((($item))))))))))))))))))');
+                                        '(((((((((((((((((((${buyController.productElement}))))))))))))))))))');
                                   },
                                   child: Container(
                                     height: 30,
@@ -192,19 +194,34 @@ class _SellerAccountState extends State<SellerAccount> {
                             physics: BouncingScrollPhysics(),
                             itemCount: snapshot.data.size,
                             itemBuilder: (context, index) {
-                              return Container(
-                                height: Get.height * 0.2,
-                                child: Card(
-                                  child: Image.network(
-                                    snapshot.data.docs[index]['Url'].toString(),
-                                    fit: BoxFit.fill,
-                                  ),
-                                  semanticContainer: true,
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  elevation: 20.0,
-                                  color: Colors.blue,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                              return GestureDetector(
+                                onTap: () {
+                                  buyController.productElement = snapshot
+                                      .data.docs[index]['productElement']
+                                      .toString();
+                                  buyController.itemElement = snapshot
+                                      .data.docs[index]['itemElement']
+                                      .toString();
+                                  buyController.sellerProduct = snapshot
+                                      .data.docs[index]['Url'][0]
+                                      .toString();
+
+                                  Get.to(() => SellerItem());
+                                },
+                                child: Container(
+                                  height: Get.height * 0.2,
+                                  child: Card(
+                                    child: Image.network(
+                                      snapshot.data.docs[index]['Url'][0]
+                                          .toString(),
+                                      fit: BoxFit.fill,
+                                    ),
+                                    semanticContainer: true,
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    elevation: 20.0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
                                   ),
                                 ),
                               );

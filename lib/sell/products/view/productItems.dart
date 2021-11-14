@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/sell/products/view/productItems.dart';
+import 'package:shopping_app/buy/data/slide_controller.dart';
 
-class ProductView extends StatelessWidget {
-  const ProductView({Key key}) : super(key: key);
+class ProductItem extends StatelessWidget {
+  ProductItem({Key key}) : super(key: key);
+  final controller = SlideController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,39 +36,22 @@ class ProductView extends StatelessWidget {
                       physics: BouncingScrollPhysics(),
                       itemCount: snapshot.data.size,
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: Get.height * 0.28,
-                              width: Get.width * 0.5,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.to(() => ProductItem());
-                                },
-                                child: Card(
-                                  child: Image.network(
-                                    snapshot.data.docs[index]['Url'][0]
-                                        .toString(),
-                                    fit: BoxFit.fill,
-                                  ),
-                                  semanticContainer: true,
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  elevation: 20.0,
-                                  color: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                ),
-                              ),
+                        return SizedBox(
+                          height: Get.height * 0.28,
+                          width: Get.width * 0.5,
+                          child: Card(
+                            child: Image.network(
+                              snapshot.data.docs[index]['Url'].toString(),
+                              fit: BoxFit.fill,
                             ),
-                            SizedBox(
-                              height: 20,
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            elevation: 20.0,
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            Text(
-                              snapshot.data.docs[index]['itemElement']
-                                  .toString(),
-                            )
-                          ],
+                          ),
                         );
                       },
                     );
