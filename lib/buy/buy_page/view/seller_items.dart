@@ -100,6 +100,7 @@ class _SellerItemState extends State<SellerItem> {
                             children: [
                               Row(children: [
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('Color',
                                         style: TextStyle(
@@ -109,7 +110,7 @@ class _SellerItemState extends State<SellerItem> {
                                       width: widths * .2,
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: 4,
+                                        itemCount: 3,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           return Container(
@@ -117,8 +118,13 @@ class _SellerItemState extends State<SellerItem> {
                                             height: 10,
                                             width: 12,
                                             decoration: BoxDecoration(
-                                                color: Colors.red,
-                                                shape: BoxShape.circle),
+                                              border: Border.all(
+                                                color: Colors.black,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Colors.red,
+                                            ),
                                           );
                                         },
                                       ),
@@ -129,11 +135,17 @@ class _SellerItemState extends State<SellerItem> {
                                   width: widths * .4,
                                 ),
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('Size',
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 15)),
-                                    Text('Ksh 20')
+                                    Text(
+                                      '20 cm',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25),
+                                    )
                                   ],
                                 )
                               ]),
@@ -152,6 +164,50 @@ class _SellerItemState extends State<SellerItem> {
                                 height: heights * .02,
                               ),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: heights * .04,
+                                        width: widths * .1,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(70)),
+                                        child: Icon(Icons.add),
+                                      ),
+                                      SizedBox(
+                                        width: widths * .03,
+                                      ),
+                                      Text('23'),
+                                      SizedBox(
+                                        width: widths * .03,
+                                      ),
+                                      Container(
+                                        height: heights * .04,
+                                        width: widths * .1,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(70)),
+                                        child: Icon(Icons.add),
+                                      ),
+                                    ],
+                                  ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.favorite))
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
                                     height: heights * .04,
@@ -162,26 +218,17 @@ class _SellerItemState extends State<SellerItem> {
                                         ),
                                         borderRadius:
                                             BorderRadius.circular(70)),
-                                    child: Icon(Icons.add),
+                                    child: Icon(Icons.shopping_cart),
                                   ),
-                                  SizedBox(
-                                    width: widths * .03,
-                                  ),
-                                  Text('23'),
-                                  SizedBox(
-                                    width: widths * .03,
-                                  ),
-                                  Container(
-                                    height: heights * .04,
-                                    width: widths * .1,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.black,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(70)),
-                                    child: Icon(Icons.add),
-                                  ),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.blue,
+                                          fixedSize: Size(widths * .7, 10),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50))),
+                                      onPressed: () {},
+                                      child: Text('Buy Now')),
                                 ],
                               )
                             ],
@@ -194,11 +241,26 @@ class _SellerItemState extends State<SellerItem> {
               ),
             ),
             Positioned(
-              left: widths * .1,
+              left: widths * .07,
               top: heights * .33,
-              child: Text(
-                'Price',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Price',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  SizedBox(
+                    height: heights * .02,
+                  ),
+                  Text(
+                    'Ksh 300,000',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25),
+                  )
+                ],
               ),
             ),
             Positioned(
