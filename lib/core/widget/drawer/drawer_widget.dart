@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/data/buy_drawer/buy_item.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
-import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/core/widget/profile_page/profile_page.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';

@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_items.dart';
+import 'package:shopping_app/cart/controller/cart_controller.dart';
 import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
+import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 
 class SellerAccount extends StatefulWidget {
   const SellerAccount({Key key}) : super(key: key);
@@ -16,6 +17,8 @@ class SellerAccount extends StatefulWidget {
 
 class _SellerAccountState extends State<SellerAccount> {
   final buyController = Get.put(BuyController());
+  final cartController = Get.put(CartController());
+  final addProductsController = Get.put(AddProductsController());
   bool isLiked = false;
   int likeCount = 0;
 
@@ -25,8 +28,7 @@ class _SellerAccountState extends State<SellerAccount> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    /*getData();*/
+    // TODO: implement initSttData();*/
     super.initState();
     print(
         '<<<<<<<<<<<<<<<<<<<<<<<<<<< ${buyController.productElement} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.');
@@ -196,6 +198,9 @@ class _SellerAccountState extends State<SellerAccount> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
+                                  buyController.id = snapshot
+                                      .data.docs[index]['userId']
+                                      .toString();
                                   buyController.productElement = snapshot
                                       .data.docs[index]['productElement']
                                       .toString();
@@ -205,7 +210,23 @@ class _SellerAccountState extends State<SellerAccount> {
                                   buyController.sellerProduct = snapshot
                                       .data.docs[index]['Url'][0]
                                       .toString();
-
+                                  cartController.name = snapshot
+                                      .data.docs[index]['productName']
+                                      .toString();
+                                  cartController.size = snapshot
+                                      .data.docs[index]['productSize']
+                                      .toString();
+                                  cartController.price = snapshot
+                                      .data.docs[index]['otherProductPrice']
+                                      .toString();
+                                  cartController.amount = snapshot
+                                      .data.docs[index]['productAmount']
+                                      .toString();
+                                  cartController.description = snapshot.data
+                                      .docs[index]['otherProductDescription']
+                                      .toString();
+                                  print(
+                                      '>>>>>>>>>>>>>>>${buyController.id},${buyController.productElement},${buyController.itemElement}');
                                   Get.to(() => SellerItem());
                                 },
                                 child: Container(

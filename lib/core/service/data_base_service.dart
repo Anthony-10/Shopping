@@ -26,7 +26,7 @@ class DatabaseService extends GetxController {
           'userId': uid
         });
       }
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       Get.snackbar(
         "Error Adding User Info",
         e.message,
@@ -76,7 +76,7 @@ class DatabaseService extends GetxController {
       } else {
         print("Uid null");
       }
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       print("---------------------- Uploading Image ----------------------");
       Get.snackbar(
         "Uploading Image",
@@ -88,13 +88,17 @@ class DatabaseService extends GetxController {
     }
   }
 
-  Future<void> userProducts({
-    String productElement,
-    String itemElement,
-    String checkBoxElement,
-    String colorElement,
-    var url,
-  }) async {
+  Future<void> userProducts(
+      {String productElement,
+      String itemElement,
+      String checkBoxElement,
+      String colorElement,
+      var url,
+      var otherProductPrice,
+      String otherProductDescription,
+      String productName,
+      var productSize,
+      var productAmount}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     print(
         '............................................userProducts$fileURLList');
@@ -106,13 +110,18 @@ class DatabaseService extends GetxController {
           'checkBoxElement': checkBoxElement,
           'colorElement': colorElement,
           'Url': url,
+          'productSize': productSize,
+          'productName': productName,
+          'productAmount': productAmount,
+          'otherProductPrice': otherProductPrice,
+          'otherProductDescription': otherProductDescription,
           'userId': uid
         });
         addProductsController.image.clear();
       } else {
         print('Uid null');
       }
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseException catch (e) {
       Get.snackbar(
         "Error Adding User Info",
         e.message,
@@ -144,7 +153,7 @@ class DatabaseService extends GetxController {
           print(
               'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww${drawerFunctions.emails}, ${drawerFunctions.names}');
         }
-      } on FirebaseAuthException catch (e) {
+      } on FirebaseException catch (e) {
         Get.snackbar(
           "Error Adding User Info",
           e.message,

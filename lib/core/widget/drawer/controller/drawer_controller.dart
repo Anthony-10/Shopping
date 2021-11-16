@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
 
 class DrawerFunctions extends GetxController {
   int initialIndex = 0;

@@ -222,7 +222,10 @@ class _BottomSheet2State extends State<BottomSheet2> {
                             addProductsController.productName != null &&
                             addProductsController.otherProductPrice != null &&
                             addProductsController.otherProductDescription !=
-                                null
+                                null &&
+                            addProductsController.productName.text != null &&
+                            addProductsController.productSize.text != null &&
+                            addProductsController.productAmount.text != null
                     ? setState(() {
                         addProductsController.initialIndex = 4;
                       })
@@ -247,7 +250,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
             itemElement: addProductsController.itemElement.title.toString(),
             checkBoxElement: addProductsController.checkBoxElement.toString(),
             colorElement: addProductsController.colorElement.toString(),
-            url: databaseService.fileURLList)
+            url: databaseService.fileURLList,
+            productName: addProductsController.productName.text,
+            productSize: addProductsController.productSize.text,
+            productAmount: addProductsController.productAmount.text,
+            otherProductPrice: addProductsController.otherProductPrice.text,
+            otherProductDescription:
+                addProductsController.otherProductDescription.text)
         : print('fileURLList null');
   }
 }

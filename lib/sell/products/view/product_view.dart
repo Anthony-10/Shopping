@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/sell/products/view/productItems.dart';
+import 'package:shopping_app/buy/buy_page/view/seller_image.dart';
 
 class ProductView extends StatelessWidget {
   const ProductView({Key key}) : super(key: key);
@@ -42,7 +42,10 @@ class ProductView extends StatelessWidget {
                               width: Get.width * 0.5,
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.to(() => ProductItem());
+                                  Get.defaultDialog(
+                                      title: 'Products',
+                                      content: SellerImage());
+                                  //Get.to(() => ProductItem());
                                 },
                                 child: Card(
                                   child: Image.network(

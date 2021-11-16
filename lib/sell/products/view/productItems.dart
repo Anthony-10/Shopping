@@ -41,7 +41,7 @@ class ProductItem extends StatelessWidget {
                           width: Get.width * 0.5,
                           child: Card(
                             child: Image.network(
-                              snapshot.data.docs[index]['Url'].toString(),
+                              snapshot.data.docs[index]['Url'][2].toString(),
                               fit: BoxFit.fill,
                             ),
                             semanticContainer: true,

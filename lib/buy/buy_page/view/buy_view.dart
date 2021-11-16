@@ -138,7 +138,7 @@ class _BuyViewState extends State<BuyView> {
                                   children: [
                                     Container(
                                       height: Get.height * 0.30,
-                                      width: Get.width * 0.4,
+                                      width: Get.width * 0.5,
                                       child: GestureDetector(
                                         onTap: () {
                                           Get.to(() => SellerAccount());
@@ -169,6 +169,7 @@ class _BuyViewState extends State<BuyView> {
                                       height: 10,
                                     ),
                                     Container(
+                                      width: Get.width * 0.3,
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,

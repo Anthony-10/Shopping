@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/buy/buy_page/view/seller_image.dart';
+import 'package:shopping_app/cart/controller/cart_controller.dart';
+import 'package:shopping_app/cart/view/cart_view.dart';
 
 class SellerItem extends StatefulWidget {
   const SellerItem({Key key}) : super(key: key);
@@ -12,6 +15,7 @@ class SellerItem extends StatefulWidget {
 
 class _SellerItemState extends State<SellerItem> {
   final buyController = Get.put(BuyController());
+  final cartController = Get.put(CartController());
   final heights = Get.height;
   final widths = Get.width;
 
@@ -209,16 +213,30 @@ class _SellerItemState extends State<SellerItem> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    height: heights * .04,
-                                    width: widths * .1,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.black,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(70)),
-                                    child: Icon(Icons.shopping_cart),
+                                  GestureDetector(
+                                    onTap: () {
+                                      cartController.cartInfo(
+                                        price: cartController.price,
+                                        size: cartController.size,
+                                        description: cartController.description,
+                                        amount: cartController.amount,
+                                        image: buyController.sellerProduct,
+                                        name: cartController.name,
+                                      );
+                                      print('');
+                                      Get.to(() => CartView());
+                                    },
+                                    child: Container(
+                                      height: heights * .04,
+                                      width: widths * .1,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.black,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(70)),
+                                      child: Icon(Icons.shopping_cart),
+                                    ),
                                   ),
                                   ElevatedButton(
                                       style: ElevatedButton.styleFrom(
@@ -266,11 +284,18 @@ class _SellerItemState extends State<SellerItem> {
             Positioned(
                 top: heights * .24,
                 right: widths * .1,
-                child: Image.network(
-                  buyController.sellerProduct,
-                  fit: BoxFit.fill,
-                  height: heights * .3,
-                  width: widths * .4,
+                child: GestureDetector(
+                  onTap: () {
+                    print(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,${buyController.id}');
+                    Get.defaultDialog(
+                        title: 'Products', content: SellerImage());
+                  },
+                  child: Image.network(
+                    buyController.sellerProduct,
+                    fit: BoxFit.fill,
+                    height: heights * .3,
+                    width: widths * .4,
+                  ),
                 ))
           ],
         ),

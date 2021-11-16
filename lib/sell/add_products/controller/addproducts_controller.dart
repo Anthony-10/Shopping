@@ -1,13 +1,10 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/sell/models/item_model.dart';
 import 'package:shopping_app/sell/models/product_model.dart';
 
@@ -21,8 +18,6 @@ class AddProductsController extends GetxController {
 
   firebase_storage.Reference ref;
   CollectionReference imgRef;
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  final FirebaseStorage _firebaseStoraqe = FirebaseStorage.instance;
 
   ProductItems productElement;
   ItemModel itemElement;
@@ -33,6 +28,8 @@ class AddProductsController extends GetxController {
   bool colorValue = false;
 
   final TextEditingController productName = TextEditingController();
+  final TextEditingController productSize = TextEditingController();
+  final TextEditingController productAmount = TextEditingController();
   final TextEditingController otherProductPrice = TextEditingController();
   final TextEditingController otherProductDescription = TextEditingController();
 

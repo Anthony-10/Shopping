@@ -38,6 +38,7 @@ class _SettingViewState extends State<SettingView> {
                           hintText: "Search",
                           fillColor: Colors.red,
                           suffixIcon: IconButton(
+                            onPressed: () {},
                             icon: Icon(Icons.search),
                           ),
                           /*enabledBorder: OutlineInputBorder(
