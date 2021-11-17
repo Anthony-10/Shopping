@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/bought/controller/bought_controller.dart';
+import 'package:shopping_app/buy/bought/view/bought_view.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_image.dart';
 import 'package:shopping_app/cart/controller/cart_controller.dart';
 import 'package:shopping_app/cart/view/cart_view.dart';
+import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
 
 class SellerItem extends StatefulWidget {
   const SellerItem({Key key}) : super(key: key);
@@ -16,6 +19,8 @@ class SellerItem extends StatefulWidget {
 class _SellerItemState extends State<SellerItem> {
   final buyController = Get.put(BuyController());
   final cartController = Get.put(CartController());
+  final boughtController = Get.put(BoughtController());
+
   final heights = Get.height;
   final widths = Get.width;
 
@@ -200,7 +205,7 @@ class _SellerItemState extends State<SellerItem> {
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(70)),
-                                        child: Icon(Icons.add),
+                                        child: Icon(Icons.remove),
                                       ),
                                     ],
                                   ),
@@ -245,7 +250,16 @@ class _SellerItemState extends State<SellerItem> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(50))),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        boughtController.boughtInfo(
+                                          price: cartController.price,
+                                          size: cartController.size,
+                                          amount: cartController.amount,
+                                          image: buyController.sellerProduct,
+                                          name: cartController.name,
+                                        );
+                                        Get.to(() => DrawerView());
+                                      },
                                       child: Text('Buy Now')),
                                 ],
                               )

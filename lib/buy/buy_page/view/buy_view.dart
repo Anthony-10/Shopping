@@ -121,7 +121,7 @@ class _BuyViewState extends State<BuyView> {
                           child: GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                              childAspectRatio: 1 / 1.7,
+                              childAspectRatio: 1 / 1.8,
                               mainAxisSpacing: 9,
                               crossAxisSpacing: 5,
                               crossAxisCount: 2,

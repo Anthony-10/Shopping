@@ -58,7 +58,7 @@ class _SellerAccountState extends State<SellerAccount> {
                       Align(
                           alignment: Alignment.topLeft,
                           child: IconButton(
-                              onPressed: () => Get.to(DrawerView()),
+                              onPressed: () => Get.back(),
                               icon: Icon(Icons.arrow_back))),
                       Align(
                         alignment: Alignment.topRight,
