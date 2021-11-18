@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CartView extends StatelessWidget {
-  CartView({Key key}) : super(key: key);
-  var heights = Get.height;
-  var widths = Get.width;
+  const CartView({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.only(top: heights * .02, left: widths * .03),
+          padding:
+              EdgeInsets.only(top: Get.height * .02, left: Get.width * .03),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -22,7 +23,7 @@ class CartView extends StatelessWidget {
                 icon: Icon(Icons.arrow_back),
               )),
               Padding(
-                padding: EdgeInsets.only(left: widths * .07),
+                padding: EdgeInsets.only(left: Get.width * .07),
                 child: Container(
                     child: Text(
                   'Cart',
@@ -55,8 +56,8 @@ class CartView extends StatelessWidget {
                                       child: Row(
                                         children: [
                                           SizedBox(
-                                            height: heights * .1,
-                                            width: widths * .2,
+                                            height: Get.height * .1,
+                                            width: Get.width * .2,
                                             child: Image.network(
                                               snapshot.data.docs[index]['image']
                                                   .toString(),
@@ -64,20 +65,63 @@ class CartView extends StatelessWidget {
                                             ),
                                           ),
                                           SizedBox(
-                                            width: widths * .2,
+                                            width: Get.width * .2,
                                           ),
                                           Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Text(snapshot
-                                                  .data.docs[index]['name']
-                                                  .toString()),
+                                              Text(
+                                                snapshot
+                                                    .data.docs[index]['name']
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 17),
+                                              ),
+                                              SizedBox(
+                                                height: Get.height * .02,
+                                              ),
                                               Text(snapshot
                                                   .data.docs[index]['price']
                                                   .toString()),
-                                              Text(snapshot
-                                                  .data.docs[index]['size']
-                                                  .toString())
                                             ],
+                                          ),
+                                          SizedBox(
+                                            width: Get.width * .17,
+                                          ),
+                                          Container(
+                                            height: Get.height * .15,
+                                            width: Get.width * .14,
+                                            color: Colors.grey[200],
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: Get.height * .01),
+                                                  child: Container(
+                                                    height: Get.height * .05,
+                                                    width: Get.width * .06,
+                                                    color: Colors.grey[100],
+                                                    child: Icon(Icons.add),
+                                                  ),
+                                                ),
+                                                Text('23'),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: Get.height * .01),
+                                                  child: Container(
+                                                    height: Get.height * .05,
+                                                    width: Get.width * .06,
+                                                    color: Colors.grey[100],
+                                                    child: Icon(Icons.remove),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           )
                                         ],
                                       ),

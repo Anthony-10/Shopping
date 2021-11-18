@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BoughtItem extends StatelessWidget {
-  BoughtItem({Key key}) : super(key: key);
-  var heights = Get.height;
-  var widths = Get.width;
+  const BoughtItem({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +33,8 @@ class BoughtItem extends StatelessWidget {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  height: heights * .1,
-                                  width: widths * .2,
+                                  height: Get.height * .1,
+                                  width: Get.width * .2,
                                   child: Image.network(
                                     snapshot.data.docs[index]['image']
                                         .toString(),
@@ -44,7 +42,7 @@ class BoughtItem extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: widths * .2,
+                                  width: Get.width * .2,
                                 ),
                                 Column(
                                   children: [

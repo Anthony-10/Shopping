@@ -6,7 +6,12 @@ class BoughtController extends GetxController {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   Future<void> boughtInfo(
-      {var price, var size, var amount, var image, var name}) async {
+      {var price,
+      var size,
+      var amount,
+      var image,
+      var name,
+      String sellUid}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       await _fireStore.collection("Bought").doc().set({
@@ -15,7 +20,8 @@ class BoughtController extends GetxController {
         'amount': amount,
         'image': image,
         'name': name,
-        'userId': uid
+        'userId': uid,
+        'sellUid': sellUid,
       });
     } on FirebaseException catch (e) {
       print(

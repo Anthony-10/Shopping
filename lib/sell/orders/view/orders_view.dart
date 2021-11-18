@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrdersView extends StatelessWidget {
-  OrdersView({Key key}) : super(key: key);
-  var heights = Get.height;
-  var widths = Get.width;
+  const OrdersView({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +12,8 @@ class OrdersView extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("Bought")
-              .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+              .where("sellUid",
+                  isEqualTo: FirebaseAuth.instance.currentUser.uid)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -35,8 +34,8 @@ class OrdersView extends StatelessWidget {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  height: heights * .1,
-                                  width: widths * .2,
+                                  height: Get.height * .1,
+                                  width: Get.width * .2,
                                   child: Image.network(
                                     snapshot.data.docs[index]['image']
                                         .toString(),
@@ -44,7 +43,7 @@ class OrdersView extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: widths * .2,
+                                  width: Get.width * .2,
                                 ),
                                 Column(
                                   children: [

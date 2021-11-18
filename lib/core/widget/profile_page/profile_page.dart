@@ -166,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             databaseService.updateUserInfo(
                                 firstName: _name.text,
                                 email: drawerFunctions.emails,
-                                Url: drawerFunctions.images);
+                                url: drawerFunctions.images);
                           },
                           child: Text('Save'),
                           style: ElevatedButton.styleFrom(
@@ -228,7 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             databaseService.updateUserInfo(
                                 firstName: drawerFunctions.names,
                                 email: _email.text,
-                                Url: drawerFunctions.images);
+                                url: drawerFunctions.images);
                           },
                           child: Text('Save'),
                           style: ElevatedButton.styleFrom(

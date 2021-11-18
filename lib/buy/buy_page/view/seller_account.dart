@@ -5,7 +5,6 @@ import 'package:like_button/like_button.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_items.dart';
 import 'package:shopping_app/cart/controller/cart_controller.dart';
-import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 
 class SellerAccount extends StatefulWidget {

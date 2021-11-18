@@ -68,7 +68,7 @@ class DatabaseService extends GetxController {
             updateUserInfo(
                 email: drawerFunctions.emails,
                 firstName: drawerFunctions.names,
-                Url: fileURL);
+                url: fileURL);
             print(
                 '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
           });
@@ -135,7 +135,7 @@ class DatabaseService extends GetxController {
   Future<void> updateUserInfo({
     var email,
     var firstName,
-    var Url,
+    var url,
   }) async {
     if (drawerFunctions.emails.isNotEmpty || drawerFunctions.names.isNotEmpty) {
       print(
@@ -148,7 +148,7 @@ class DatabaseService extends GetxController {
             'email': email,
             'firstName': firstName,
             'userId': uid,
-            'Url': Url,
+            'Url': url,
           });
           print(
               'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww${drawerFunctions.emails}, ${drawerFunctions.names}');
