@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_items.dart';
-import 'package:shopping_app/cart/controller/cart_controller.dart';
+import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 
 class SellerAccount extends StatefulWidget {
@@ -68,15 +69,32 @@ class _SellerAccountState extends State<SellerAccount> {
                             IconButton(
                                 onPressed: () {}, icon: Icon(Icons.search)),
                             LikeButton(
+                              onTap: (isLiked) async {
+                                buyController.favorite(
+                                    image: buyController.image,
+                                    name: buyController.name,
+                                    userUid: buyController.id);
+                                this.isLiked = !isLiked;
+                                return !isLiked;
+                              },
                               size: 40,
                               isLiked: isLiked,
                               likeCount: likeCount,
                               likeBuilder: (isLiked) {
-                                final color = Colors.red;
+                                final color =
+                                    isLiked ? Colors.red : Colors.grey;
                                 return Icon(
                                   Icons.favorite,
                                   color: color,
                                   size: 25,
+                                );
+                              },
+                              countBuilder: (count, isLiked, text) {
+                                final color =
+                                    isLiked ? Colors.black : Colors.grey;
+                                return Text(
+                                  text,
+                                  style: TextStyle(color: color),
                                 );
                               },
                             )
@@ -293,6 +311,43 @@ class _SellerAccountState extends State<SellerAccount> {
         ]),
       ),
     );
+  }
+
+  Future favorite({var image, String name}) async {
+    try {
+      String uid = FirebaseAuth.instance.currentUser.uid;
+      dynamic likes;
+      bool _isLiked = likes[uid] == true;
+      if (_isLiked) {
+        setState(() {
+          likeCount -= 1;
+          isLiked = false;
+          likes[uid] = false;
+        });
+      }
+      /*var value = 1;
+      DocumentReference documentReference =
+          FirebaseFirestore.instance.collection('love').doc(uid);
+
+      return FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(documentReference);
+
+        if (!snapshot.exists) {
+          documentReference.set(
+              {'love': value});
+        }
+        int newAmount = snapshot.get('love') + 1;
+        transaction.update(documentReference, {'Love': newAmount});
+      });*/
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> getData() async {

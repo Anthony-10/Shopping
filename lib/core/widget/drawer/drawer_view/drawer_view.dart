@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/controller/auth_controller.dart';
 import 'package:shopping_app/buy/bought/view/bought_view.dart';
+import 'package:shopping_app/buy/cart/view/cart_view.dart';
 import 'package:shopping_app/buy/data/buy_drawer/buy_item.dart';
-import 'package:shopping_app/cart/view/cart_view.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/core/widget/tab_bar/new_tab.dart';
 import 'package:shopping_app/sell/add_products/view/addproducts_view.dart';
@@ -13,7 +13,7 @@ import 'package:shopping_app/sell/orders/view/orders_view.dart';
 import 'package:shopping_app/sell/products/view/product_view.dart';
 import 'package:shopping_app/sell/settings/view/setting_view.dart';
 
-import '../../../../../../favourites.dart';
+import '../../../../buy/favourite/favourites.dart';
 import '../drawer_widget.dart';
 
 class DrawerView extends StatefulWidget {

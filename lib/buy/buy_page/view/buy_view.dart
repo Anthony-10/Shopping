@@ -146,6 +146,8 @@ class _BuyViewState extends State<BuyView> {
                                               .data.docs[index]['firstName'];
                                           buyController.id = snapshot
                                               .data.docs[index]['userId'];
+                                          buyController.image =
+                                              snapshot.data.docs[index]['Url'];
                                         },
                                         child: Card(
                                           child: Image.network(

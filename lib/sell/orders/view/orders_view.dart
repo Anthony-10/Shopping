@@ -52,7 +52,9 @@ class OrdersView extends StatelessWidget {
                                     Text(snapshot.data.docs[index]['price']
                                         .toString()),
                                     Text(snapshot.data.docs[index]['size']
-                                        .toString())
+                                        .toString()),
+                                    Text(snapshot.data.docs[index]['date']
+                                        .toString()),
                                   ],
                                 )
                               ],

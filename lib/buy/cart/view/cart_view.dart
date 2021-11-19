@@ -55,9 +55,13 @@ class CartView extends StatelessWidget {
                                       padding: const EdgeInsets.all(9.0),
                                       child: Row(
                                         children: [
-                                          SizedBox(
-                                            height: Get.height * .1,
-                                            width: Get.width * .2,
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            height: Get.height * .15,
+                                            width: Get.width * .25,
                                             child: Image.network(
                                               snapshot.data.docs[index]['image']
                                                   .toString(),
@@ -65,30 +69,34 @@ class CartView extends StatelessWidget {
                                             ),
                                           ),
                                           SizedBox(
-                                            width: Get.width * .2,
+                                            width: Get.width * .15,
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                snapshot
-                                                    .data.docs[index]['name']
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 17),
-                                              ),
-                                              SizedBox(
-                                                height: Get.height * .02,
-                                              ),
-                                              Text(snapshot
-                                                  .data.docs[index]['price']
-                                                  .toString()),
-                                            ],
+                                          Container(
+                                            width: Get.width * .2,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  snapshot
+                                                      .data.docs[index]['name']
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 17),
+                                                ),
+                                                SizedBox(
+                                                  height: Get.height * .02,
+                                                ),
+                                                Text(snapshot
+                                                    .data.docs[index]['price']
+                                                    .toString()),
+                                              ],
+                                            ),
                                           ),
                                           SizedBox(
-                                            width: Get.width * .17,
+                                            width: Get.width * .15,
                                           ),
                                           Container(
                                             height: Get.height * .15,
@@ -138,6 +146,67 @@ class CartView extends StatelessWidget {
                         return Center(child: Text('Loading.....'));
                       }
                     }),
+              ),
+              Container(
+                height: Get.height * .15,
+                width: Get.width,
+                color: Colors.grey[200],
+                child: Row(
+                  children: [
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            'Cart total',
+                            style: TextStyle(fontSize: 17),
+                          ),
+                          Text(
+                            'Tax',
+                            style: TextStyle(fontSize: 17),
+                          ),
+                          Divider(),
+                          Text(
+                            'Subtotal',
+                            style: TextStyle(fontSize: 17),
+                          ),
+                        ]),
+                    SizedBox(
+                      width: Get.width * .1,
+                    ),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Ksh 30,000',
+                              style: TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.bold)),
+                          Text('Ksh 30,000',
+                              style: TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.bold)),
+                          Divider(),
+                          Text('Ksh 30,000',
+                              style: TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.bold))
+                        ]),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: Get.height * .04,
+              ),
+              Center(
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                        fixedSize: Size(Get.width * .7, 10),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50))),
+                    onPressed: () {},
+                    child: Text('Checkout')),
+              ),
+              SizedBox(
+                height: Get.height * .04,
               )
             ],
           ),

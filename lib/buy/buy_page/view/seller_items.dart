@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:shopping_app/buy/bought/controller/bought_controller.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_image.dart';
-import 'package:shopping_app/cart/controller/cart_controller.dart';
-import 'package:shopping_app/cart/view/cart_view.dart';
+import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
+import 'package:shopping_app/buy/cart/view/cart_view.dart';
 import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
 
 class SellerItem extends StatefulWidget {
