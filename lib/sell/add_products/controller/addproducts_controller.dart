@@ -1,22 +1,23 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shopping_app/models/item_model.dart';
-import 'package:shopping_app/models/product_model.dart';
+import 'package:shopping_app/sell/models/item_model.dart';
+import 'package:shopping_app/sell/models/product_model.dart';
 
 class AddProductsController extends GetxController {
   final picker = ImagePicker();
   final image = [].obs;
+  final drawerImage = [].obs;
   var imageSize = ''.obs;
   int initialIndex = 0;
+  int bottomIndex = 0;
 
   firebase_storage.Reference ref;
   CollectionReference imgRef;
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   ProductItems productElement;
   ItemModel itemElement;
@@ -26,29 +27,52 @@ class AddProductsController extends GetxController {
   var colorElement;
   bool colorValue = false;
 
+  final TextEditingController productName = TextEditingController();
+  final TextEditingController productSize = TextEditingController();
+  final TextEditingController productAmount = TextEditingController();
+  final TextEditingController otherProductPrice = TextEditingController();
+  final TextEditingController otherProductDescription = TextEditingController();
+
   getImageGallery(ImageSource imageSource) async {
     image.clear();
     final FilePickerResult pickedFile = await FilePicker.platform.pickFiles(
-      type: FileType.any,
+      type: FileType.image,
       allowMultiple: true,
     );
     if (pickedFile != null) {
-      if (pickedFile.count > 3) {
-        Get.snackbar('Error', 'More than 3 items selected',
-            snackPosition: SnackPosition.BOTTOM);
-        return;
-      } else if (pickedFile.count < 3) {
-        Get.snackbar('Error', 'Less than 3 items selected',
-            snackPosition: SnackPosition.BOTTOM);
-        return;
+      if (bottomIndex == 0) {
+        if (pickedFile.count > 3) {
+          Get.snackbar('Error', 'More than 3 items selected',
+              snackPosition: SnackPosition.BOTTOM);
+          return;
+        } else if (pickedFile.count < 3) {
+          Get.snackbar('Error', 'Less than 3 items selected',
+              snackPosition: SnackPosition.BOTTOM);
+          return;
+        }
+        pickedFile.files.forEach((selectedFile) {
+          final File file = File(selectedFile.path);
+          image.add(file);
+          print('At the drawerImage$image');
+        });
+      } else {
+        print('At the drawerImage');
+        drawerImage.clear();
+        if (pickedFile.count > 1) {
+          Get.snackbar('Error', 'More than 1 items selected',
+              snackPosition: SnackPosition.BOTTOM);
+        } else {
+          pickedFile.files.forEach((selectedFile) {
+            final File file = File(selectedFile.path);
+            drawerImage.add(file);
+            print('At the drawerImage$drawerImage');
+          });
+        }
       }
-      pickedFile.files.forEach((selectedFile) {
-        final File file = File(selectedFile.path);
-        image.add(file);
-      });
     } else {
       Get.snackbar('Error', 'No image selected',
           snackPosition: SnackPosition.BOTTOM);
+      print('Error' 'No image selected');
     }
   }
 
@@ -57,107 +81,23 @@ class AddProductsController extends GetxController {
 
     final pickedFile = await ImagePicker().getImage(source: imageSource);
     if (pickedFile != null) {
-      image.add(File(pickedFile.path));
-      if (image.length == 3) {
-        return;
-      } else if (image.length > 3) {
-        image.removeLast();
-        Get.snackbar('Error', 'More than 3 items selected',
-            snackPosition: SnackPosition.BOTTOM);
+      if (bottomIndex == 0) {
+        image.add(File(pickedFile.path));
+        if (image.length == 3) {
+          return;
+        } else if (image.length > 3) {
+          image.removeLast();
+          Get.snackbar('Error', 'More than 3 items selected',
+              snackPosition: SnackPosition.BOTTOM);
+        } else {
+          this.getImageCamera(imageSource);
+        }
       } else {
-        this.getImageCamera(imageSource);
+        Get.snackbar('Error', 'No image selected',
+            snackPosition: SnackPosition.BOTTOM);
       }
     } else {
-      Get.snackbar('Error', 'No image selected',
-          snackPosition: SnackPosition.BOTTOM);
+      drawerImage.add(File(pickedFile.path));
     }
   }
-
-  Future<void> userImage({
-    String productElement,
-    String itemElement,
-    String checkBoxElement,
-    String colorElement,
-  }) async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    try {
-      if (uid != null) {
-        image.forEach((file) async {
-          ref = firebase_storage.FirebaseStorage.instance
-              .ref()
-              .child("images/${DateTime.now().toString()}");
-          await ref.putFile(file).whenComplete(() => ref
-              .getDownloadURL()
-              .then((imageUrl) => _fireStore.collection("Products").doc().set({
-                    'productElement': productElement,
-                    'itemElement': itemElement,
-                    'checkBoxElement': checkBoxElement,
-                    'colorElement': colorElement,
-                    'Url': imageUrl,
-                    'userId': uid
-                  })));
-          /*_fireStore.collection("image").add({"url": imageUrl}))
-              .whenComplete(() => print("image imewekwa")));*/
-        });
-      }
-    } on FirebaseAuthException catch (e) {
-      Get.snackbar(
-        "Uploading Image",
-        e.message,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> userProducts({
-    String productElement,
-    String itemElement,
-    String checkBoxElement,
-    String colorElement,
-    imageUrl,
-  }) async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    try {
-      if (uid != null) {
-        await _fireStore.collection("Products").doc().set({
-          'productElement': productElement,
-          'itemElement': itemElement,
-          'checkBoxElement': checkBoxElement,
-          'colorElement': colorElement,
-          'Url': imageUrl,
-          'userId': uid
-        });
-      }
-    } on FirebaseAuthException catch (e) {
-      Get.snackbar(
-        "Error Adding User Info",
-        e.message,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  //String uid = FirebaseAuth.instance.currentUser.uid;
-
-/*  Future<void> addProducts(String name, var size) async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    try {
-      if (uid != null) {
-        await _firestore
-            .collection("Products")
-            .doc()
-            .set({'name': name, 'size': size, 'userId': uid});
-      }
-    } on FirebaseAuthException catch (e) {
-      Get.snackbar("Error creating account", e.message,
-          snackPosition: SnackPosition.BOTTOM);
-    } catch (e) {
-      rethrow;
-    }
-  }*/
 }

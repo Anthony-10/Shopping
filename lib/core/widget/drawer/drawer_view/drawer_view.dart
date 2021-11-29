@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/controller/auth_controller.dart';
-import 'package:shopping_app/buy/buy_location/view/buyer_location.dart';
+import 'package:shopping_app/buy/bought/view/bought_view.dart';
+import 'package:shopping_app/buy/cart/view/cart_view.dart';
+import 'package:shopping_app/buy/data/buy_drawer/buy_item.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/core/widget/tab_bar/new_tab.dart';
-import 'package:shopping_app/data/sell_drawer/sell_item.dart';
-import 'package:shopping_app/data/buy_drawer/buy_item.dart';
-import 'package:shopping_app/models/drawer_model.dart';
 import 'package:shopping_app/sell/add_products/view/addproducts_view.dart';
-import 'package:shopping_app/sell/orders/view/oders_view.dart';
+import 'package:shopping_app/sell/data/sell_drawer/sell_item.dart';
+import 'package:shopping_app/sell/models/drawer_model.dart';
+import 'package:shopping_app/sell/orders/view/orders_view.dart';
 import 'package:shopping_app/sell/products/view/product_view.dart';
-import 'package:shopping_app/sell/sell_location/view/sell_location.dart';
 import 'package:shopping_app/sell/settings/view/setting_view.dart';
 
-import '../../../../../../favourites.dart';
+import '../../../../buy/favourite/favourites.dart';
 import '../drawer_widget.dart';
 
 class DrawerView extends StatefulWidget {
@@ -53,7 +53,7 @@ class _DrawerViewState extends State<DrawerView> {
         isDrawerOpen = true;
       });
 
-  final initialindex = Get.put(InitialIndex());
+  final drawerFunctions = Get.put(DrawerFunctions());
   final authController = Get.find<AuthController>();
 
   @override
@@ -130,7 +130,7 @@ class _DrawerViewState extends State<DrawerView> {
                 borderRadius: BorderRadius.circular(isDrawerOpen ? 20 : 0),
                 child: Container(
                     color: isDrawerOpen ? Colors.grey[200] : Colors.white,
-                    child: initialindex.initialIndex == 0
+                    child: drawerFunctions.initialIndex == 0
                         ? getBuyPage()
                         : getSellPage()),
               ),
@@ -143,8 +143,12 @@ class _DrawerViewState extends State<DrawerView> {
     switch (item) {
       case BuyDrawerItems.favourites:
         return Favourites();
-      case BuyDrawerItems.location:
-        return BuyerLocation();
+      case BuyDrawerItems.cart:
+        return CartView();
+      case BuyDrawerItems.bought:
+        return BoughtView();
+      /* case BuyDrawerItems.location:
+        return BuyerLocation();*/
       case BuyDrawerItems.home:
       default:
         return NewTab();
@@ -161,8 +165,8 @@ class _DrawerViewState extends State<DrawerView> {
         return AddProductsView();
       case SellDrawerItems.orders:
         return OrdersView();
-      case SellDrawerItems.location:
-        return SellLocation();
+      /*case SellDrawerItems.location:
+        return SellLocation();*/
       case SellDrawerItems.sellPage:
       default:
         return NewTab();

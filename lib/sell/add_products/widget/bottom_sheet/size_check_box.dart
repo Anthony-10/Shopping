@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/bottom_sheet/check_box_category.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
+import 'package:shopping_app/sell/data/bottom_sheet/check_box_category.dart';
 
 class SizeCheckBox extends StatefulWidget {
   const SizeCheckBox({Key key}) : super(key: key);

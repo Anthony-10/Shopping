@@ -1,6 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/controller/auth_controller.dart';
 import 'package:shopping_app/authentication/view/register.dart';
@@ -15,10 +14,9 @@ class AuthView extends StatefulWidget {
 }
 
 class _AuthViewState extends State<AuthView> {
-  //int initialIndex = 0;
-
-  //final authController = Get.find<AuthController>();
   final authController = Get.put(AuthController());
+  final heights = Get.height;
+  final widths = Get.width;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +25,8 @@ class _AuthViewState extends State<AuthView> {
         child: Stack(
           children: [
             Container(
-              height: Get.height,
-              width: Get.width,
+              height: heights,
+              width: widths,
               decoration: BoxDecoration(
                   gradient: LinearGradient(begin: Alignment.topCenter, colors: [
                 Colors.indigo[800],
@@ -39,11 +37,14 @@ class _AuthViewState extends State<AuthView> {
               child: Column(
                 children: [
                   Container(
-                      height: Get.height * 0.5,
-                      width: Get.width,
+                      height: heights * 0.4,
+                      width: widths,
                       child: authController.initialIndexAuth == 0
-                          ? Align(
-                              alignment: Alignment(-0.5, -0.1),
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                  top: heights * .1,
+                                  left: widths * .1,
+                                  right: widths * .1),
                               child: DefaultTextStyle(
                                 style: TextStyle(
                                     fontSize: 35.0, color: Colors.white),
@@ -60,8 +61,11 @@ class _AuthViewState extends State<AuthView> {
                               ),
                             )
                           : authController.initialIndexAuth == 1
-                              ? Align(
-                                  alignment: Alignment(-0.5, -0.1),
+                              ? Padding(
+                                  padding: EdgeInsets.only(
+                                      top: heights * .09,
+                                      left: widths * .1,
+                                      right: widths * .1),
                                   child: DefaultTextStyle(
                                     style: TextStyle(
                                         fontSize: 35.0, color: Colors.white),
@@ -74,8 +78,11 @@ class _AuthViewState extends State<AuthView> {
                                   ),
                                 )
                               //TODO
-                              : Align(
-                                  alignment: Alignment(-0.5, -0.1),
+                              : Padding(
+                                  padding: EdgeInsets.only(
+                                      top: heights * .09,
+                                      left: widths * .1,
+                                      right: widths * .1),
                                   child: DefaultTextStyle(
                                     style: TextStyle(
                                         fontSize: 35.0, color: Colors.white),
@@ -90,17 +97,17 @@ class _AuthViewState extends State<AuthView> {
                   Expanded(
                     child: Container(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 90, top: 230),
+                        padding: EdgeInsets.only(
+                            left: widths * .2, top: heights * .4),
                         child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Row(
                               children: [
                                 authController.initialIndexAuth == 0
                                     ? Row(children: [
-                                        Text('Don\'t have an account?'),
+                                        Text("Don't have an account?"),
                                         SizedBox(
-                                          width: 10.0,
+                                          width: widths * .02,
                                         ),
                                         TextButton(
                                           child: Text('Sign Up'),
@@ -116,7 +123,7 @@ class _AuthViewState extends State<AuthView> {
                                         children: [
                                           Text('Already have an account?'),
                                           SizedBox(
-                                            width: 5.0,
+                                            width: widths * .02,
                                           ),
                                           TextButton(
                                               onPressed: () {
@@ -131,30 +138,20 @@ class _AuthViewState extends State<AuthView> {
                               ],
                             ),
                             SizedBox(
-                              height: 10.0,
+                              height: Get.height * .02,
                             ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.mail,
-                                    size: 30.0,
-                                    color: Colors.red,
-                                  ),
-                                  onPressed: () {},
-                                ),
-                                SizedBox(
-                                  width: 30,
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.facebook,
-                                    size: 30.0,
-                                    color: Colors.blue,
-                                  ),
-                                  onPressed: () {},
-                                ),
-                              ],
+                            FloatingActionButton.extended(
+                              icon: Icon(
+                                Icons.mail,
+                                size: 30.0,
+                                color: Colors.red,
+                              ),
+                              label: Text('Sign in with Google'),
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.black,
+                              onPressed: () {
+                                authController.googleLogin();
+                              },
                             ),
                           ],
                         ),
@@ -170,37 +167,10 @@ class _AuthViewState extends State<AuthView> {
                 ],
               ),
             ),
-            /*Container(
-              height: Get.height * 0.5,
-              width: Get.width,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20.0),
-                      topLeft: Radius.circular(20.0))),
-            ),*/
-            /*Image.asset(
-              "assets/login.jpg",
-              fit: BoxFit.cover,
-              height: Get.height,
-              width: Get.width,
-            ),*/
-            /* Positioned(
-                top: 80.0,
-                left: 120.0,
-                child: initialIndex == 0
-                    ? Text(
-                        'Sign In',
-                        style: TextStyle(color: Colors.white, fontSize: 35.0),
-                      )
-                    : Text(
-                        'Sign Up',
-                        style: TextStyle(color: Colors.white, fontSize: 35.0),
-                      )),*/
             Positioned(
-                bottom: 140.0,
-                left: 50.0,
-                right: 50.0,
+                top: heights * .3,
+                left: widths * .1,
+                right: widths * .1,
                 child: authController.initialIndexAuth == 0
                     ? Login()
                     : authController.initialIndexAuth == 1

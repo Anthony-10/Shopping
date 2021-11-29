@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/*import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:geocoder/geocoder.dart' as geoCo;
+*/ /*import 'package:geocoder/geocoder.dart' as geoCo;*/ /*
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SellLocationController extends GetxController {
@@ -61,4 +61,4 @@ class SellLocationController extends GetxController {
       'Country': firstAddress1.countryName,
     });
   }
-}
+}*/

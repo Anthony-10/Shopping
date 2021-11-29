@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shopping_app/data/add_product/add_product.dart';
-import 'package:shopping_app/models/product_model.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
+import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/sell/add_products/widget/bottom_sheet.dart';
 import 'package:shopping_app/sell/add_products/widget/bottom_sheet2.dart';
+import 'package:shopping_app/sell/data/add_product/add_product.dart';
+import 'package:shopping_app/sell/models/product_model.dart';
 
 class AddProductsView extends StatefulWidget {
   AddProductsView({
@@ -18,12 +19,15 @@ class AddProductsView extends StatefulWidget {
 
 class _AddProductsViewState extends State<AddProductsView> {
   final addProductsController = Get.put(AddProductsController());
+  final DatabaseService databaseService = Get.put(DatabaseService());
 
   final bottomSheetView = Get.put(BottomSheetView());
 
   bool value = false;
 
   ValueChanged<ProductItems> onClickProduct;
+  var height = Get.height;
+  var width = Get.width;
 
   @override
   Widget build(BuildContext context) {
@@ -32,35 +36,9 @@ class _AddProductsViewState extends State<AddProductsView> {
         backgroundColor: Colors.black,
         child: Icon(Icons.add),
         onPressed: () {
-          Get.bottomSheet(Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20))),
-            height: 100.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                    icon: const Icon(
-                      Icons.camera_alt,
-                      size: 30.0,
-                    ),
-                    onPressed: () {
-                      addProductsController.getImageCamera(ImageSource.camera);
-                      Get.back();
-                    }),
-                IconButton(
-                    icon: const Icon(Icons.camera_roll_sharp, size: 30.0),
-                    onPressed: () {
-                      addProductsController
-                          .getImageGallery(ImageSource.gallery);
-                      Get.back();
-                    })
-              ],
-            ),
-          ));
+          addProductsController.bottomIndex = 0;
+          Get.bottomSheet(
+              BottomSheetChose(addProductsController: addProductsController));
         },
       ),
       body: SafeArea(
@@ -69,15 +47,6 @@ class _AddProductsViewState extends State<AddProductsView> {
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                Container(
-                  child: Center(
-                      /*child: Text(
-                      "Add Product",
-                      style: TextStyle(fontSize: 20.0),
-                    ),*/
-                      ),
-                  height: 30.0,
-                ),
                 Obx(() => addProductsController.image.isNotEmpty
                     ? SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -85,8 +54,8 @@ class _AddProductsViewState extends State<AddProductsView> {
                         child: Row(
                           children: addProductsController.image
                               .map((element) => SizedBox(
-                                    height: Get.height * 0.5,
-                                    width: Get.width * 0.7,
+                                    height: height * 0.7,
+                                    width: width,
                                     child: Card(
                                       semanticContainer: true,
                                       clipBehavior: Clip.antiAlias,
@@ -95,11 +64,11 @@ class _AddProductsViewState extends State<AddProductsView> {
                                               BorderRadius.circular(10.0)),
                                       child: Image.file(element,
                                           fit: BoxFit.fill,
-                                          height: Get.height * 0.5,
-                                          width: Get.width * 0.7),
+                                          height: height * 0.5,
+                                          width: width * 0.7),
                                       color: Colors.white70,
                                       elevation: 3.0,
-                                      margin: EdgeInsets.all(5.0),
+                                      margin: EdgeInsets.all(9.0),
                                     ),
                                   ))
                               .toList(),
@@ -112,8 +81,8 @@ class _AddProductsViewState extends State<AddProductsView> {
                             children: AddProductItems.all
                                 .map(
                                   (item) => SizedBox(
-                                    height: Get.height * 0.5,
-                                    width: Get.width * 0.7,
+                                    height: height * 0.7,
+                                    width: width,
                                     child: Card(
                                       semanticContainer: true,
                                       clipBehavior: Clip.antiAlias,
@@ -128,32 +97,38 @@ class _AddProductsViewState extends State<AddProductsView> {
                                       )),
                                       color: Colors.white70,
                                       elevation: 3.0,
-                                      margin: EdgeInsets.all(5.0),
+                                      margin: EdgeInsets.all(9.0),
                                     ),
                                   ),
                                 )
                                 .toList()),
                       )),
                 SizedBox(
-                  height: 30.0,
+                  height: height * .03,
                 ),
                 Text(
                   'Enter Three Dimension Of Your Products',
                   style: TextStyle(color: Colors.red),
                 ),
                 SizedBox(
-                  height: 60.0,
+                  height: height * .04,
                 ),
                 SizedBox(
-                    width: Get.width * 0.6,
+                    width: width * 0.6,
                     child: Column(
                       children: [
                         ElevatedButton(
-                          onPressed: () {
-                            Get.bottomSheet(
-                              BottomSheet2(),
-                              isDismissible: false,
-                            );
+                          onPressed: () async {
+                            //adding Await
+                            await databaseService.userImage();
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) => BottomSheet2(),
+                                isScrollControlled: true,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                )));
                           },
                           child: Text('Continue'),
                           style: ElevatedButton.styleFrom(

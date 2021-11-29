@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/agriculture.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
+import 'package:shopping_app/sell/data/bottom_sheet/item_category/agriculture.dart';
 
 class AgricultureList extends StatefulWidget {
   const AgricultureList({Key key}) : super(key: key);

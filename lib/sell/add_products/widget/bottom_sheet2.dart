@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/bottom_sheet/product_category.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
+import 'package:shopping_app/sell/data/bottom_sheet/product_category.dart';
 import 'bottom_sheet/category_list.dart';
 import 'bottom_sheet/color_check_box.dart';
 import 'bottom_sheet/item_list/agriculture_list.dart';
@@ -27,25 +28,28 @@ class BottomSheet2 extends StatefulWidget {
 
 class _BottomSheet2State extends State<BottomSheet2> {
   int initialIndex1 = 0;
-  AddProductsController addProductsController =
+  final AddProductsController addProductsController =
       Get.put(AddProductsController());
+  final DatabaseService databaseService = Get.put(DatabaseService());
+  var height = Get.height;
+  var width = Get.width;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 550,
-      width: Get.width,
+      height: height * .9,
+      width: width,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       child: Padding(
         padding:
-            const EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
+            const EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 30),
         child: Column(
           children: [
             Container(
-              height: Get.height * 0.06,
+              height: height * 0.06,
               child: Icon(
                 Icons.keyboard_arrow_up,
                 size: 40,
@@ -96,7 +100,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
                                               ),
                       ),
                       SizedBox(
-                        height: 30.0,
+                        height: height * .04,
                       ),
                       Expanded(
                         child: SingleChildScrollView(
@@ -138,7 +142,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
                             ),
                           ),
                           SizedBox(
-                            width: 30.0,
+                            width: width * .05,
                           ),
                           ElevatedButton(
                             onPressed: () {
@@ -193,7 +197,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
     }
   }
 
-  void validation() {
+  Future<void> validation() async {
     addProductsController.initialIndex == 0 &&
             addProductsController.productElement != null
         ? setState(() {
@@ -214,23 +218,20 @@ class _BottomSheet2State extends State<BottomSheet2> {
                 : addProductsController.initialIndex == 3 ||
                         addProductsController.initialIndex == 1 &&
                             addProductsController.productElement !=
-                                ProductCategories.others
+                                ProductCategories.others &&
+                            addProductsController.productName != null &&
+                            addProductsController.otherProductPrice != null &&
+                            addProductsController.otherProductDescription !=
+                                null &&
+                            addProductsController.productName.text != null &&
+                            addProductsController.productSize.text != null &&
+                            addProductsController.productAmount.text != null
                     ? setState(() {
                         addProductsController.initialIndex = 4;
                       })
                     : addProductsController.initialIndex == 4
-                        ? addProductsController.userImage(
-                            productElement: addProductsController
-                                .productElement.title
-                                .toString(),
-                            itemElement: addProductsController.itemElement.title
-                                .toString(),
-                            checkBoxElement: addProductsController
-                                .checkBoxElement
-                                .toString(),
-                            colorElement:
-                                addProductsController.colorElement.toString())
-                        //addProductsController.userImage().toString()
+                        ? uploadPicks()
+                            .whenComplete(() => Navigator.pop(context))
                         : addProductsController.productElement == null
                             ? Get.snackbar('Massage', 'Select product',
                                 snackPosition: SnackPosition.BOTTOM)
@@ -239,5 +240,23 @@ class _BottomSheet2State extends State<BottomSheet2> {
                                     snackPosition: SnackPosition.BOTTOM)
                                 : Get.snackbar('Massage', 'Select product',
                                     snackPosition: SnackPosition.BOTTOM);
+  }
+
+  Future<void> uploadPicks() async {
+    databaseService.fileURLList.isNotEmpty
+        ? databaseService.userProducts(
+            productElement:
+                addProductsController.productElement.title.toString(),
+            itemElement: addProductsController.itemElement.title.toString(),
+            checkBoxElement: addProductsController.checkBoxElement.toString(),
+            colorElement: addProductsController.colorElement.toString(),
+            url: databaseService.fileURLList,
+            productName: addProductsController.productName.text,
+            productSize: addProductsController.productSize.text,
+            productAmount: addProductsController.productAmount.text,
+            otherProductPrice: addProductsController.otherProductPrice.text,
+            otherProductDescription:
+                addProductsController.otherProductDescription.text)
+        : print('fileURLList null');
   }
 }

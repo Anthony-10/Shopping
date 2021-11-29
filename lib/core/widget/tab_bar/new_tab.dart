@@ -10,13 +10,13 @@ class NewTab extends StatefulWidget {
 }
 
 class _NewTabState extends State<NewTab> {
-  final initialindex = Get.put(InitialIndex());
+  final drawerFunctions = Get.put(DrawerFunctions());
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      initialIndex: initialindex.initialIndex,
+      initialIndex: drawerFunctions.initialIndex,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
@@ -37,14 +37,14 @@ class _NewTabState extends State<NewTab> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          initialindex.initialIndex = 0;
+                          drawerFunctions.initialIndex = 0;
                         });
                       },
                       child: Container(
                         width: Get.width * 0.30,
                         height: Get.height * 0.05,
                         decoration: BoxDecoration(
-                            color: initialindex.initialIndex == 0
+                            color: drawerFunctions.initialIndex == 0
                                 ? Colors.black
                                 : Colors.grey,
                             borderRadius: BorderRadius.circular(20.0)),
@@ -59,14 +59,14 @@ class _NewTabState extends State<NewTab> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          initialindex.initialIndex = 1;
+                          drawerFunctions.initialIndex = 1;
                         });
                       },
                       child: Container(
                         width: Get.width * 0.30,
                         height: Get.height * 0.05,
                         decoration: BoxDecoration(
-                            color: initialindex.initialIndex == 1
+                            color: drawerFunctions.initialIndex == 1
                                 ? Colors.black
                                 : Colors.grey,
                             borderRadius: BorderRadius.circular(20.0)),
@@ -87,8 +87,9 @@ class _NewTabState extends State<NewTab> {
               DecoratedBox(decoration: BoxDecoration(color: Colors.red)),
               ),*/
               Expanded(
-                  child:
-                      initialindex.initialIndex == 0 ? BuyView() : SellView())
+                  child: drawerFunctions.initialIndex == 0
+                      ? BuyView()
+                      : SellView())
             ],
           ),
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/data/bottom_sheet/item_category/vehicles.dart';
+import 'package:shopping_app/sell/data/bottom_sheet/item_category/vehicles.dart';
 
 class CarView extends StatefulWidget {
   const CarView({Key key}) : super(key: key);

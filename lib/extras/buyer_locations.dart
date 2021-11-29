@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/*import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoder/geocoder.dart' as geoCo;
+*/ /*import 'package:geocoder/geocoder.dart' as geoCo;*/ /*
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class BuyerLocations extends StatefulWidget {
@@ -67,8 +67,8 @@ class _BuyerLocationsState extends State<BuyerLocations> {
                   .findAddressesFromCoordinates(coordinated);
               var firstAddress = address.first;
               getMarkers(tapped.latitude, tapped.longitude);
-              /*var firstAddress1 = address.first;
-              getCurrentLocation();*/
+              */ /*var firstAddress1 = address.first;
+              getCurrentLocation();*/ /*
               await FirebaseFirestore.instance.collection('location').add({
                 'latitude': tapped.latitude,
                 'longitude': tapped.longitude,
@@ -115,4 +115,4 @@ class _BuyerLocationsState extends State<BuyerLocations> {
       ),
     );
   }
-}
+}*/

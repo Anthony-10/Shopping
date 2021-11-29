@@ -50,7 +50,7 @@ class _LoginState extends State<Login> {
                     controller: _userPassWord,
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: Get.height * 0.02,
                   ),
                   TextButton(
                       onPressed: () {
@@ -73,9 +73,6 @@ class _LoginState extends State<Login> {
                             password: _userPassWord.text);
                       },
                       child: Text('Sign In')),
-                  SizedBox(
-                    height: 20.0,
-                  ),
                 ],
               ),
             ),
