@@ -1,12 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/bought/controller/bought_controller.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/buy/buy_page/view/pay_view.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_image.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
 import 'package:shopping_app/buy/cart/view/cart_view.dart';
-import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
 
 class SellerItem extends StatefulWidget {
   const SellerItem({Key key}) : super(key: key);
@@ -149,7 +150,7 @@ class _SellerItemState extends State<SellerItem> {
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 15)),
                                     Text(
-                                      '20 cm',
+                                      cartController.size,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 25),
@@ -160,13 +161,12 @@ class _SellerItemState extends State<SellerItem> {
                               SizedBox(
                                 height: heights * .02,
                               ),
-                              SingleChildScrollView(
-                                child: Text(
-                                    'we are Accessing hidden method Lsun/misc/'
-                                    'Unsafe;->putLong(Ljava/lang/Object;JJ)V (greylist, '
-                                    'linking, allowed) EGLint new_window_surface'
-                                    '(egl_winsys_display *, void *, EGLSurface, EGLConfig, '
-                                    'egl_winsys_surface **, EGLBoolean) returns 0x3000'),
+                              Container(
+                                height: heights * .13,
+                                width: widths,
+                                child: SingleChildScrollView(
+                                  child: Text(cartController.description),
+                                ),
                               ),
                               SizedBox(
                                 height: heights * .02,
@@ -250,14 +250,7 @@ class _SellerItemState extends State<SellerItem> {
                                               borderRadius:
                                                   BorderRadius.circular(50))),
                                       onPressed: () {
-                                        boughtController.boughtInfo(
-                                            price: cartController.price,
-                                            size: cartController.size,
-                                            amount: cartController.amount,
-                                            image: buyController.sellerProduct,
-                                            name: cartController.name,
-                                            sellUid: buyController.id);
-                                        Get.to(() => DrawerView());
+                                        Get.to(() => PayView());
                                       },
                                       child: Text('Buy Now')),
                                 ],
@@ -285,7 +278,7 @@ class _SellerItemState extends State<SellerItem> {
                     height: heights * .02,
                   ),
                   Text(
-                    'Ksh 300,000',
+                    cartController.price,
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -297,17 +290,37 @@ class _SellerItemState extends State<SellerItem> {
             Positioned(
                 top: heights * .24,
                 right: widths * .1,
-                child: GestureDetector(
-                  onTap: () {
-                    print(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,${buyController.id}');
-                    Get.defaultDialog(
-                        title: 'Products', content: SellerImage());
-                  },
-                  child: Image.network(
-                    buyController.sellerProduct,
-                    fit: BoxFit.fill,
-                    height: heights * .3,
-                    width: widths * .4,
+                child: Container(
+                  height: heights * .3,
+                  width: widths * .4,
+                  child: GestureDetector(
+                    onTap: () {
+                      print(
+                          ',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,${buyController.id}');
+                      Get.defaultDialog(
+                          title: 'Products', content: SellerImage());
+                    },
+                    child: Card(
+                      child: CachedNetworkImage(
+                        cacheManager: buyController.customCacheManager,
+                        imageUrl: buyController.sellerProduct,
+                        fit: BoxFit.fill,
+                        placeholder: (context, url) => Container(
+                          color: Colors.black12,
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          color: Colors.black12,
+                          child: Icon(Icons.error, color: Colors.red),
+                        ),
+                      ),
+                      semanticContainer: true,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
                   ),
                 ))
           ],

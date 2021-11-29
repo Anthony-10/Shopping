@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 
-class BoughtItem extends StatelessWidget {
-  BoughtItem({Key key}) : super(key: key);
+class Orders extends StatelessWidget {
+  Orders({Key key}) : super(key: key);
   final buyController = Get.put(BuyController());
 
   @override
@@ -15,7 +15,8 @@ class BoughtItem extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("Bought")
-              .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+              .where("sellUid",
+                  isEqualTo: FirebaseAuth.instance.currentUser.uid)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -36,8 +37,8 @@ class BoughtItem extends StatelessWidget {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  height: Get.height * .15,
-                                  width: Get.width * .25,
+                                  height: Get.height * .1,
+                                  width: Get.width * .2,
                                   child: Card(
                                     child: CachedNetworkImage(
                                       cacheManager:
@@ -75,7 +76,9 @@ class BoughtItem extends StatelessWidget {
                                     Text(snapshot.data.docs[index]['price']
                                         .toString()),
                                     Text(snapshot.data.docs[index]['size']
-                                        .toString())
+                                        .toString()),
+                                    Text(snapshot.data.docs[index]['date']
+                                        .toString()),
                                   ],
                                 )
                               ],

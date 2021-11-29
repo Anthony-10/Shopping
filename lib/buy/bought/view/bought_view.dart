@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'bought.dart';
 
 class BoughtView extends StatefulWidget {

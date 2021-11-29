@@ -46,8 +46,7 @@ class _SellLocationState extends State<SellLocation> {
     });
   }
 
-  */
-/*void getCurrentAddress() async {
+  void getCurrentAddress() async {
     final coordinated =
         new geoCo.Coordinates(position.latitude, position.longitude);
     var address =
@@ -61,8 +60,7 @@ class _SellLocationState extends State<SellLocation> {
       print(
           '????????????????????????????????????????$country$postalCode$addressLocation$firstAddress1');
     });
-  }*/ /*
-
+  }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -104,22 +102,23 @@ class _SellLocationState extends State<SellLocation> {
             trafficEnabled: true,
             onMapCreated: _onMapCreated,
 
-            */
+*/
 /*(GoogleMapController controller) {
 
               setState(() {
                 googleMapController = controller;
               });
-            },*/ /*
+            },
 
-            initialCameraPosition: CameraPosition(
+
+initialCameraPosition: CameraPosition(
                 target: _center
-                */
-/*LatLng(position.latitude.toDouble(),
-                    position.longitude.toDouble())*/ /*
+LatLng(position.latitude.toDouble(),
+                    position.longitude.toDouble()) ,
+                zoom: 18.0), */ /*
 
-                ,
-                zoom: 18.0),
+
+
             markers: Set<Marker>.of(markers.values),
           ),
           Positioned(

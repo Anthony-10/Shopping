@@ -1,11 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/buy/buy_page/view/pay_view.dart';
 
 class CartView extends StatelessWidget {
-  const CartView({Key key}) : super(key: key);
+  CartView({Key key}) : super(key: key);
+  final buyController = Get.put(BuyController());
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +66,35 @@ class CartView extends StatelessWidget {
                                             ),
                                             height: Get.height * .15,
                                             width: Get.width * .25,
-                                            child: Image.network(
-                                              snapshot.data.docs[index]['image']
-                                                  .toString(),
-                                              fit: BoxFit.fill,
+                                            child: Card(
+                                              child: CachedNetworkImage(
+                                                cacheManager: buyController
+                                                    .customCacheManager,
+                                                imageUrl: snapshot
+                                                    .data.docs[index]['image']
+                                                    .toString(),
+                                                fit: BoxFit.fill,
+                                                placeholder: (context, url) =>
+                                                    Container(
+                                                  color: Colors.black12,
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Container(
+                                                  color: Colors.black12,
+                                                  child: Icon(Icons.error,
+                                                      color: Colors.red),
+                                                ),
+                                              ),
+                                              semanticContainer: true,
+                                              clipBehavior:
+                                                  Clip.antiAliasWithSaveLayer,
+                                              elevation: 20.0,
+                                              color: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
                                             ),
                                           ),
                                           SizedBox(
@@ -202,7 +231,9 @@ class CartView extends StatelessWidget {
                         fixedSize: Size(Get.width * .7, 10),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => PayView());
+                    },
                     child: Text('Checkout')),
               ),
               SizedBox(

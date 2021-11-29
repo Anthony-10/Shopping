@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -249,10 +250,22 @@ class _SellerAccountState extends State<SellerAccount> {
                                 child: Container(
                                   height: Get.height * 0.2,
                                   child: Card(
-                                    child: Image.network(
-                                      snapshot.data.docs[index]['Url'][0]
+                                    child: CachedNetworkImage(
+                                      cacheManager:
+                                          buyController.customCacheManager,
+                                      imageUrl: snapshot
+                                          .data.docs[index]['Url'][0]
                                           .toString(),
                                       fit: BoxFit.fill,
+                                      placeholder: (context, url) => Container(
+                                        color: Colors.black12,
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Container(
+                                        color: Colors.black12,
+                                        child: Icon(Icons.error,
+                                            color: Colors.red),
+                                      ),
                                     ),
                                     semanticContainer: true,
                                     clipBehavior: Clip.antiAliasWithSaveLayer,

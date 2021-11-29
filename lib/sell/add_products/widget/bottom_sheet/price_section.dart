@@ -16,6 +16,7 @@ class _PriceSectionState extends State<PriceSection> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      reverse: true,
       physics: BouncingScrollPhysics(),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Container(

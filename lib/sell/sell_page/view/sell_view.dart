@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/sell/data/sell_view_category/sell_view_category.dart';
+import 'package:shopping_app/sell/models/sell_view_model.dart';
+import 'package:shopping_app/sell/orders/view/orders_view.dart';
+import 'package:shopping_app/sell/products/view/product_view.dart';
 
 class SellView extends StatefulWidget {
   const SellView({Key key}) : super(key: key);
@@ -10,6 +15,17 @@ class SellView extends StatefulWidget {
 }
 
 class _SellViewState extends State<SellView> {
+  SellViewItems element = SellViewCategory.products;
+  var lengths;
+  Query query;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+    print('$lengths,----------------------');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +79,13 @@ class _SellViewState extends State<SellView> {
                         (element) => Card(
                           child: ListTile(
                               title: TextButton.icon(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    setState(() {
+                                      this.element = element;
+                                    });
+                                    getPage();
+                                    print('${element.label},llllllllllllll');
+                                  },
                                   icon: Icon(element.icon),
                                   label: Text(element.label)),
                               subtitle: Text(
@@ -86,4 +108,59 @@ class _SellViewState extends State<SellView> {
       ),
     );
   }
+
+  Widget getPage() {
+    print(element);
+    switch (element) {
+      /*case SellViewCategory.products:
+        return ProductView();*/
+      case SellViewCategory.orders:
+        return OrdersView();
+      /* case SellViewCategory.users:
+        return BoughtView();*/
+      /* case BuyDrawerItems.location:
+        return BuyerLocation();*/
+      case SellViewCategory.products:
+      default:
+        return ProductView();
+    }
+  }
+
+  Future<int> getData() async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    try {
+      Query<Map<String, dynamic>> documentSnapshot = FirebaseFirestore.instance
+          .collection('Users')
+          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid);
+      if (documentSnapshot != null) {
+        setState(() {
+          lengths = documentSnapshot.snapshots().length;
+        });
+        print('${lengths},ooooooooo');
+      } else {
+        print('wewe');
+      }
+    } catch (e) {
+      print(e);
+    }
+    return lengths;
+  }
+
+  /*Future<void> getData() async {
+    final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+    try {
+      query = _fireStore
+          .collection("Products")
+          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+          .parameters
+          .length;
+      print('$query,----------------------');
+      */ /*.where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+          .snapshots()
+          .length;*/ /*
+
+    } catch (e) {
+      print(e);
+    }
+  }*/
 }

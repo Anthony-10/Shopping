@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/controller/auth_controller.dart';
@@ -29,6 +31,7 @@ class _DrawerViewState extends State<DrawerView> {
   double scaleFactor;
   bool isDrawerOpen;
   DrawerItem item = BuyDrawerItems.home;
+
   bool isDragging = false;
 
   @override

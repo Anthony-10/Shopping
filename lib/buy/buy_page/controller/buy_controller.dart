@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 
 class BuyController extends GetxController {
@@ -13,6 +14,14 @@ class BuyController extends GetxController {
   var itemElement;
   var sellerProduct;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+
+  final customCacheManager = CacheManager(
+    Config(
+      'customCachKey',
+      stalePeriod: Duration(days: 20),
+      maxNrOfCacheObjects: 100,
+    ),
+  );
 
   Future favorite({var image, String name, var userUid}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;

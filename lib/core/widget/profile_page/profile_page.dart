@@ -312,7 +312,8 @@ class _ProfilePageState extends State<ProfilePage> {
           await FirebaseFirestore.instance.collection('Users').doc(uid).get();
       if (documentSnapshot.exists) {
         setState(() {
-          drawerFunctions.images = documentSnapshot.get('Url');
+          drawerFunctions.images =
+              documentSnapshot.reference.snapshots().length;
           drawerFunctions.names = documentSnapshot.get('firstName');
           drawerFunctions.emails = documentSnapshot.get('email');
           drawerFunctions.url = documentSnapshot.get('userId');

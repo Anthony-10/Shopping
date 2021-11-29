@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
@@ -53,15 +55,35 @@ class _SellerImageState extends State<SellerImage> {
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: const EdgeInsets.all(16),
+                                height: heights * .5,
+                                width: widths * .5,
                                 //TODO
-                                child: Image.network(
-                                  snapshot.data.docs[index]['Url'][0]
-                                      .toString()
-                                      .characters
-                                      .iterator
-                                      .current,
-                                  height: heights * .5,
-                                  width: widths * .5,
+                                child: Card(
+                                  child: CachedNetworkImage(
+                                    cacheManager:
+                                        buyController.customCacheManager,
+                                    imageUrl: snapshot
+                                        .data.docs[index]['Url'][0]
+                                        .toString()
+                                        .characters
+                                        .iterator
+                                        .current,
+                                    placeholder: (context, url) => Container(
+                                      color: Colors.black12,
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Container(
+                                      color: Colors.black12,
+                                      child:
+                                          Icon(Icons.error, color: Colors.red),
+                                    ),
+                                  ),
+                                  semanticContainer: true,
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  elevation: 20.0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                 ),
                               );
                             }),

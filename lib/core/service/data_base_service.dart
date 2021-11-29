@@ -104,7 +104,7 @@ class DatabaseService extends GetxController {
         '............................................userProducts$fileURLList');
     try {
       if (uid != null) {
-        await _fireStore.collection("Products").doc().set({
+        await _fireStore.collection("Products").doc(uid).set({
           'productElement': productElement,
           'itemElement': itemElement,
           'checkBoxElement': checkBoxElement,
