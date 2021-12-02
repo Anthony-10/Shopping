@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
@@ -21,19 +22,13 @@ class _SellerAccountState extends State<SellerAccount> {
   final cartController = Get.put(CartController());
   final addProductsController = Get.put(AddProductsController());
   bool isLiked = false;
-  int likeCount = 0;
+  int likeCount;
 
   var name2;
 
   var item;
-
-  @override
-  void initState() {
-    // TODO: implement initSttData();*/
-    super.initState();
-    print(
-        '<<<<<<<<<<<<<<<<<<<<<<<<<<< ${buyController.productElement} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.');
-  }
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+  String uid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +63,60 @@ class _SellerAccountState extends State<SellerAccount> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                                onPressed: () {}, icon: Icon(Icons.search)),
-                            LikeButton(
+                                onPressed: () => print('2222222222222222'),
+                                icon: Icon(Icons.search)),
+                            IconButton(
+                                onPressed: () {
+                                  print('2222222222222222');
+                                  //TODO
+                                  if (_fireStore
+                                          .collection("Favorite")
+                                          .doc(buyController.id)
+                                          .collection("currentUser")
+                                          .doc(uid)
+                                          .get() !=
+                                      null) {
+                                    buyController.removeFavorite(
+                                        image: buyController.image,
+                                        name: buyController.name,
+                                        userUid: buyController.id);
+                                    print(
+                                        'removeFavorite, ############################################');
+                                  } else {
+                                    buyController.addFavorite(
+                                        image: buyController.image,
+                                        name: buyController.name,
+                                        userUid: buyController.id);
+                                    print(
+                                        'addFavorite, *******************************************');
+                                  }
+                                },
+                                icon: Icon(Icons.favorite)),
+                            /*LikeButton(
                               onTap: (isLiked) async {
-                                buyController.favorite(
-                                    image: buyController.image,
-                                    name: buyController.name,
-                                    userUid: buyController.id);
+                                print('wwewewew');
+                                if (_fireStore
+                                        .collection("Favorite")
+                                        .doc(buyController.id)
+                                        .collection("currentUser")
+                                        .doc(uid) !=
+                                    null) {
+                                  buyController.removeFavorite(
+                                      image: buyController.image,
+                                      name: buyController.name,
+                                      userUid: buyController.id);
+                                  print(
+                                      'addFavorite, ############################################');
+                                } else {
+                                  buyController.addFavorite(
+                                      image: buyController.image,
+                                      name: buyController.name,
+                                      userUid: buyController.id);
+                                  print(
+                                      'removeFavorite, *******************************************');
+                                }
                                 this.isLiked = !isLiked;
+                                print('wwewewew');
                                 return !isLiked;
                               },
                               size: 40,
@@ -98,7 +139,7 @@ class _SellerAccountState extends State<SellerAccount> {
                                   style: TextStyle(color: color),
                                 );
                               },
-                            )
+                            )*/
                           ],
                         ),
                       ),

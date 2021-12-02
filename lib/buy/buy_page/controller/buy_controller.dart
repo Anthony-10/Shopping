@@ -13,6 +13,9 @@ class BuyController extends GetxController {
   var productElement;
   var itemElement;
   var sellerProduct;
+
+  int likeCount = 0;
+  Map likes;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   final customCacheManager = CacheManager(
@@ -23,13 +26,70 @@ class BuyController extends GetxController {
     ),
   );
 
-  Future favorite({var image, String name, var userUid}) async {
+  Future addFavorite({var image, String name, var userUid}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
 
     try {
       if (uid != null) {
-        await _fireStore.collection("Favorite").doc().set(
-            {'image': image, 'name': name, 'uid': uid, 'userUid': userUid});
+        await _fireStore
+            .collection("Favorite")
+            .doc(userUid)
+            .collection("currentUser")
+            .doc(uid)
+            .set(
+                {'image': image, 'name': name, 'uid': uid, 'userUid': userUid});
+      } else {
+        print('Uid null');
+      }
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future handleLikePost() async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    try {
+      if (uid != null) {
+        await _fireStore
+            .collection("Likes")
+            .doc(userUid)
+            .collection("currentUser")
+            .doc(uid)
+            .set(
+                {'image': image, 'name': name, 'uid': uid, 'userUid': userUid});
+      } else {
+        print('Uid null');
+      }
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future removeFavorite({var image, String name, var userUid}) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+
+    try {
+      if (uid != null) {
+        await _fireStore
+            .collection("Favorite")
+            .doc(id)
+            .collection("currentUser")
+            .doc(uid)
+            .delete();
+      } else {
+        print('Uid null');
       }
     } on FirebaseException catch (e) {
       Get.snackbar(

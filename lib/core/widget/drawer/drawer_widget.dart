@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/data/buy_drawer/buy_item.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
@@ -26,10 +28,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   final drawerFunctions = Get.put(DrawerFunctions());
 
   final DatabaseService databaseService = Get.put(DatabaseService());
-  //final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   final AddProductsController addProductsController =
       Get.put(AddProductsController());
+  final buyController = Get.put(BuyController());
 
   @override
   Widget build(BuildContext context) {
@@ -87,58 +89,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   buildCircleAvatar(BuildContext context) => Padding(
       padding: const EdgeInsets.only(left: 20.0, top: 10.0, bottom: 20.0),
-      child:
-          /*Row(children: [
-          Stack(
-            children: [
-              CircleAvatar(
-                backgroundColor: Colors.grey,
-                radius: 50.0,
-                child: drawerFunctions.images != null
-                    ? Image.network(
-                        drawerFunctions.images,
-                        fit: BoxFit.fill,
-                      )
-                    : Icon(
-                        Icons.person,
-                        size: Get.height * 0.1,
-                      ),
-              ),
-              Positioned(
-                  bottom: -3,
-                  right: -3,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.camera_alt,
-                      size: 30.0,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        addProductsController.bottomIndex = 1;
-                        print(
-                            '????????????????????????????????????????????????????');
-                      });
-                      Get.bottomSheet(BottomSheetChose(
-                              addProductsController: addProductsController))
-                          .whenComplete(() => addProductsController
-                                  .drawerImage.isNotEmpty
-                              ? addProductsController.userImage().whenComplete(
-                                  () => databaseService.updateUserInfo())
-                              : Get.snackbar(
-                                  "Error Massage",
-                                  'No image Selected',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                ));
-                      print(
-                          'OOOOOOOOO BottomSheet OOOOOOOOOOOOO ${drawerFunctions.names} ${drawerFunctions.emails} 0000000000000000');
-                    },
-                  ))
-            ],
-          ),
-          //drawerFunctions.buildStreamBuilder(),
-        ]),*/
-          //????????????????????????????????????????????????????????????
-          Container(
+      child: Container(
         height: 100,
         child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
@@ -180,13 +131,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                       backgroundColor: Colors.grey,
                                       radius: 50.0,
                                       child: ClipOval(
-                                        child: Image.network(
-                                          drawerFunctions.images = snapshot
-                                              .data.docs[index]['Url']
-                                              .toString(),
-                                          fit: BoxFit.cover,
-                                          width: 100,
-                                          height: 100,
+                                        child: CachedNetworkImage(
+                                          cacheManager:
+                                              buyController.customCacheManager,
+                                          imageUrl: drawerFunctions.images =
+                                              snapshot.data.docs[index]['Url']
+                                                  .toString(),
+                                          fit: BoxFit.fill,
+                                          placeholder: (context, url) =>
+                                              Container(
+                                            color: Colors.black12,
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Container(
+                                            color: Colors.black12,
+                                            child: Icon(Icons.error,
+                                                color: Colors.red),
+                                          ),
                                         ),
                                       )),
                                 ),
@@ -205,15 +166,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                   snapshot.data.docs[index]['email'].toString(),
                                 ),
                               ])
-                              /*ListTile(
-                                title: Text(
-                                  snapshot.data.docs[index]['firstName']
-                                      .toString(),
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(snapshot.data.docs[index]['email']
-                                    .toString()),
-                              )*/
                             ],
                           ),
                         );
@@ -236,77 +188,5 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 );
               }
             }),
-      )
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-      /* Row(children: [
-          Stack(
-            children: [
-              CircleAvatar(
-                backgroundColor: Colors.grey,
-                radius: 50.0,
-                child: Icon(
-                  Icons.person,
-                  size: Get.height * 0.1,
-                ),
-              ),
-              Positioned(
-                  bottom: -3,
-                  right: -3,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.camera_alt,
-                      size: 30.0,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        addProductsController.bottomIndex = 1;
-                        print(
-                            '????????????????????????????????????????????????????');
-                      });
-                      Get.bottomSheet(BottomSheetChose(
-                              addProductsController: addProductsController))
-                          .whenComplete(() => addProductsController
-                                  .drawerImage.isNotEmpty
-                              ? addProductsController.userImage().whenComplete(
-                                  () => addProductsController.fileURL != null
-                                      ? databaseService.updateUserInfo()
-                                      : addProductsController.userImage())
-                              : Get.snackbar(
-                                  "Error Massage",
-                                  'No image Selected',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                ));
-                      print(
-                          'OOOOOOOOOOOOOOOOOOOOOO ${drawerFunctions.name} ${drawerFunctions.gmail} 0000000000000000');
-                    },
-                  ))
-            ],
-          ),
-          drawerFunctions.buildStreamBuilder(),
-           SizedBox(
-            height: Get.height * 0.1,
-            width: Get.width * 0.5,
-            child: ListTile(
-              title: Text(
-                drawerFunctions.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(drawerFunctions.gmail),
-            ),
-          )
-        ]),*/
-      //drawerFunctions.buildStreamBuilder(),
-      /*SizedBox(
-            height: Get.height * 0.1,
-            width: Get.width * 0.5,
-            child: ListTile(
-              title: Text(
-                drawerFunctions.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(drawerFunctions.gmail),
-            ),
-          )*/
-      );
+      ));
 }

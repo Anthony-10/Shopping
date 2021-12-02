@@ -14,6 +14,7 @@ class DatabaseService extends GetxController {
   var fileURL;
 
   List fileURLList = [];
+  int count;
 
   Future<void> addUserInfo({String email, String firstName, var url}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
@@ -88,17 +89,18 @@ class DatabaseService extends GetxController {
     }
   }
 
-  Future<void> userProducts(
-      {String productElement,
-      String itemElement,
-      String checkBoxElement,
-      String colorElement,
-      var url,
-      var otherProductPrice,
-      String otherProductDescription,
-      String productName,
-      var productSize,
-      var productAmount}) async {
+  Future<void> userProducts({
+    String productElement,
+    String itemElement,
+    String checkBoxElement,
+    String colorElement,
+    var url,
+    var otherProductPrice,
+    String otherProductDescription,
+    String productName,
+    var productSize,
+    var productAmount,
+  }) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     print(
         '............................................userProducts$fileURLList');
@@ -115,7 +117,7 @@ class DatabaseService extends GetxController {
           'productAmount': productAmount,
           'otherProductPrice': otherProductPrice,
           'otherProductDescription': otherProductDescription,
-          'userId': uid
+          'userId': uid,
         });
         addProductsController.image.clear();
       } else {

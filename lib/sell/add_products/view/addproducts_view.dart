@@ -62,10 +62,10 @@ class _AddProductsViewState extends State<AddProductsView> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0)),
-                                      child: Image.file(element,
-                                          fit: BoxFit.fill,
-                                          height: height * 0.5,
-                                          width: width * 0.7),
+                                      child: Image.file(
+                                        element,
+                                        fit: BoxFit.fill,
+                                      ),
                                       color: Colors.white70,
                                       elevation: 3.0,
                                       margin: EdgeInsets.all(9.0),

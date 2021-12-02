@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/widget/carouselSlider.dart';
@@ -27,6 +29,52 @@ class _BuyViewState extends State<BuyView> {
   var height = Get.height;
   var width = Get.width;
   int activeIndex = 0;
+
+  Position _currentUserPosition;
+  double distanceImMeter = 0.0;
+
+  Future _getTheDistance() async {
+    _currentUserPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print('${_currentUserPosition.latitude}LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
+    double storelat = -1.2871771;
+    double storelog = 36.8201451;
+
+    distanceImMeter = await Geolocator.distanceBetween(
+        _currentUserPosition.latitude,
+        _currentUserPosition.longitude,
+        storelat,
+        storelog);
+  }
+
+  Future<void> getData() async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    try {
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection('location')
+          .doc(uid)
+          .get();
+      if (documentSnapshot.exists) {
+        setState(() {
+          drawerFunctions.names = documentSnapshot.get('firstName');
+          drawerFunctions.emails = documentSnapshot.get('email');
+          drawerFunctions.url = documentSnapshot.get('userId');
+        });
+      } else {
+        print('wewe');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initSttData();*/
+    _getTheDistance();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -11,6 +11,7 @@ import 'package:shopping_app/sell/data/sell_drawer/sell_item.dart';
 import 'package:shopping_app/sell/models/drawer_model.dart';
 import 'package:shopping_app/sell/orders/view/orders_view.dart';
 import 'package:shopping_app/sell/products/view/product_view.dart';
+import 'package:shopping_app/sell/sell_location/view/sell_location.dart';
 import 'package:shopping_app/sell/settings/view/setting_view.dart';
 
 import '../../../../buy/favourite/favourites.dart';
@@ -166,8 +167,8 @@ class _DrawerViewState extends State<DrawerView> {
         return AddProductsView();
       case SellDrawerItems.orders:
         return OrdersView();
-      /*case SellDrawerItems.location:
-        return SellLocation();*/
+      case SellDrawerItems.location:
+        return SellLocation();
       case SellDrawerItems.sellPage:
       default:
         return NewTab();
