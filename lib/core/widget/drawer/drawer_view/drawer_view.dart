@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/controller/auth_controller.dart';
 import 'package:shopping_app/buy/bought/view/bought_view.dart';
+import 'package:shopping_app/buy/buy_location/view/buyer_location.dart';
 import 'package:shopping_app/buy/cart/view/cart_view.dart';
 import 'package:shopping_app/buy/data/buy_drawer/buy_item.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
@@ -149,8 +150,8 @@ class _DrawerViewState extends State<DrawerView> {
         return CartView();
       case BuyDrawerItems.bought:
         return BoughtView();
-      /* case BuyDrawerItems.location:
-        return BuyerLocation();*/
+      case BuyDrawerItems.location:
+        return BuyerLocation();
       case BuyDrawerItems.home:
       default:
         return NewTab();

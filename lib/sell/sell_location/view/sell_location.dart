@@ -45,7 +45,9 @@ class _SellLocationState extends State<SellLocation> {
         await GeolocatorPlatform.instance.getCurrentPosition();
     setState(() {
       position = currentPosition;
+      print('${position.longitude},${position.latitude}');
     });
+    getAddressFromLatLong();
   }
 
   void getCurrentAddress() async {
@@ -91,13 +93,20 @@ class _SellLocationState extends State<SellLocation> {
   }
 */
 
-  Future<void> getAddressFromLatLong() async {
-    List<Placemark> placemark =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+  Future getAddressFromLatLong() async {
+    print('getAddressFromLatLong,lllllllllllllllllllllllllllllllllllllllllll');
+    print(
+        '${position.longitude},${position.latitude},////////////////////////////////');
+    List<Placemark> placemark = await GeocodingPlatform.instance
+        .placemarkFromCoordinates(position.latitude, position.longitude,
+            localeIdentifier: "en");
+    print('getAddressFromLatLong,00000000000000000000000000000000000000000000');
     Placemark place = placemark[0];
     addressLocation = place.street;
     country = place.country;
     postalCode = place.postalCode;
+    print('$addressLocation,$country,$postalCode');
+    setState(() {});
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -119,7 +128,6 @@ class _SellLocationState extends State<SellLocation> {
   void initState() {
     // TODO: implement initState
     getCurrentLocation();
-    getAddressFromLatLong();
     super.initState();
   }
 
