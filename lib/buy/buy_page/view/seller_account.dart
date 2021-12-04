@@ -27,6 +27,7 @@ class _SellerAccountState extends State<SellerAccount> {
   var name2;
 
   var item;
+  var color;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   String uid = FirebaseAuth.instance.currentUser.uid;
 
@@ -69,29 +70,43 @@ class _SellerAccountState extends State<SellerAccount> {
                                 onPressed: () {
                                   print('2222222222222222');
                                   //TODO
-                                  if (_fireStore
-                                          .collection("Favorite")
-                                          .doc(buyController.id)
-                                          .collection("currentUser")
-                                          .doc(uid)
-                                          .get() !=
-                                      null) {
-                                    buyController.removeFavorite(
-                                        image: buyController.image,
-                                        name: buyController.name,
-                                        userUid: buyController.id);
-                                    print(
-                                        'removeFavorite, ############################################');
-                                  } else {
-                                    buyController.addFavorite(
-                                        image: buyController.image,
-                                        name: buyController.name,
-                                        userUid: buyController.id);
-                                    print(
-                                        'addFavorite, *******************************************');
-                                  }
+                                  FirebaseFirestore.instance
+                                      .collection("Favorite")
+                                      .doc(buyController.id)
+                                      .collection("currentUser")
+                                      .doc(uid)
+                                      .get()
+                                      .then(
+                                          (DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.exists) {
+                                      buyController.removeFavorite(
+                                          image: buyController.image,
+                                          name: buyController.name,
+                                          userUid: buyController.id);
+                                      setState(() {
+                                        color = 1;
+                                      });
+                                      print(
+                                          'removeFavorite, ############################################');
+                                    } else {
+                                      buyController.addFavorite(
+                                          image: buyController.image,
+                                          name: buyController.name,
+                                          userUid: buyController.id);
+                                      setState(() {
+                                        color = 2;
+                                      });
+                                      print(
+                                          'addFavorite, *******************************************');
+                                    }
+                                  });
                                 },
-                                icon: Icon(Icons.favorite)),
+                                icon: Icon(Icons.favorite,
+                                    color: color == 1
+                                        ? Colors.grey
+                                        : color == 2
+                                            ? Colors.red
+                                            : Colors.grey)),
                             /*LikeButton(
                               onTap: (isLiked) async {
                                 print('wwewewew');

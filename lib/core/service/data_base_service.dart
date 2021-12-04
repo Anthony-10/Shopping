@@ -140,9 +140,6 @@ class DatabaseService extends GetxController {
     var url,
   }) async {
     if (drawerFunctions.emails.isNotEmpty || drawerFunctions.names.isNotEmpty) {
-      print(
-          '2222222222222 GetData Called 22222222222222222${drawerFunctions.emails},${drawerFunctions.names}');
-      print('11111111111 UpdateUserInfo 1111111111111111$fileURL');
       String uid = FirebaseAuth.instance.currentUser.uid;
       try {
         if (uid != null) {

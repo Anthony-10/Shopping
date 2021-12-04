@@ -14,6 +14,11 @@ class BuyController extends GetxController {
   var itemElement;
   var sellerProduct;
 
+  double lat;
+  double long;
+
+  var address;
+  var country;
   int likeCount = 0;
   Map likes;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -36,8 +41,12 @@ class BuyController extends GetxController {
             .doc(userUid)
             .collection("currentUser")
             .doc(uid)
-            .set(
-                {'image': image, 'name': name, 'uid': uid, 'userUid': userUid});
+            .set({
+          'image': image,
+          'name': name,
+          'uid': uid,
+          'userUid': userUid,
+        });
       } else {
         print('Uid null');
       }
