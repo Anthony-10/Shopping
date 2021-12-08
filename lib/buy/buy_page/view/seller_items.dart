@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/bought/controller/bought_controller.dart';
@@ -56,7 +55,9 @@ class _SellerItemState extends State<SellerItem> {
                                 color: Colors.white,
                               )),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.to(() => CartView());
+                              },
                               icon: Icon(
                                 Icons.shopping_cart,
                                 color: Colors.white,
@@ -239,7 +240,7 @@ class _SellerItemState extends State<SellerItem> {
                                           ),
                                           borderRadius:
                                               BorderRadius.circular(70)),
-                                      child: Icon(Icons.shopping_cart),
+                                      child: Icon(Icons.add_shopping_cart),
                                     ),
                                   ),
                                   ElevatedButton(

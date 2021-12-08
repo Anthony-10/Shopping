@@ -53,8 +53,10 @@ class DatabaseService extends GetxController {
                 .child("ProductImages/${DateTime.now().toString()}");
             final result = await ref.putFile(file);
             fileURL = await result.ref.getDownloadURL();
+
             fileURLList.add(fileURL);
             print('Image Url$fileURLList');
+            addProductsController.image.clear();
             print(
                 '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<not drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
           });
@@ -70,6 +72,7 @@ class DatabaseService extends GetxController {
                 email: drawerFunctions.emails,
                 firstName: drawerFunctions.names,
                 url: fileURL);
+            addProductsController.drawerImage.clear();
             print(
                 '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
           });

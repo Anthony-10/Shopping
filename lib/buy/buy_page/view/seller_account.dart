@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:like_button/like_button.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/buy/buy_page/view/location.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_items.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
@@ -30,6 +30,13 @@ class _SellerAccountState extends State<SellerAccount> {
   var color;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   String uid = FirebaseAuth.instance.currentUser.uid;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    buildIcon();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +67,7 @@ class _SellerAccountState extends State<SellerAccount> {
                       Align(
                         alignment: Alignment.topRight,
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            IconButton(
-                                onPressed: () => print('2222222222222222'),
-                                icon: Icon(Icons.search)),
                             IconButton(
                                 onPressed: () {
                                   print('2222222222222222');
@@ -101,60 +103,12 @@ class _SellerAccountState extends State<SellerAccount> {
                                     }
                                   });
                                 },
-                                icon: Icon(Icons.favorite,
-                                    color: color == 1
-                                        ? Colors.grey
-                                        : color == 2
-                                            ? Colors.red
-                                            : Colors.grey)),
-                            /*LikeButton(
-                              onTap: (isLiked) async {
-                                print('wwewewew');
-                                if (_fireStore
-                                        .collection("Favorite")
-                                        .doc(buyController.id)
-                                        .collection("currentUser")
-                                        .doc(uid) !=
-                                    null) {
-                                  buyController.removeFavorite(
-                                      image: buyController.image,
-                                      name: buyController.name,
-                                      userUid: buyController.id);
-                                  print(
-                                      'addFavorite, ############################################');
-                                } else {
-                                  buyController.addFavorite(
-                                      image: buyController.image,
-                                      name: buyController.name,
-                                      userUid: buyController.id);
-                                  print(
-                                      'removeFavorite, *******************************************');
-                                }
-                                this.isLiked = !isLiked;
-                                print('wwewewew');
-                                return !isLiked;
-                              },
-                              size: 40,
-                              isLiked: isLiked,
-                              likeCount: likeCount,
-                              likeBuilder: (isLiked) {
-                                final color =
-                                    isLiked ? Colors.red : Colors.grey;
-                                return Icon(
-                                  Icons.favorite,
-                                  color: color,
-                                  size: 25,
-                                );
-                              },
-                              countBuilder: (count, isLiked, text) {
-                                final color =
-                                    isLiked ? Colors.black : Colors.grey;
-                                return Text(
-                                  text,
-                                  style: TextStyle(color: color),
-                                );
-                              },
-                            )*/
+                                icon: buildIcon()),
+                            IconButton(
+                                onPressed: () {
+                                  Get.to(() => Location());
+                                },
+                                icon: Icon(Icons.map))
                           ],
                         ),
                       ),
@@ -176,8 +130,9 @@ class _SellerAccountState extends State<SellerAccount> {
           SizedBox(
             height: 20,
           ),
+          //Changed from stream to future
           StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
+              stream: _fireStore
                   .collection("Products")
                   .where("userId", isEqualTo: buyController.id)
                   .snapshots(),
@@ -198,6 +153,12 @@ class _SellerAccountState extends State<SellerAccount> {
                           scrollDirection: Axis.horizontal,
                           itemCount: snapshot.data.size,
                           itemBuilder: (BuildContext context, int index) {
+                            //removeDuplicat by .toSet
+                            final productElement =
+                                snapshot.data.docs[index]['productElement'];
+                            print(
+                                '${snapshot.data.docs[index]['productElement']},9999999999999999999999');
+
                             return Row(
                               children: [
                                 SizedBox(
@@ -208,8 +169,8 @@ class _SellerAccountState extends State<SellerAccount> {
                                     setState(() {
                                       buyController.id =
                                           snapshot.data.docs[index]['userId'];
-                                      item = snapshot.data.docs[index]
-                                          ['productElement'];
+                                      //TODO
+                                      item = productElement;
                                     });
                                     print(
                                         '(((((((((((((((((((${buyController.id}))))))))))))))))))');
@@ -220,9 +181,7 @@ class _SellerAccountState extends State<SellerAccount> {
                                     height: 30,
                                     width: 90,
                                     child: Center(
-                                        child: Text(snapshot
-                                            .data.docs[index]['productElement']
-                                            .toString())),
+                                        child: Text(productElement.toString())),
                                     decoration: BoxDecoration(
                                         color: Colors.grey[400],
                                         borderRadius:
@@ -380,6 +339,15 @@ class _SellerAccountState extends State<SellerAccount> {
         ]),
       ),
     );
+  }
+
+  Icon buildIcon() {
+    return Icon(Icons.favorite,
+        color: color == 1
+            ? Colors.grey
+            : color == 2
+                ? Colors.red
+                : Colors.grey);
   }
 
   Future favorite({var image, String name}) async {

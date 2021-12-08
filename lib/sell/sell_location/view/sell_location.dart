@@ -189,6 +189,7 @@ class _SellLocationState extends State<SellLocation> {
                       'Address': addressLocation,
                       'Country': country,
                       'postalCode': postalCode,
+                      'uid': uid,
                       /*final coordinated = new geoCo.Coordinates(
                         position.latitude, position.longitude);
                     var address = await geoCo.Geocoder.local

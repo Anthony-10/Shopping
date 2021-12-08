@@ -16,7 +16,9 @@ class Favourites extends StatefulWidget {
 
 class _FavouritesState extends State<Favourites> {
   final buyController = Get.put(BuyController());
-  var we;
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('Favorite');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,21 +46,25 @@ class _FavouritesState extends State<Favourites> {
               ],
             )),
             Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection("Favorite")
-                      .where("uid",
-                          isEqualTo: FirebaseAuth.instance.currentUser.uid)
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.active) {
+              //Changed from stream to future
+              child: FutureBuilder(
+                  future: _fireStore
+                      .collection('Favorite')
+                      .doc()
+                      .collection("currentUser")
+                      .doc(FirebaseAuth.instance.currentUser.uid)
+                      .get(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
                       if (!snapshot.hasData) {
                         return const Center(
                           child: Text("Check your connection"),
                         );
                       } else {
                         if (snapshot.hasData) {
+                          final Map<String, dynamic> datas =
+                              snapshot.data.data() as Map<String, dynamic>;
+                          print('$datas,lllllllttttttttttttttttttttttttt');
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -66,7 +72,7 @@ class _FavouritesState extends State<Favourites> {
                             primary: false,
                             padding: const EdgeInsets.all(15),
                             physics: BouncingScrollPhysics(),
-                            itemCount: snapshot.data.size,
+                            itemCount: datas.length,
                             itemBuilder: (context, index) {
                               return Column(
                                 children: [
@@ -77,18 +83,18 @@ class _FavouritesState extends State<Favourites> {
                                       onTap: () {
                                         Get.to(() => SellerAccount());
                                         buyController.name =
-                                            snapshot.data.docs[index]['name'];
-                                        buyController.id = snapshot
-                                            .data.docs[index]['userUid'];
+                                            snapshot.data[index]['name'];
+                                        buyController.id =
+                                            snapshot.data[index]['userUid'];
                                         buyController.image =
-                                            snapshot.data.docs[index]['image'];
+                                            snapshot.data[index]['image'];
                                       },
                                       child: Card(
                                         child: CachedNetworkImage(
                                           cacheManager:
                                               buyController.customCacheManager,
-                                          imageUrl: snapshot
-                                              .data.docs[index]['image']
+                                          imageUrl: snapshot.data[index]
+                                                  ['image']
                                               .toString(),
                                           fit: BoxFit.fill,
                                           placeholder: (context, url) =>
@@ -118,8 +124,7 @@ class _FavouritesState extends State<Favourites> {
                                     height: 20,
                                   ),
                                   Text(
-                                    snapshot.data.docs[index]['name']
-                                        .toString(),
+                                    snapshot.data[index]['name'].toString(),
                                   )
                                 ],
                               );

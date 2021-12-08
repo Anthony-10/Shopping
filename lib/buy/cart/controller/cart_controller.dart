@@ -10,16 +10,18 @@ class CartController extends GetxController {
   var amount;
   var uid;
   var name;
+  var sllerId;
 
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-  Future<void> cartInfo(
-      {var price,
-      var size,
-      var description,
-      var amount,
-      var image,
-      var name}) async {
+  Future<void> cartInfo({
+    var price,
+    var size,
+    var description,
+    var amount,
+    var image,
+    var name,
+  }) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       await _fireStore.collection("Cart").doc().set({
@@ -29,7 +31,7 @@ class CartController extends GetxController {
         'amount': amount,
         'image': image,
         'name': name,
-        'userId': uid
+        'userId': uid,
       });
     } on FirebaseException catch (e) {
       print(

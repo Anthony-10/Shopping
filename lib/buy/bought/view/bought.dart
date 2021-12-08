@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
@@ -69,12 +70,24 @@ class BoughtItem extends StatelessWidget {
                                   width: Get.width * .2,
                                 ),
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(snapshot.data.docs[index]['name']
                                         .toString()),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
                                     Text(snapshot.data.docs[index]['price']
                                         .toString()),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
                                     Text(snapshot.data.docs[index]['size']
+                                        .toString()),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(snapshot.data.docs[index]['date']
                                         .toString())
                                   ],
                                 )

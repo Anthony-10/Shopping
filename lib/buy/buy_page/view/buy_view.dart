@@ -103,6 +103,7 @@ class _BuyViewState extends State<BuyView> {
           buyController.address = documentSnapshot.get('Address');
           buyController.country = documentSnapshot.get('Country');
         });
+        print('${buyController.lat} getData:::::::::::::::::::::::::');
       } else {
         print('wewe');
       }
