@@ -1,14 +1,14 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
-import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
+import 'package:shopping_app/buy/buy_page/widget/carouselSlider.dart';
+import 'package:shopping_app/buy/buy_page/widget/userInfo.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BuyView extends StatefulWidget {
   @override
@@ -22,6 +22,9 @@ class _BuyViewState extends State<BuyView> {
   final uid = FirebaseAuth.instance.currentUser;
   final DatabaseService databaseService = Get.put(DatabaseService());
 
+  final usersRef = FirebaseFirestore.instance.collection('location');
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+
   bool isLiked = false;
   int likeCount = 0;
   var name;
@@ -29,6 +32,94 @@ class _BuyViewState extends State<BuyView> {
   var height = Get.height;
   var width = Get.width;
   int activeIndex = 0;
+
+  Position _currentUserPosition;
+  double distanceImMeter = 0;
+
+  getUsers() {
+    usersRef.get().then((QuerySnapshot snapshot) =>
+        snapshot.docs.forEach((DocumentSnapshot doc) {
+          print(doc.data());
+        }));
+  }
+
+  Future _getTheDistance() async {
+    _currentUserPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print('${_currentUserPosition.latitude}LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
+
+    print('${buyController.lat}OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+    print('wewe');
+    distanceImMeter = Geolocator.distanceBetween(_currentUserPosition.latitude,
+        _currentUserPosition.longitude, buyController.lat, buyController.long);
+    print('rerere');
+    var distance = distanceImMeter.round().toInt();
+    print('qeqeqe');
+    updateDistance(
+        address: buyController.address,
+        country: buyController.country,
+        latitude: buyController.lat,
+        longitude: buyController.long,
+        distances: distance);
+  }
+
+  Future<void> updateDistance(
+      {var address,
+      var country,
+      var latitude,
+      var longitude,
+      var distances}) async {
+    if (distances.isNotEmpty) {
+      String uid = FirebaseAuth.instance.currentUser.uid;
+      try {
+        await _fireStore.collection("Users").doc().update({
+          'Address': address,
+          'Country': country,
+          'latitude': latitude,
+          'longitude': longitude,
+          'distance': distances,
+        });
+      } on FirebaseException catch (e) {
+        Get.snackbar(
+          "Error Adding User ",
+          e.message,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      } catch (e) {
+        rethrow;
+      }
+    }
+  }
+
+  Future<void> getData() async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    try {
+      DocumentSnapshot documentSnapshot =
+          await FirebaseFirestore.instance.collection('location').doc().get();
+      if (documentSnapshot.exists) {
+        setState(() {
+          buyController.lat = documentSnapshot.get('latitude');
+          buyController.long = documentSnapshot.get('longitude');
+          buyController.address = documentSnapshot.get('Address');
+          buyController.country = documentSnapshot.get('Country');
+        });
+        print('${buyController.lat} getData:::::::::::::::::::::::::');
+      } else {
+        print('wewe');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initSttData();*/
+    getData();
+    _getTheDistance();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,56 +127,7 @@ class _BuyViewState extends State<BuyView> {
         backgroundColor: Colors.transparent,
         body: Column(
           children: [
-            Stack(
-              children: [
-                Container(
-                  height: Get.height * 0.3,
-                  width: Get.width,
-                  child: CarouselSlider.builder(
-                    options: CarouselOptions(
-                        onPageChanged: (index, reason) =>
-                            setState(() => activeIndex = index),
-                        viewportFraction: 1,
-                        height: height * 0.6,
-                        enlargeCenterPage: true,
-                        autoPlay: true,
-                        autoPlayAnimationDuration: Duration(seconds: 2),
-                        autoPlayInterval: Duration(seconds: 5),
-                        aspectRatio: 18 / 8),
-                    itemCount: controller.homePageData.length,
-                    itemBuilder: (context, index, realIndex) {
-                      final image = controller.homePageData[index].imageAsset;
-                      return Container(
-                        height: height * 0.6,
-                        width: width,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(image),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(20)),
-                        margin: const EdgeInsets.all(15),
-                      );
-                    },
-                  ),
-                ),
-                Positioned(
-                    bottom: 20,
-                    right: 150,
-                    child: AnimatedSmoothIndicator(
-                      activeIndex: activeIndex,
-                      count: controller.homePageData.length,
-                      effect: JumpingDotEffect(
-                        activeDotColor: Colors.red,
-                        dotColor: Colors.white,
-                        dotHeight: 10,
-                        dotWidth: 10,
-                        spacing: 16,
-                        verticalOffset: 10,
-                      ),
-                    )),
-              ],
-            ),
+            CarouselSliderPage(),
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: SizedBox(
@@ -102,112 +144,7 @@ class _BuyViewState extends State<BuyView> {
             SizedBox(
               height: 15,
             ),
-            StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection("Users")
-                    .where("userId",
-                        isNotEqualTo: FirebaseAuth.instance.currentUser.uid)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
-                    if (!snapshot.hasData) {
-                      return const Center(
-                        child: Text("Check your connection"),
-                      );
-                    } else {
-                      if (snapshot.hasData) {
-                        return Expanded(
-                          child: GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              childAspectRatio: 1 / 1.8,
-                              mainAxisSpacing: 9,
-                              crossAxisSpacing: 5,
-                              crossAxisCount: 2,
-                            ),
-                            primary: false,
-                            padding: const EdgeInsets.all(15),
-                            physics: BouncingScrollPhysics(),
-                            itemCount: snapshot.data.size,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                height: height * 0.9,
-                                width: width * 0.5,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: Get.height * 0.30,
-                                      width: Get.width * 0.5,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Get.to(() => SellerAccount());
-                                          buyController.name = snapshot
-                                              .data.docs[index]['firstName'];
-                                          buyController.id = snapshot
-                                              .data.docs[index]['userId'];
-                                          buyController.image =
-                                              snapshot.data.docs[index]['Url'];
-                                        },
-                                        child: Card(
-                                          child: Image.network(
-                                            snapshot.data.docs[index]['Url']
-                                                .toString(),
-                                            fit: BoxFit.fill,
-                                          ),
-                                          semanticContainer: true,
-                                          clipBehavior:
-                                              Clip.antiAliasWithSaveLayer,
-                                          elevation: 20.0,
-                                          color: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      width: Get.width * 0.3,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            snapshot
-                                                .data.docs[index]['firstName']
-                                                .toString(),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text('30'),
-                                                Icon(Icons.favorite),
-                                              ])
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                    }
-                    return null;
-                  } else {
-                    return Center(child: Text('Loading.....'));
-                  }
-                }),
+            UserStaff(),
           ],
         ),
       ),

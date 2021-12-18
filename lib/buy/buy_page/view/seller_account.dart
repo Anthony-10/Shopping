@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:like_button/like_button.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/buy/buy_page/view/location.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_items.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
@@ -20,18 +22,20 @@ class _SellerAccountState extends State<SellerAccount> {
   final cartController = Get.put(CartController());
   final addProductsController = Get.put(AddProductsController());
   bool isLiked = false;
-  int likeCount = 0;
+  int likeCount;
 
   var name2;
 
   var item;
+  var color;
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+  String uid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   void initState() {
-    // TODO: implement initSttData();*/
+    // TODO: implement initState
+    buildIcon();
     super.initState();
-    print(
-        '<<<<<<<<<<<<<<<<<<<<<<<<<<< ${buyController.productElement} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.');
   }
 
   @override
@@ -63,41 +67,48 @@ class _SellerAccountState extends State<SellerAccount> {
                       Align(
                         alignment: Alignment.topRight,
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                                onPressed: () {}, icon: Icon(Icons.search)),
-                            LikeButton(
-                              onTap: (isLiked) async {
-                                buyController.favorite(
-                                    image: buyController.image,
-                                    name: buyController.name,
-                                    userUid: buyController.id);
-                                this.isLiked = !isLiked;
-                                return !isLiked;
-                              },
-                              size: 40,
-                              isLiked: isLiked,
-                              likeCount: likeCount,
-                              likeBuilder: (isLiked) {
-                                final color =
-                                    isLiked ? Colors.red : Colors.grey;
-                                return Icon(
-                                  Icons.favorite,
-                                  color: color,
-                                  size: 25,
-                                );
-                              },
-                              countBuilder: (count, isLiked, text) {
-                                final color =
-                                    isLiked ? Colors.black : Colors.grey;
-                                return Text(
-                                  text,
-                                  style: TextStyle(color: color),
-                                );
-                              },
-                            )
+                                onPressed: () {
+                                  print('2222222222222222');
+                                  //TODO
+                                  FirebaseFirestore.instance
+                                      .collection("Favorite")
+                                      .doc(buyController.id)
+                                      .collection("currentUser")
+                                      .doc(uid)
+                                      .get()
+                                      .then(
+                                          (DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.exists) {
+                                      buyController.removeFavorite(
+                                          image: buyController.image,
+                                          name: buyController.name,
+                                          userUid: buyController.id);
+                                      setState(() {
+                                        color = 1;
+                                      });
+                                      print(
+                                          'removeFavorite, ############################################');
+                                    } else {
+                                      buyController.addFavorite(
+                                          image: buyController.image,
+                                          name: buyController.name,
+                                          userUid: buyController.id);
+                                      setState(() {
+                                        color = 2;
+                                      });
+                                      print(
+                                          'addFavorite, *******************************************');
+                                    }
+                                  });
+                                },
+                                icon: buildIcon()),
+                            IconButton(
+                                onPressed: () {
+                                  Get.to(() => Location());
+                                },
+                                icon: Icon(Icons.map))
                           ],
                         ),
                       ),
@@ -119,8 +130,9 @@ class _SellerAccountState extends State<SellerAccount> {
           SizedBox(
             height: 20,
           ),
+          //Changed from stream to future
           StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
+              stream: _fireStore
                   .collection("Products")
                   .where("userId", isEqualTo: buyController.id)
                   .snapshots(),
@@ -141,6 +153,12 @@ class _SellerAccountState extends State<SellerAccount> {
                           scrollDirection: Axis.horizontal,
                           itemCount: snapshot.data.size,
                           itemBuilder: (BuildContext context, int index) {
+                            //removeDuplicat by .toSet
+                            final productElement =
+                                snapshot.data.docs[index]['productElement'];
+                            print(
+                                '${snapshot.data.docs[index]['productElement']},9999999999999999999999');
+
                             return Row(
                               children: [
                                 SizedBox(
@@ -151,8 +169,8 @@ class _SellerAccountState extends State<SellerAccount> {
                                     setState(() {
                                       buyController.id =
                                           snapshot.data.docs[index]['userId'];
-                                      item = snapshot.data.docs[index]
-                                          ['productElement'];
+                                      //TODO
+                                      item = productElement;
                                     });
                                     print(
                                         '(((((((((((((((((((${buyController.id}))))))))))))))))))');
@@ -163,9 +181,7 @@ class _SellerAccountState extends State<SellerAccount> {
                                     height: 30,
                                     width: 90,
                                     child: Center(
-                                        child: Text(snapshot
-                                            .data.docs[index]['productElement']
-                                            .toString())),
+                                        child: Text(productElement.toString())),
                                     decoration: BoxDecoration(
                                         color: Colors.grey[400],
                                         borderRadius:
@@ -249,10 +265,22 @@ class _SellerAccountState extends State<SellerAccount> {
                                 child: Container(
                                   height: Get.height * 0.2,
                                   child: Card(
-                                    child: Image.network(
-                                      snapshot.data.docs[index]['Url'][0]
+                                    child: CachedNetworkImage(
+                                      cacheManager:
+                                          buyController.customCacheManager,
+                                      imageUrl: snapshot
+                                          .data.docs[index]['Url'][0]
                                           .toString(),
                                       fit: BoxFit.fill,
+                                      placeholder: (context, url) => Container(
+                                        color: Colors.black12,
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Container(
+                                        color: Colors.black12,
+                                        child: Icon(Icons.error,
+                                            color: Colors.red),
+                                      ),
                                     ),
                                     semanticContainer: true,
                                     clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -311,6 +339,15 @@ class _SellerAccountState extends State<SellerAccount> {
         ]),
       ),
     );
+  }
+
+  Icon buildIcon() {
+    return Icon(Icons.favorite,
+        color: color == 1
+            ? Colors.grey
+            : color == 2
+                ? Colors.red
+                : Colors.grey);
   }
 
   Future favorite({var image, String name}) async {

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/view/buy_view.dart';
@@ -11,6 +13,15 @@ class NewTab extends StatefulWidget {
 
 class _NewTabState extends State<NewTab> {
   final drawerFunctions = Get.put(DrawerFunctions());
+
+  var userNumbers;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('wwwwwwwwwwwww');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +69,12 @@ class _NewTabState extends State<NewTab> {
                     ),
                     GestureDetector(
                       onTap: () {
+                        print(
+                            '$userNumbers,lllllllllllllllllllllllllllllllllllllllllllll');
                         setState(() {
+                          getData();
+                          print(
+                              '$userNumbers,lllllllllllllllllllllllllllllllllllllllllllll');
                           drawerFunctions.initialIndex = 1;
                         });
                       },
@@ -95,5 +111,18 @@ class _NewTabState extends State<NewTab> {
         ),
       ),
     );
+  }
+
+  Future<void> getData() async {
+    try {
+      userNumbers = FirebaseFirestore.instance
+          .collection("Products")
+          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+          .snapshots()
+          .length
+          .toString();
+    } catch (e) {
+      print(e);
+    }
   }
 }

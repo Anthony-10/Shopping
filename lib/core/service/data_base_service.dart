@@ -14,6 +14,7 @@ class DatabaseService extends GetxController {
   var fileURL;
 
   List fileURLList = [];
+  int count;
 
   Future<void> addUserInfo({String email, String firstName, var url}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
@@ -52,8 +53,10 @@ class DatabaseService extends GetxController {
                 .child("ProductImages/${DateTime.now().toString()}");
             final result = await ref.putFile(file);
             fileURL = await result.ref.getDownloadURL();
+
             fileURLList.add(fileURL);
             print('Image Url$fileURLList');
+            addProductsController.image.clear();
             print(
                 '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<not drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
           });
@@ -69,6 +72,7 @@ class DatabaseService extends GetxController {
                 email: drawerFunctions.emails,
                 firstName: drawerFunctions.names,
                 url: fileURL);
+            addProductsController.drawerImage.clear();
             print(
                 '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<drawer>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$fileURL');
           });
@@ -88,23 +92,24 @@ class DatabaseService extends GetxController {
     }
   }
 
-  Future<void> userProducts(
-      {String productElement,
-      String itemElement,
-      String checkBoxElement,
-      String colorElement,
-      var url,
-      var otherProductPrice,
-      String otherProductDescription,
-      String productName,
-      var productSize,
-      var productAmount}) async {
+  Future<void> userProducts({
+    String productElement,
+    String itemElement,
+    String checkBoxElement,
+    String colorElement,
+    var url,
+    var otherProductPrice,
+    String otherProductDescription,
+    String productName,
+    var productSize,
+    var productAmount,
+  }) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     print(
         '............................................userProducts$fileURLList');
     try {
       if (uid != null) {
-        await _fireStore.collection("Products").doc().set({
+        await _fireStore.collection("Products").doc(uid).set({
           'productElement': productElement,
           'itemElement': itemElement,
           'checkBoxElement': checkBoxElement,
@@ -115,7 +120,7 @@ class DatabaseService extends GetxController {
           'productAmount': productAmount,
           'otherProductPrice': otherProductPrice,
           'otherProductDescription': otherProductDescription,
-          'userId': uid
+          'userId': uid,
         });
         addProductsController.image.clear();
       } else {
@@ -138,9 +143,6 @@ class DatabaseService extends GetxController {
     var url,
   }) async {
     if (drawerFunctions.emails.isNotEmpty || drawerFunctions.names.isNotEmpty) {
-      print(
-          '2222222222222 GetData Called 22222222222222222${drawerFunctions.emails},${drawerFunctions.names}');
-      print('11111111111 UpdateUserInfo 1111111111111111$fileURL');
       String uid = FirebaseAuth.instance.currentUser.uid;
       try {
         if (uid != null) {

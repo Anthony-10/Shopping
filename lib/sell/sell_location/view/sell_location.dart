@@ -1,8 +1,8 @@
-/*
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoder/geocoder.dart' as geoCo;
+import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SellLocation extends StatefulWidget {
@@ -17,13 +17,15 @@ class _SellLocationState extends State<SellLocation> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   final LatLng _center = const LatLng(45.521563, -122.677433);
   GoogleMapController mapController;
+  String uid = FirebaseAuth.instance.currentUser.uid;
 
   Position position;
   String addressLocation;
   String country;
   String postalCode;
   String country1;
-  String address1;
+  String address;
+  Placemark place;
   //Geolocator _geolocator = Geolocator();
 
   void getMarkers(double lat, double long) {
@@ -43,12 +45,13 @@ class _SellLocationState extends State<SellLocation> {
         await GeolocatorPlatform.instance.getCurrentPosition();
     setState(() {
       position = currentPosition;
+      print('${position.longitude},${position.latitude}');
     });
+    getAddressFromLatLong();
   }
 
-  */
-/*void getCurrentAddress() async {
-    final coordinated =
+  void getCurrentAddress() async {
+    /*final coordinated =
         new geoCo.Coordinates(position.latitude, position.longitude);
     var address =
         await geoCo.Geocoder.local.findAddressesFromCoordinates(coordinated);
@@ -60,9 +63,51 @@ class _SellLocationState extends State<SellLocation> {
       addressLocation = firstAddress1.addressLine;
       print(
           '????????????????????????????????????????$country$postalCode$addressLocation$firstAddress1');
-    });
-  }*/ /*
+    });*/
+  }
+  /*Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+*/
+
+  Future getAddressFromLatLong() async {
+    print('getAddressFromLatLong,lllllllllllllllllllllllllllllllllllllllllll');
+    print(
+        '${position.longitude},${position.latitude},////////////////////////////////');
+    List<Placemark> placemark = await GeocodingPlatform.instance
+        .placemarkFromCoordinates(position.latitude, position.longitude,
+            localeIdentifier: "en");
+    print('getAddressFromLatLong,00000000000000000000000000000000000000000000');
+    Placemark place = placemark[0];
+    addressLocation = place.street;
+    country = place.country;
+    postalCode = place.postalCode;
+    print('$addressLocation,$country,$postalCode');
+    setState(() {});
+  }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -103,23 +148,7 @@ class _SellLocationState extends State<SellLocation> {
             compassEnabled: true,
             trafficEnabled: true,
             onMapCreated: _onMapCreated,
-
-            */
-/*(GoogleMapController controller) {
-
-              setState(() {
-                googleMapController = controller;
-              });
-            },*/ /*
-
-            initialCameraPosition: CameraPosition(
-                target: _center
-                */
-/*LatLng(position.latitude.toDouble(),
-                    position.longitude.toDouble())*/ /*
-
-                ,
-                zoom: 18.0),
+            initialCameraPosition: CameraPosition(target: _center, zoom: 18.0),
             markers: Set<Marker>.of(markers.values),
           ),
           Positioned(
@@ -151,7 +180,17 @@ class _SellLocationState extends State<SellLocation> {
               padding: const EdgeInsets.symmetric(horizontal: 70.0),
               child: ElevatedButton(
                   onPressed: () async {
-                    final coordinated = new geoCo.Coordinates(
+                    await FirebaseFirestore.instance
+                        .collection('location')
+                        .doc(uid)
+                        .set({
+                      'latitude': position.latitude,
+                      'longitude': position.longitude,
+                      'Address': addressLocation,
+                      'Country': country,
+                      'postalCode': postalCode,
+                      'uid': uid,
+                      /*final coordinated = new geoCo.Coordinates(
                         position.latitude, position.longitude);
                     var address = await geoCo.Geocoder.local
                         .findAddressesFromCoordinates(coordinated);
@@ -171,6 +210,7 @@ class _SellLocationState extends State<SellLocation> {
                       addressLocation = firstAddress1.addressLine;
                       print(
                           '????????????????????????????????????????$country$postalCode$addressLocation$firstAddress1');
+                    });*/
                     });
                   },
                   child: Text('Save'),
@@ -185,4 +225,3 @@ class _SellLocationState extends State<SellLocation> {
     );
   }
 }
-*/

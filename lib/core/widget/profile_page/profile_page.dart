@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
@@ -22,6 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+  final buyController = Get.put(BuyController());
 
   var names;
 
@@ -263,12 +266,18 @@ class _ProfilePageState extends State<ProfilePage> {
               backgroundColor: Colors.grey,
               radius: 80.0,
               child: ClipOval(
-                child: Image.network(
-                  drawerFunctions.images =
+                child: CachedNetworkImage(
+                  cacheManager: buyController.customCacheManager,
+                  imageUrl: drawerFunctions.images =
                       snapshot.data.docs[index]['Url'].toString(),
-                  fit: BoxFit.cover,
-                  width: 180,
-                  height: 180,
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) => Container(
+                    color: Colors.black12,
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.black12,
+                    child: Icon(Icons.error, color: Colors.red),
+                  ),
                 ),
               )),
         ),
@@ -312,7 +321,8 @@ class _ProfilePageState extends State<ProfilePage> {
           await FirebaseFirestore.instance.collection('Users').doc(uid).get();
       if (documentSnapshot.exists) {
         setState(() {
-          drawerFunctions.images = documentSnapshot.get('Url');
+          drawerFunctions.images =
+              documentSnapshot.reference.snapshots().length;
           drawerFunctions.names = documentSnapshot.get('firstName');
           drawerFunctions.emails = documentSnapshot.get('email');
           drawerFunctions.url = documentSnapshot.get('userId');

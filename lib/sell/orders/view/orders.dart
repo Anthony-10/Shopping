@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 
-class BoughtItem extends StatelessWidget {
-  BoughtItem({Key key}) : super(key: key);
+class Orders extends StatelessWidget {
+  Orders({Key key}) : super(key: key);
   final buyController = Get.put(BuyController());
 
   @override
@@ -16,7 +15,8 @@ class BoughtItem extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("Bought")
-              .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+              .where("sellUid",
+                  isEqualTo: FirebaseAuth.instance.currentUser.uid)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -37,8 +37,8 @@ class BoughtItem extends StatelessWidget {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  height: Get.height * .15,
-                                  width: Get.width * .25,
+                                  height: Get.height * .1,
+                                  width: Get.width * .2,
                                   child: Card(
                                     child: CachedNetworkImage(
                                       cacheManager:
@@ -70,25 +70,15 @@ class BoughtItem extends StatelessWidget {
                                   width: Get.width * .2,
                                 ),
                                 Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(snapshot.data.docs[index]['name']
                                         .toString()),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
                                     Text(snapshot.data.docs[index]['price']
                                         .toString()),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
                                     Text(snapshot.data.docs[index]['size']
                                         .toString()),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
                                     Text(snapshot.data.docs[index]['date']
-                                        .toString())
+                                        .toString()),
                                   ],
                                 )
                               ],

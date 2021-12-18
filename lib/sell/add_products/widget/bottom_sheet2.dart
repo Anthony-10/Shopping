@@ -243,20 +243,22 @@ class _BottomSheet2State extends State<BottomSheet2> {
   }
 
   Future<void> uploadPicks() async {
-    databaseService.fileURLList.isNotEmpty
-        ? databaseService.userProducts(
-            productElement:
-                addProductsController.productElement.title.toString(),
-            itemElement: addProductsController.itemElement.title.toString(),
-            checkBoxElement: addProductsController.checkBoxElement.toString(),
-            colorElement: addProductsController.colorElement.toString(),
-            url: databaseService.fileURLList,
-            productName: addProductsController.productName.text,
-            productSize: addProductsController.productSize.text,
-            productAmount: addProductsController.productAmount.text,
-            otherProductPrice: addProductsController.otherProductPrice.text,
-            otherProductDescription:
-                addProductsController.otherProductDescription.text)
-        : print('fileURLList null');
+    if (databaseService.fileURLList.isNotEmpty) {
+      databaseService.userProducts(
+        productElement: addProductsController.productElement.title.toString(),
+        itemElement: addProductsController.itemElement.title.toString(),
+        checkBoxElement: addProductsController.checkBoxElement.toString(),
+        colorElement: addProductsController.colorElement.toString(),
+        url: databaseService.fileURLList,
+        productName: addProductsController.productName.text,
+        productSize: addProductsController.productSize.text,
+        productAmount: addProductsController.productAmount.text,
+        otherProductPrice: addProductsController.otherProductPrice.text,
+        otherProductDescription:
+            addProductsController.otherProductDescription.text,
+      );
+    } else {
+      print('fileURLList null');
+    }
   }
 }
