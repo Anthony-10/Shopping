@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SellLocation extends StatefulWidget {
@@ -182,7 +183,7 @@ class _SellLocationState extends State<SellLocation> {
                   onPressed: () async {
                     await FirebaseFirestore.instance
                         .collection('location')
-                        .doc(uid)
+                        .doc()
                         .set({
                       'latitude': position.latitude,
                       'longitude': position.longitude,
@@ -211,7 +212,10 @@ class _SellLocationState extends State<SellLocation> {
                       print(
                           '????????????????????????????????????????$country$postalCode$addressLocation$firstAddress1');
                     });*/
-                    });
+                    }).whenComplete(() => Get.snackbar(
+                              "Success message",
+                              'Location Added',
+                            ));
                   },
                   child: Text('Save'),
                   style: ElevatedButton.styleFrom(

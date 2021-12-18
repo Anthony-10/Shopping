@@ -110,6 +110,7 @@ class DatabaseService extends GetxController {
     try {
       if (uid != null) {
         await _fireStore.collection("Products").doc(uid).set({
+          'productCount': FieldValue.increment(1),
           'productElement': productElement,
           'itemElement': itemElement,
           'checkBoxElement': checkBoxElement,

@@ -36,48 +36,43 @@ class _BuyViewState extends State<BuyView> {
   Position _currentUserPosition;
   double distanceImMeter = 0;
 
-  getUsers() {
-    usersRef.get().then((QuerySnapshot snapshot) =>
-        snapshot.docs.forEach((DocumentSnapshot doc) {
-          print(doc.data());
-        }));
-  }
-
   Future _getTheDistance() async {
     _currentUserPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    print('${_currentUserPosition.latitude}LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL');
+    /* print('${_currentUserPosition.latitude}Lalalalalalalalalalalala');
+    print('${buyController.lat}latlatlatlatlatlatlatlatlat');
+    print('${_currentUserPosition.longitude}lololololololololololololo');
+    print('${buyController.long}longlonglonglonglonglonglonglonglonglong');*/
 
-    print('${buyController.lat}OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
-    print('wewe');
-    distanceImMeter = Geolocator.distanceBetween(_currentUserPosition.latitude,
-        _currentUserPosition.longitude, buyController.lat, buyController.long);
-    print('rerere');
-    var distance = distanceImMeter.round().toInt();
-    print('qeqeqe');
-    updateDistance(
-        address: buyController.address,
-        country: buyController.country,
-        latitude: buyController.lat,
-        longitude: buyController.long,
-        distances: distance);
+    for (int i = 0;
+        i < usersRef.doc(buyController.userId).toString().length;
+        i++) {
+      distanceImMeter = Geolocator.distanceBetween(
+          _currentUserPosition.latitude,
+          _currentUserPosition.longitude,
+          buyController.lat,
+          buyController.long);
+      print('rerere');
+      var distance = distanceImMeter.round().toInt();
+      print('qeqeqe');
+      updateDistance(
+          url: buyController.url,
+          email: buyController.email,
+          firstName: buyController.firstName,
+          distances: distance);
+    }
   }
 
   Future<void> updateDistance(
-      {var address,
-      var country,
-      var latitude,
-      var longitude,
-      var distances}) async {
-    if (distances.isNotEmpty) {
-      String uid = FirebaseAuth.instance.currentUser.uid;
+      {var url, var email, var firstName, var distances}) async {
+    print('$distances,ggggggggggggggggggggggggjgjjgjgjgj');
+    if (distances != null) {
       try {
         await _fireStore.collection("Users").doc().update({
-          'Address': address,
-          'Country': country,
-          'latitude': latitude,
-          'longitude': longitude,
-          'distance': distances,
+          'Url': buyController.url,
+          'email': buyController.email,
+          'firstName': buyController.firstName,
+          'distances': distances,
         });
       } on FirebaseException catch (e) {
         Get.snackbar(
@@ -92,10 +87,41 @@ class _BuyViewState extends State<BuyView> {
   }
 
   Future<void> getData() async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
+    print('getData888888888888888888888888');
     try {
-      DocumentSnapshot documentSnapshot =
-          await FirebaseFirestore.instance.collection('location').doc().get();
+      FirebaseFirestore.instance
+          .collection('location')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          buyController.lat = doc['latitude'];
+          buyController.long = doc['longitude'];
+
+          print('${doc['latitude']},eeeeeeeeeeeeeeeeeeeeee');
+          print('${doc['longitude']},eeeeeeeeeeeeeeeeeeeeee');
+        });
+      });
+
+      /*DocumentSnapshot documentSnapshot =
+          await*/
+      /* FirebaseFirestore.instance
+          .collection('Products')
+          .doc()
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          setState(() {
+            buyController.lat = documentSnapshot.get('latitude');
+            buyController.long = documentSnapshot.get('longitude');
+            buyController.address = documentSnapshot.get('Address');
+            buyController.country = documentSnapshot.get('Country');
+          });
+          print('${buyController.lat} getData:::::::::::::::::::::::::');
+        } else {
+          print('wewe');
+        }
+      });*/
+      /* print('$documentSnapshot,55555555555555555555555555555555555555555');
       if (documentSnapshot.exists) {
         setState(() {
           buyController.lat = documentSnapshot.get('latitude');
@@ -106,17 +132,33 @@ class _BuyViewState extends State<BuyView> {
         print('${buyController.lat} getData:::::::::::::::::::::::::');
       } else {
         print('wewe');
-      }
+      }*/
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<void> getUserData() async {
+    DocumentSnapshot documentSnapshot =
+        await FirebaseFirestore.instance.collection('Users').doc().get();
+    if (documentSnapshot.exists) {
+      setState(() {
+        buyController.url = documentSnapshot.get('Url');
+        buyController.email = documentSnapshot.get('email');
+        buyController.firstName = documentSnapshot.get('firstName');
+        buyController.userId = documentSnapshot.get('userId');
+      });
+      print('${buyController.lat} getUserData:::::::::::::::::::::::::');
+    } else {
+      print('wewe');
     }
   }
 
   @override
   void initState() {
     // TODO: implement initSttData();*/
-    getData();
-    _getTheDistance();
+    /* getData();
+    _getTheDistance();*/
     super.initState();
   }
 

@@ -34,7 +34,7 @@ class _SellerAccountState extends State<SellerAccount> {
   @override
   void initState() {
     // TODO: implement initState
-    buildIcon();
+    colorFunction();
     super.initState();
   }
 
@@ -86,7 +86,7 @@ class _SellerAccountState extends State<SellerAccount> {
                                           name: buyController.name,
                                           userUid: buyController.id);
                                       setState(() {
-                                        color = 1;
+                                        color = 0;
                                       });
                                       print(
                                           'removeFavorite, ############################################');
@@ -96,7 +96,7 @@ class _SellerAccountState extends State<SellerAccount> {
                                           name: buyController.name,
                                           userUid: buyController.id);
                                       setState(() {
-                                        color = 2;
+                                        color = 1;
                                       });
                                       print(
                                           'addFavorite, *******************************************');
@@ -341,11 +341,31 @@ class _SellerAccountState extends State<SellerAccount> {
     );
   }
 
+  void colorFunction() {
+    FirebaseFirestore.instance
+        .collection("Favorite")
+        .doc(buyController.id)
+        .collection("currentUser")
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          color = 1;
+        });
+      } else {
+        setState(() {
+          color = 0;
+        });
+      }
+    });
+  }
+
   Icon buildIcon() {
     return Icon(Icons.favorite,
-        color: color == 1
+        color: color == 0
             ? Colors.grey
-            : color == 2
+            : color == 1
                 ? Colors.red
                 : Colors.grey);
   }

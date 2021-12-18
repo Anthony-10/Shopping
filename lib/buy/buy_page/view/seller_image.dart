@@ -23,6 +23,8 @@ class _SellerImageState extends State<SellerImage> {
 
   var activeIndex = 0;
 
+  var ware;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +32,7 @@ class _SellerImageState extends State<SellerImage> {
       width: widths * .8,
       child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection("Products")
+              .collection("Product")
               .where("userId", isEqualTo: buyController.id)
               .where('productElement', isEqualTo: buyController.productElement)
               .where('itemElement', isEqualTo: buyController.itemElement)
@@ -53,6 +55,8 @@ class _SellerImageState extends State<SellerImage> {
                             //onPageChanged: controller.selectedPageIndex,
                             itemCount: snapshot.data.size,
                             itemBuilder: (context, index) {
+                              print(
+                                  '${ware = snapshot.data.docs[index]['Url'][1].toString()},jjjjjjjjjjjjjjjjj88888888888888888888');
                               return Container(
                                 margin: const EdgeInsets.all(16),
                                 height: heights * .5,
@@ -62,12 +66,9 @@ class _SellerImageState extends State<SellerImage> {
                                   child: CachedNetworkImage(
                                     cacheManager:
                                         buyController.customCacheManager,
-                                    imageUrl: snapshot
-                                        .data.docs[index]['Url'][0]
-                                        .toString()
-                                        .characters
-                                        .iterator
-                                        .current,
+                                    imageUrl: ware = snapshot
+                                        .data.docs[index]['Url'][1]
+                                        .toString(),
                                     placeholder: (context, url) => Container(
                                       color: Colors.black12,
                                     ),
@@ -88,7 +89,7 @@ class _SellerImageState extends State<SellerImage> {
                               );
                             }),
                       ),
-                      SmoothPageIndicator(
+                      /*SmoothPageIndicator(
                         controller: controller.controller,
                         //activeIndex: ,
                         count: snapshot.data.size,
@@ -100,11 +101,12 @@ class _SellerImageState extends State<SellerImage> {
                           spacing: 16,
                           verticalOffset: 10,
                         ),
-                      )
+                      )*/
                     ],
                   );
                 }
               }
+              print('$ware,mmmmmmmmmmmmmmpppppppppppppppppppppppppppp');
               return null;
             } else {
               return Center(child: Text('Loading.....'));
