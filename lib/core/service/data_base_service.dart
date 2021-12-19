@@ -15,9 +15,15 @@ class DatabaseService extends GetxController {
 
   List fileURLList = [];
   int count;
+  String uid = FirebaseAuth.instance.currentUser.uid;
+
+  var categories = 0;
+  var products = 0;
+  var sold = 0;
+  var returns = 0;
+  var order = 0;
 
   Future<void> addUserInfo({String email, String firstName, var url}) async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       if (uid != null) {
         await _fireStore.collection("Users").doc(uid).set({
@@ -104,13 +110,11 @@ class DatabaseService extends GetxController {
     var productSize,
     var productAmount,
   }) async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
     print(
         '............................................userProducts$fileURLList');
     try {
       if (uid != null) {
-        await _fireStore.collection("Products").doc(uid).set({
-          'productCount': FieldValue.increment(1),
+        await _fireStore.collection("Products").doc().set({
           'productElement': productElement,
           'itemElement': itemElement,
           'checkBoxElement': checkBoxElement,
@@ -123,6 +127,15 @@ class DatabaseService extends GetxController {
           'otherProductDescription': otherProductDescription,
           'userId': uid,
         });
+        {
+          counterNumber(
+              categories: categories,
+              products: FieldValue.increment(1),
+              sold: sold,
+              returns: returns,
+              order: order,
+              userid: uid);
+        }
         addProductsController.image.clear();
       } else {
         print('Uid null');
@@ -136,6 +149,65 @@ class DatabaseService extends GetxController {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> getCounterNumber() async {
+    FirebaseFirestore.instance
+        .collection("Counter")
+        .where('uid', isEqualTo: uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((doc) {
+          categories = doc['categories'];
+          products = doc['products'];
+          sold = doc['sold'];
+          order = doc['order'];
+          returns = doc['returns'];
+        });
+      } else {
+        print(
+            'there is no data,llllllllllllllllllllllllllllllllllllllllllllllll');
+      }
+    });
+  }
+
+  Future<void> counterNumber(
+      {var categories,
+      var products,
+      var sold,
+      var order,
+      var returns,
+      var userid}) async {
+    FirebaseFirestore.instance
+        .collection("Counter")
+        .where('uid', isEqualTo: uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isEmpty) {
+        _fireStore.collection("Counter").doc(userid).set({
+          'categories': categories,
+          'products': products,
+          'sold': sold,
+          'order': order,
+          'returns': returns,
+          'uid': userid
+        });
+        print('set,9999999999999999');
+      } else {
+        print(
+            '$categories,$products,$sold,$order,$returns,$userid,oooooooooooooooooooooooooooooooo');
+        _fireStore.collection("Counter").doc(userid).update({
+          'categories': categories,
+          'products': products,
+          'sold': sold,
+          'order': order,
+          'returns': returns,
+          'uid': userid
+        });
+        print('update,9999999999999999');
+      }
+    });
   }
 
   Future<void> updateUserInfo({

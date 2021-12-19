@@ -30,6 +30,13 @@ class _AddProductsViewState extends State<AddProductsView> {
   var width = Get.width;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    databaseService.getCounterNumber();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
