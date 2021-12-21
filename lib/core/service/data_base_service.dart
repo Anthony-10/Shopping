@@ -15,7 +15,6 @@ class DatabaseService extends GetxController {
 
   List fileURLList = [];
   int count;
-  String uid = FirebaseAuth.instance.currentUser.uid;
 
   var categories = 0;
   var products = 0;
@@ -24,6 +23,7 @@ class DatabaseService extends GetxController {
   var order = 0;
 
   Future<void> addUserInfo({String email, String firstName, var url}) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       if (uid != null) {
         await _fireStore.collection("Users").doc(uid).set({
@@ -110,6 +110,7 @@ class DatabaseService extends GetxController {
     var productSize,
     var productAmount,
   }) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
     print(
         '............................................userProducts$fileURLList');
     try {
@@ -151,7 +152,14 @@ class DatabaseService extends GetxController {
     }
   }
 
+  /*Future<void>userCategories()async {
+    if(){
+
+    }
+  }*/
+
   Future<void> getCounterNumber() async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
         .collection("Counter")
         .where('uid', isEqualTo: uid)
@@ -179,6 +187,7 @@ class DatabaseService extends GetxController {
       var order,
       var returns,
       var userid}) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
         .collection("Counter")
         .where('uid', isEqualTo: uid)

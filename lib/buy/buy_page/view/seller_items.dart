@@ -125,8 +125,8 @@ class _SellerItemState extends State<SellerItem> {
                                             (BuildContext context, int index) {
                                           return Container(
                                             margin: EdgeInsets.all(4),
-                                            height: 10,
-                                            width: 12,
+                                            height: Get.height * .07,
+                                            width: Get.width * .04,
                                             decoration: BoxDecoration(
                                               border: Border.all(
                                                 color: Colors.black,
@@ -163,7 +163,7 @@ class _SellerItemState extends State<SellerItem> {
                                 height: heights * .02,
                               ),
                               Container(
-                                height: heights * .13,
+                                height: heights * .09,
                                 width: widths,
                                 child: SingleChildScrollView(
                                   child: Text(cartController.description),
@@ -179,34 +179,45 @@ class _SellerItemState extends State<SellerItem> {
                                   Row(
                                     children: [
                                       Container(
-                                        height: heights * .04,
-                                        width: widths * .1,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(70)),
-                                        child: Icon(Icons.add),
-                                      ),
+                                          height: heights * .04,
+                                          width: widths * .1,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.black,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(70)),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                buyController.counter++;
+                                              });
+                                            },
+                                            child: Icon(Icons.add),
+                                          )),
                                       SizedBox(
                                         width: widths * .03,
                                       ),
-                                      Text('23'),
+                                      Text('${buyController.counter}'),
                                       SizedBox(
                                         width: widths * .03,
                                       ),
                                       Container(
-                                        height: heights * .04,
-                                        width: widths * .1,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(70)),
-                                        child: Icon(Icons.remove),
-                                      ),
+                                          height: heights * .04,
+                                          width: widths * .1,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.black,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(70)),
+                                          child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  buyController.counter--;
+                                                });
+                                              },
+                                              child: Icon(Icons.remove))),
                                     ],
                                   ),
                                   IconButton(
@@ -224,7 +235,7 @@ class _SellerItemState extends State<SellerItem> {
                                         price: cartController.price,
                                         size: cartController.size,
                                         description: cartController.description,
-                                        amount: cartController.amount,
+                                        amount: buyController.counter,
                                         image: buyController.sellerProduct,
                                         name: cartController.name,
                                       );

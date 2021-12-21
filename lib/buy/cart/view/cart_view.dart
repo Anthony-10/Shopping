@@ -8,10 +8,29 @@ import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/pay_view.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
 
-class CartView extends StatelessWidget {
+class CartView extends StatefulWidget {
   CartView({Key key}) : super(key: key);
+
+  @override
+  State<CartView> createState() => _CartViewState();
+}
+
+class _CartViewState extends State<CartView> {
   final buyController = Get.put(BuyController());
+
   final cartController = Get.put(CartController());
+
+  var price;
+  int sum = 0;
+
+  String uid = FirebaseAuth.instance.currentUser.uid;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    sumFunction();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,17 +80,6 @@ class CartView extends StatelessWidget {
                                       padding: const EdgeInsets.all(9.0),
                                       child: Column(
                                         children: [
-                                          Align(
-                                            alignment: Alignment.topRight,
-                                            child: IconButton(
-                                                onPressed: () {
-                                                  cartController.sllerId =
-                                                      snapshot.data.docs[index]
-                                                          .reference
-                                                          .delete();
-                                                },
-                                                icon: Icon(Icons.close)),
-                                          ),
                                           Row(
                                             children: [
                                               Container(
@@ -124,9 +132,7 @@ class CartView extends StatelessWidget {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      snapshot.data
-                                                          .docs[index]['name']
-                                                          .toString(),
+                                                      'name: ${snapshot.data.docs[index]['name'].toString()}',
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -135,53 +141,33 @@ class CartView extends StatelessWidget {
                                                     SizedBox(
                                                       height: Get.height * .02,
                                                     ),
-                                                    Text(snapshot.data
-                                                        .docs[index]['price']
-                                                        .toString()),
+                                                    Text(
+                                                        'price: ${snapshot.data.docs[index]['price'].toString()}'),
+                                                    SizedBox(
+                                                      height: Get.height * .02,
+                                                    ),
+                                                    Text(
+                                                        'amount: ${snapshot.data.docs[index]['amount'].toString()}'),
                                                   ],
                                                 ),
                                               ),
                                               SizedBox(
                                                 width: Get.width * .15,
                                               ),
-                                              Container(
-                                                height: Get.height * .15,
-                                                width: Get.width * .14,
-                                                color: Colors.grey[200],
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top:
-                                                              Get.height * .01),
-                                                      child: Container(
-                                                        height:
-                                                            Get.height * .05,
-                                                        width: Get.width * .06,
-                                                        color: Colors.grey[100],
-                                                        child: Icon(Icons.add),
-                                                      ),
-                                                    ),
-                                                    Text('23'),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          bottom:
-                                                              Get.height * .01),
-                                                      child: Container(
-                                                        height:
-                                                            Get.height * .05,
-                                                        width: Get.width * .06,
-                                                        color: Colors.grey[100],
-                                                        child:
-                                                            Icon(Icons.remove),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              )
+                                              IconButton(
+                                                  onPressed: () {
+                                                    cartController.sllerId =
+                                                        snapshot
+                                                            .data
+                                                            .docs[index]
+                                                            .reference
+                                                            .delete();
+                                                    //TODO
+                                                    //Adding the numbers even
+                                                    // when removing the items
+                                                    sumFunction();
+                                                  },
+                                                  icon: Icon(Icons.close)),
                                             ],
                                           ),
                                         ],
@@ -231,7 +217,7 @@ class CartView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text('Ksh 30,000',
+                          Text('Ksh $sum',
                               style: TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.bold)),
                           Text('Ksh 30,000',
@@ -268,5 +254,29 @@ class CartView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+//TODO
+  void sumFunction() {
+    print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+    FirebaseFirestore.instance
+        .collection('Cart')
+        .where('userId', isEqualTo: uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      print('ooooooooooooooooooooooooooooooooooo');
+      querySnapshot.docs.forEach((doc) {
+        if (querySnapshot.docs.isNotEmpty) {
+          price = doc['price'];
+          int pValue = int.parse(price);
+          setState(() {
+            sum += pValue;
+          });
+          print('$sum,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+        } else {
+          print('wewe');
+        }
+      });
+    });
   }
 }

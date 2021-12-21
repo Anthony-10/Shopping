@@ -12,7 +12,7 @@ class BoughtController extends GetxController {
       var image,
       var name,
       String sellUid}) async {
-    var date = DateTime.now();
+    var date = DateTime.now().toString();
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       await _fireStore.collection("Bought").doc().set({
@@ -25,6 +25,8 @@ class BoughtController extends GetxController {
         'sellUid': sellUid,
         'date': date,
       });
+      print(
+          "---------------------- Uploading User data  ----------------------");
     } on FirebaseException catch (e) {
       print(
           "---------------------- Uploading User data  ----------------------");

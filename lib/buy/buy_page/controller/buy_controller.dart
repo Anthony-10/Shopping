@@ -28,6 +28,8 @@ class BuyController extends GetxController {
   var address;
   var country;
 
+  int counter = 0;
+
   int likeCount = 0;
   Map likes;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;

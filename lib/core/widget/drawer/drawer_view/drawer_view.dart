@@ -57,7 +57,7 @@ class _DrawerViewState extends State<DrawerView> {
       });
 
   final drawerFunctions = Get.put(DrawerFunctions());
-  final authController = Get.find<AuthController>();
+  final authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {

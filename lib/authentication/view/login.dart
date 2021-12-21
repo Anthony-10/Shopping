@@ -64,7 +64,7 @@ class _LoginState extends State<Login> {
                           alignment: Alignment.centerRight,
                           child: Text('Forgot PassWord?'))),
                   SizedBox(
-                    height: 20.0,
+                    height: Get.height * 0.007,
                   ),
                   ElevatedButton(
                       onPressed: () {

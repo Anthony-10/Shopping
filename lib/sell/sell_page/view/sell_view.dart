@@ -127,7 +127,6 @@ class _SellViewState extends State<SellView> {
   }
 
   Future<int> getData() async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       Query<Map<String, dynamic>> documentSnapshot = FirebaseFirestore.instance
           .collection('Users')
@@ -136,7 +135,6 @@ class _SellViewState extends State<SellView> {
         setState(() {
           lengths = documentSnapshot.snapshots().length;
         });
-        print('${lengths},ooooooooo');
       } else {
         print('wewe');
       }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/authentication/controller/auth_controller.dart';
 import 'package:shopping_app/buy/bought/controller/bought_controller.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
@@ -71,7 +72,7 @@ class _PayViewState extends State<PayView> {
                       boughtController.boughtInfo(
                           price: cartController.price,
                           size: cartController.size,
-                          amount: cartController.amount,
+                          amount: buyController.counter,
                           image: buyController.sellerProduct,
                           name: cartController.name,
                           sellUid: buyController.id);
