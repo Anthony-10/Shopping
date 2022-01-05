@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/sell/models/item_model.dart';
 import 'package:shopping_app/sell/models/product_model.dart';
 
@@ -32,6 +33,7 @@ class AddProductsController extends GetxController {
   final TextEditingController productAmount = TextEditingController();
   final TextEditingController otherProductPrice = TextEditingController();
   final TextEditingController otherProductDescription = TextEditingController();
+  //final buyController = Get.put(BuyController());
 
   getImageGallery(ImageSource imageSource) async {
     image.clear();

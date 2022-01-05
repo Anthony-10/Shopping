@@ -300,11 +300,11 @@ class _SellerItemState extends State<SellerItem> {
               ),
             ),
             Positioned(
-                top: heights * .24,
+                top: heights * .18,
                 right: widths * .1,
                 child: Container(
-                  height: heights * .3,
-                  width: widths * .4,
+                  height: heights * .35,
+                  width: widths * .5,
                   child: GestureDetector(
                     onTap: () {
                       print(

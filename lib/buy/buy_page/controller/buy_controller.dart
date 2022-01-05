@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 
 class BuyController extends GetxController {
   var name;
@@ -32,7 +33,11 @@ class BuyController extends GetxController {
 
   int likeCount = 0;
   Map likes;
+  var item;
+  List itemsCatego = [];
+
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+  //final addProductsController = Get.put(AddProductsController());
 
   final customCacheManager = CacheManager(
     Config(
@@ -125,5 +130,37 @@ class BuyController extends GetxController {
     } catch (e) {
       rethrow;
     }
+  }
+
+  void categories({var items}) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    await _fireStore.collection("Categories").doc().set({
+      'Item': items,
+      'userId': uid,
+    });
+  }
+
+  void getCategories() {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    print('getCategories,kkkkkkkkkkkkkkkkkkkkkkkkk');
+    FirebaseFirestore.instance
+        .collection("Categories")
+        .where('userId', isEqualTo: uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      print('$uid,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+      print('ooooooooooooooooooooooooooooo');
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((doc) {
+          item = doc['Item'];
+          itemsCatego.add(item);
+          print('$itemsCatego,ggggggggggggggggggggggggggggggggg');
+          print('${item},yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+        });
+      } else {
+        print("No data");
+        return;
+      }
+    });
   }
 }

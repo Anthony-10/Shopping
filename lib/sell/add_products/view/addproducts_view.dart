@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
@@ -24,15 +26,16 @@ class _AddProductsViewState extends State<AddProductsView> {
   final bottomSheetView = Get.put(BottomSheetView());
 
   bool value = false;
+  final buyController = Get.put(BuyController());
 
   ValueChanged<ProductItems> onClickProduct;
   var height = Get.height;
   var width = Get.width;
-
   @override
   void initState() {
     // TODO: implement initState
     databaseService.getCounterNumber();
+    print('getCategories(),jjjjjjjjjjjjjjjj');
     super.initState();
   }
 
@@ -136,6 +139,7 @@ class _AddProductsViewState extends State<AddProductsView> {
                                     borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(20),
                                 )));
+                            buyController.getCategories();
                           },
                           child: Text('Continue'),
                           style: ElevatedButton.styleFrom(

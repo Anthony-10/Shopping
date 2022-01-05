@@ -71,23 +71,23 @@ class BoughtItem extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(snapshot.data.docs[index]['name']
-                                        .toString()),
+                                    Text(
+                                        'Name: ${snapshot.data.docs[index]['name'].toString()}'),
                                     SizedBox(
                                       height: 10,
                                     ),
-                                    Text(snapshot.data.docs[index]['price']
-                                        .toString()),
+                                    Text(
+                                        'Price: ${snapshot.data.docs[index]['price'].toString()}'),
                                     SizedBox(
                                       height: 10,
                                     ),
-                                    Text(snapshot.data.docs[index]['size']
-                                        .toString()),
+                                    Text(
+                                        'Size: ${snapshot.data.docs[index]['size'].toString()}'),
                                     SizedBox(
                                       height: 10,
                                     ),
-                                    Text(snapshot.data.docs[index]['date']
-                                        .toString())
+                                    Text(
+                                        'Date: ${snapshot.data.docs[index]['date'].toString()}'),
                                   ],
                                 )
                               ],

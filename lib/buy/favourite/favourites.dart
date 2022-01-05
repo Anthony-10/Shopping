@@ -47,7 +47,7 @@ class _FavouritesState extends State<Favourites> {
             )),
             Expanded(
               //Changed from stream to future
-              child: FutureBuilder(
+              child: FutureBuilder<dynamic>(
                   future: _fireStore
                       .collection('Favorite')
                       .doc()
@@ -62,9 +62,6 @@ class _FavouritesState extends State<Favourites> {
                         );
                       } else {
                         if (snapshot.hasData) {
-                          final Map<String, dynamic> datas =
-                              snapshot.data.data() as Map<String, dynamic>;
-                          print('$datas,lllllllttttttttttttttttttttttttt');
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -72,8 +69,11 @@ class _FavouritesState extends State<Favourites> {
                             primary: false,
                             padding: const EdgeInsets.all(15),
                             physics: BouncingScrollPhysics(),
-                            itemCount: datas.length,
+                            itemCount: snapshot.data.toString().length,
                             itemBuilder: (context, index) {
+                              print(
+                                  '888888888888888888888888888888888888888888');
+
                               return Column(
                                 children: [
                                   SizedBox(
@@ -81,20 +81,21 @@ class _FavouritesState extends State<Favourites> {
                                     width: Get.width * 0.5,
                                     child: GestureDetector(
                                       onTap: () {
-                                        Get.to(() => SellerAccount());
+                                        /*Get.to(() => SellerAccount());
                                         buyController.name =
                                             snapshot.data[index]['name'];
                                         buyController.id =
                                             snapshot.data[index]['userUid'];
                                         buyController.image =
-                                            snapshot.data[index]['image'];
+                                            snapshot.data[index]['image'];*/
                                       },
                                       child: Card(
                                         child: CachedNetworkImage(
                                           cacheManager:
                                               buyController.customCacheManager,
-                                          imageUrl: snapshot.data[index]
-                                                  ['image']
+                                          imageUrl: snapshot.data
+                                              .data()
+                                              .docs[index]['image']
                                               .toString(),
                                           fit: BoxFit.fill,
                                           placeholder: (context, url) =>
@@ -124,7 +125,9 @@ class _FavouritesState extends State<Favourites> {
                                     height: 20,
                                   ),
                                   Text(
-                                    snapshot.data[index]['name'].toString(),
+                                    snapshot.data
+                                        .data()[index]['name']
+                                        .toString(),
                                   )
                                 ],
                               );

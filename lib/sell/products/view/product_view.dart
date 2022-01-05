@@ -5,10 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_image.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 
-class ProductView extends StatelessWidget {
-   ProductView({Key key}) : super(key: key);
+class ProductView extends StatefulWidget {
+  ProductView({Key key}) : super(key: key);
+
+  @override
+  State<ProductView> createState() => _ProductViewState();
+}
+
+class _ProductViewState extends State<ProductView> {
   final buyController = Get.put(BuyController());
+  final databaseService = Get.put(DatabaseService());
+
+  List itemProduct = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    databaseService.getProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +78,7 @@ class ProductView extends StatelessWidget {
                             physics: BouncingScrollPhysics(),
                             itemCount: snapshot.data.size,
                             itemBuilder: (context, index) {
+                              print('yyyyyyyyyyyyyyyyyyyyyy');
                               return Column(
                                 children: [
                                   SizedBox(
@@ -68,6 +86,15 @@ class ProductView extends StatelessWidget {
                                     width: Get.width * 0.5,
                                     child: GestureDetector(
                                       onTap: () {
+                                        buyController.id = snapshot
+                                            .data.docs[index]["userId"]
+                                            .toString();
+                                        buyController.productElement = snapshot
+                                            .data.docs[index]['productElement']
+                                            .toString();
+                                        buyController.itemElement = snapshot
+                                            .data.docs[index]['itemElement']
+                                            .toString();
                                         Get.defaultDialog(
                                             title: 'Products',
                                             content: SellerImage());

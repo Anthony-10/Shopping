@@ -5,6 +5,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/buy/buy_page/view/locations/.env.dart';
+import 'package:shopping_app/buy/buy_page/view/locations/direction_model.dart';
+
+import 'directions_repository.dart';
 //import 'package:shopping_app/core/service/.env.dart';
 
 class Location extends StatefulWidget {
@@ -23,6 +27,8 @@ class _LocationState extends State<Location> {
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints;
   Position position;
+  int length;
+  Directions _info;
 
   void getCurrentLocation() async {
     Position currentPosition =
@@ -70,6 +76,9 @@ class _LocationState extends State<Location> {
         .get()
         .then((myData) {
       if (myData.docs.isNotEmpty) {
+        setState(() {
+          length = 1;
+        });
         for (int i = 0; i < myData.docs.length; i++) {
           initMarker(myData.docs[i].data(), myData.docs[i].id);
         }
@@ -111,20 +120,40 @@ class _LocationState extends State<Location> {
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          title: const Text('Google Maps'),
+          actions: [
+            if (position != null)
+              TextButton(
+                  onPressed: () => mapController.animateCamera(
+                      CameraUpdate.newCameraPosition(CameraPosition(
+                          target: LatLng(position.latitude.toDouble(),
+                              position.longitude.toDouble())))),
+                  child: Text('ORIGIN')),
+            if (length == 1)
+              TextButton(
+                  onPressed: () => mapController.animateCamera(
+                      CameraUpdate.newCameraPosition(CameraPosition(
+                          target: LatLng(position.latitude.toDouble(),
+                              position.longitude.toDouble())))),
+                  child: Text('ORIGIN'))
+          ],
+        ),
         body: Stack(
           children: [
             GoogleMap(
               myLocationEnabled: true,
               compassEnabled: true,
               trafficEnabled: true,
+              polylines: _polylines,
               onMapCreated: (GoogleMapController controller) {
                 mapController = controller;
-                //setPolylines();
+                setPolylines();
               },
               initialCameraPosition:
                   CameraPosition(target: _center, zoom: 18.0),
               markers: Set<Marker>.of(markers.values),
-              polylines: _polylines,
             ),
             Positioned(
                 top: Get.height * .03,
@@ -137,11 +166,18 @@ class _LocationState extends State<Location> {
                 ))
           ],
         ),
+        /*floatingActionButton:FloatingActionButton(
+backgroundColor:  Theme.of(context).primaryColorDark,
+            foregroundColor: Colors.black,
+            onPressed: (){
+              mapController.animateCamera(CameraUpdate.newCameraPosition(_onMapCreated()));
+            },
+          )*/
       ),
     );
   }
 
-  /*void setPolylines() async {
+  void setPolylines() async {
     print('setPolylines,///////////////////////////////////////////////');
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         googleAPIKey,
@@ -171,5 +207,7 @@ class _LocationState extends State<Location> {
       print(
           'Error setPolylines, wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
     }
-  }*/
+  }
+  // Get directions
+
 }

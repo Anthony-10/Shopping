@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -8,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 class DatabaseService extends GetxController {
   final addProductsController = Get.put(AddProductsController());
   final drawerFunctions = Get.put(DrawerFunctions());
+  final buyController = Get.put(BuyController());
 
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
@@ -21,6 +23,8 @@ class DatabaseService extends GetxController {
   var sold = 0;
   var returns = 0;
   var order = 0;
+
+  var itemProducts;
 
   Future<void> addUserInfo({String email, String firstName, var url}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
@@ -137,7 +141,22 @@ class DatabaseService extends GetxController {
               order: order,
               userid: uid);
         }
-        addProductsController.image.clear();
+        {
+          if (buyController.itemsCatego.isNotEmpty) {
+            if (buyController.itemsCatego.contains(
+                addProductsController.productElement.title.toString())) {
+              print('No entry,////////////////////');
+            } else {
+              buyController.categories(
+                  items: addProductsController.productElement.title.toString());
+              print('pleas enter,>>>>>>>>>>>>>>>>>');
+            }
+          } else {
+            buyController.categories(
+                items: addProductsController.productElement.title.toString());
+          }
+          buyController.itemsCatego.clear();
+        }
       } else {
         print('Uid null');
       }
@@ -253,5 +272,27 @@ class DatabaseService extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
       );
     }
+  }
+
+  void getProducts() {
+    print('getProducts,kkkkkkkkkkkkkkkkkkkkkkkkk');
+
+    FirebaseFirestore.instance
+        .collection("Products")
+        .where("userId", isEqualTo: buyController.id)
+        .where('productElement', isEqualTo: buyController.productElement)
+        .where('itemElement', isEqualTo: buyController.itemElement)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((doc) {
+          itemProducts = doc['Url'];
+        });
+        print('$itemProducts,yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+      } else {
+        print("No data");
+        return;
+      }
+    });
   }
 }

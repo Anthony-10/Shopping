@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class SellerImage extends StatefulWidget {
@@ -16,6 +17,7 @@ class SellerImage extends StatefulWidget {
 class _SellerImageState extends State<SellerImage> {
   final buyController = Get.put(BuyController());
   final controller = SlideController();
+  final databaseService = Get.put(DatabaseService());
 
   var heights = Get.height;
 
@@ -24,9 +26,11 @@ class _SellerImageState extends State<SellerImage> {
   var activeIndex = 0;
 
   var ware;
+  var wre;
 
   @override
   Widget build(BuildContext context) {
+    print('SellerImage,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
     return Container(
       height: heights * .5,
       width: widths * .8,
@@ -46,17 +50,18 @@ class _SellerImageState extends State<SellerImage> {
                 );
               } else {
                 if (snapshot.hasData) {
+                  print(
+                      '${buyController.id},${buyController.productElement},${buyController.itemElement},lllllllllllllllllllllllllllllll');
                   return Column(
                     children: [
                       Expanded(
                         child: PageView.builder(
                             physics: BouncingScrollPhysics(),
-                            controller: controller.controller,
-                            //onPageChanged: controller.selectedPageIndex,
-                            itemCount: snapshot.data.size,
+                            //controller: controller.controller,
+                            /*onPageChanged: controller.selectedPageIndex,*/
+                            itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
-                              print(
-                                  '${ware = snapshot.data.docs[index]['Url'][1].toString()},jjjjjjjjjjjjjjjjj88888888888888888888');
+                              print('uuuuuuuuuuuuuuuuuuuuuu');
                               return Container(
                                 margin: const EdgeInsets.all(16),
                                 height: heights * .5,
@@ -66,9 +71,9 @@ class _SellerImageState extends State<SellerImage> {
                                   child: CachedNetworkImage(
                                     cacheManager:
                                         buyController.customCacheManager,
-                                    imageUrl: ware = snapshot
-                                        .data.docs[index]['Url'][1]
+                                    imageUrl: snapshot.data.docs[index]['Url']
                                         .toString(),
+                                    fit: BoxFit.fill,
                                     placeholder: (context, url) => Container(
                                       color: Colors.black12,
                                     ),
@@ -89,10 +94,10 @@ class _SellerImageState extends State<SellerImage> {
                               );
                             }),
                       ),
-                      /*SmoothPageIndicator(
+                      SmoothPageIndicator(
                         controller: controller.controller,
                         //activeIndex: ,
-                        count: snapshot.data.size,
+                        count: snapshot.data.docs.length,
                         effect: JumpingDotEffect(
                           activeDotColor: Colors.red,
                           dotColor: Colors.white,
@@ -101,7 +106,7 @@ class _SellerImageState extends State<SellerImage> {
                           spacing: 16,
                           verticalOffset: 10,
                         ),
-                      )*/
+                      )
                     ],
                   );
                 }

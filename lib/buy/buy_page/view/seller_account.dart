@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
-import 'package:shopping_app/buy/buy_page/view/location.dart';
+import 'package:shopping_app/buy/buy_page/view/locations/location.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_items.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
@@ -130,10 +130,10 @@ class _SellerAccountState extends State<SellerAccount> {
           SizedBox(
             height: 20,
           ),
-          //Changed from stream to future
+          // The Categories menu
           StreamBuilder<QuerySnapshot>(
               stream: _fireStore
-                  .collection("Products")
+                  .collection("Categories")
                   .where("userId", isEqualTo: buyController.id)
                   .snapshots(),
               builder: (BuildContext context,
@@ -154,10 +154,10 @@ class _SellerAccountState extends State<SellerAccount> {
                           itemCount: snapshot.data.size,
                           itemBuilder: (BuildContext context, int index) {
                             //removeDuplicat by .toSet
-                            final productElement =
-                                snapshot.data.docs[index]['productElement'];
+                            final categories =
+                                snapshot.data.docs[index]['Item'];
                             print(
-                                '${snapshot.data.docs[index]['productElement']},9999999999999999999999');
+                                '${snapshot.data.docs[index]['Item']},9999999999999999999999');
 
                             return Row(
                               children: [
@@ -170,7 +170,7 @@ class _SellerAccountState extends State<SellerAccount> {
                                       buyController.id =
                                           snapshot.data.docs[index]['userId'];
                                       //TODO
-                                      item = productElement;
+                                      item = categories;
                                     });
                                     print(
                                         '(((((((((((((((((((${buyController.id}))))))))))))))))))');
@@ -181,7 +181,7 @@ class _SellerAccountState extends State<SellerAccount> {
                                     height: 30,
                                     width: 90,
                                     child: Center(
-                                        child: Text(productElement.toString())),
+                                        child: Text(categories.toString())),
                                     decoration: BoxDecoration(
                                         color: Colors.grey[400],
                                         borderRadius:
@@ -204,6 +204,7 @@ class _SellerAccountState extends State<SellerAccount> {
                   return Text('Loading......');
                 }
               }),
+          // The Products
           StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection("Products")

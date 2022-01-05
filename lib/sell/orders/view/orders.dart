@@ -37,8 +37,8 @@ class Orders extends StatelessWidget {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  height: Get.height * .1,
-                                  width: Get.width * .2,
+                                  height: Get.height * .15,
+                                  width: Get.width * .25,
                                   child: Card(
                                     child: CachedNetworkImage(
                                       cacheManager:
@@ -70,15 +70,25 @@ class Orders extends StatelessWidget {
                                   width: Get.width * .2,
                                 ),
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(snapshot.data.docs[index]['name']
-                                        .toString()),
-                                    Text(snapshot.data.docs[index]['price']
-                                        .toString()),
-                                    Text(snapshot.data.docs[index]['size']
-                                        .toString()),
-                                    Text(snapshot.data.docs[index]['date']
-                                        .toString()),
+                                    Text(
+                                        'Name: ${snapshot.data.docs[index]['name'].toString()}'),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                        'Price: ${snapshot.data.docs[index]['price'].toString()}'),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                        'Size: ${snapshot.data.docs[index]['size'].toString()}'),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                        'Date: ${snapshot.data.docs[index]['date'].toString()}'),
                                   ],
                                 )
                               ],

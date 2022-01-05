@@ -37,8 +37,10 @@ class _CartViewState extends State<CartView> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding:
-              EdgeInsets.only(top: Get.height * .02, left: Get.width * .03),
+          padding: EdgeInsets.only(
+              top: Get.height * .02,
+              left: Get.width * .03,
+              right: Get.width * .03),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -59,7 +61,7 @@ class _CartViewState extends State<CartView> {
                 child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection("Cart")
-                        .where("userId",
+                        .where('userId',
                             isEqualTo: FirebaseAuth.instance.currentUser.uid)
                         .snapshots(),
                     builder: (BuildContext context,
@@ -152,7 +154,7 @@ class _CartViewState extends State<CartView> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: Get.width * .15,
+                                                width: Get.width * .12,
                                               ),
                                               IconButton(
                                                   onPressed: () {
@@ -165,7 +167,7 @@ class _CartViewState extends State<CartView> {
                                                     //TODO
                                                     //Adding the numbers even
                                                     // when removing the items
-                                                    sumFunction();
+                                                    subFunction();
                                                   },
                                                   icon: Icon(Icons.close)),
                                             ],
@@ -192,24 +194,27 @@ class _CartViewState extends State<CartView> {
                 color: Colors.grey[200],
                 child: Row(
                   children: [
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            'Cart total',
-                            style: TextStyle(fontSize: 17),
-                          ),
-                          Text(
-                            'Tax',
-                            style: TextStyle(fontSize: 17),
-                          ),
-                          Divider(),
-                          Text(
-                            'Subtotal',
-                            style: TextStyle(fontSize: 17),
-                          ),
-                        ]),
+                    Padding(
+                      padding: EdgeInsets.only(left: Get.width * .05),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              'Cart total',
+                              style: TextStyle(fontSize: 17),
+                            ),
+                            /*Text(
+                              'Tax',
+                              style: TextStyle(fontSize: 17),
+                            ),
+                            Divider(),
+                            Text(
+                              'Subtotal',
+                              style: TextStyle(fontSize: 17),
+                            ),*/
+                          ]),
+                    ),
                     SizedBox(
                       width: Get.width * .1,
                     ),
@@ -220,13 +225,13 @@ class _CartViewState extends State<CartView> {
                           Text('Ksh $sum',
                               style: TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.bold)),
-                          Text('Ksh 30,000',
+                          /*Text('Ksh 30,000',
                               style: TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.bold)),
                           Divider(),
                           Text('Ksh 30,000',
                               style: TextStyle(
-                                  fontSize: 17, fontWeight: FontWeight.bold))
+                                  fontSize: 17, fontWeight: FontWeight.bold))*/
                         ]),
                   ],
                 ),
@@ -265,18 +270,45 @@ class _CartViewState extends State<CartView> {
         .get()
         .then((QuerySnapshot querySnapshot) {
       print('ooooooooooooooooooooooooooooooooooo');
-      querySnapshot.docs.forEach((doc) {
-        if (querySnapshot.docs.isNotEmpty) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((doc) {
           price = doc['price'];
           int pValue = int.parse(price);
           setState(() {
             sum += pValue;
           });
           print('$sum,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-        } else {
-          print('wewe');
-        }
-      });
+        });
+      } else {
+        print('wewe');
+      }
+    });
+  }
+
+  void subFunction() {
+    print('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
+    FirebaseFirestore.instance
+        .collection('Cart')
+        .where('userId', isEqualTo: uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      print('ooooooooooooooooooooooooooooooooooo');
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((doc) {
+          price = doc['price'];
+          print('$price,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+          int pValue = int.parse(price);
+          setState(() {
+            sum = pValue;
+          });
+          print('$sum,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+        });
+      } else {
+        setState(() {
+          sum = 0;
+        });
+        print('wewe');
+      }
     });
   }
 }
