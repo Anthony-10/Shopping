@@ -9,7 +9,8 @@ class BuyController extends GetxController {
   var name;
   var id;
   var userUid;
-  var image;
+  List image = [];
+  var item;
 
   var productElement;
   var itemElement;
@@ -33,7 +34,7 @@ class BuyController extends GetxController {
 
   int likeCount = 0;
   Map likes;
-  var item;
+  var items;
   List itemsCatego = [];
 
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -152,10 +153,10 @@ class BuyController extends GetxController {
       print('ooooooooooooooooooooooooooooo');
       if (querySnapshot.docs.isNotEmpty) {
         querySnapshot.docs.forEach((doc) {
-          item = doc['Item'];
-          itemsCatego.add(item);
+          items = doc['Item'];
+          itemsCatego.add(items);
           print('$itemsCatego,ggggggggggggggggggggggggggggggggg');
-          print('${item},yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+          print('${items},yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
         });
       } else {
         print("No data");

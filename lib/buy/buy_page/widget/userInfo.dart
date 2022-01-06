@@ -97,6 +97,9 @@ class UserStaff extends StatelessWidget {
                                   Text(
                                     snapshot.data.docs[index]['firstName']
                                         .toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 20),
                                   ),
                                   SizedBox(
                                     height: 10,
@@ -105,7 +108,10 @@ class UserStaff extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('30'),
+                                        Text(
+                                          '30',
+                                          style: TextStyle(fontSize: 20),
+                                        ),
                                         Icon(Icons.favorite),
                                       ])
                                 ],

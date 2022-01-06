@@ -36,10 +36,11 @@ class _SellerImageState extends State<SellerImage> {
       width: widths * .8,
       child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection("Product")
+              .collection("Products")
+              .where('Url', isEqualTo: buyController.image)
               .where("userId", isEqualTo: buyController.id)
               .where('productElement', isEqualTo: buyController.productElement)
-              .where('itemElement', isEqualTo: buyController.itemElement)
+              .where('itemElement', isEqualTo: wre = buyController.itemElement)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -51,7 +52,9 @@ class _SellerImageState extends State<SellerImage> {
               } else {
                 if (snapshot.hasData) {
                   print(
-                      '${buyController.id},${buyController.productElement},${buyController.itemElement},lllllllllllllllllllllllllllllll');
+                      '${buyController.id},${buyController.productElement},${buyController.itemElement},${buyController.image},lllllllllllllllllllllllllllllll');
+                  var wewe = snapshot.data.docs.toString();
+                  print('$wewe,wwwwwwwwwwwwwwwwwwwwwwwwwww');
                   return Column(
                     children: [
                       Expanded(
@@ -59,7 +62,7 @@ class _SellerImageState extends State<SellerImage> {
                             physics: BouncingScrollPhysics(),
                             //controller: controller.controller,
                             /*onPageChanged: controller.selectedPageIndex,*/
-                            itemCount: snapshot.data.docs.length,
+                            itemCount: snapshot.data.size,
                             itemBuilder: (context, index) {
                               print('uuuuuuuuuuuuuuuuuuuuuu');
                               return Container(
@@ -71,8 +74,7 @@ class _SellerImageState extends State<SellerImage> {
                                   child: CachedNetworkImage(
                                     cacheManager:
                                         buyController.customCacheManager,
-                                    imageUrl: snapshot.data.docs[index]['Url']
-                                        .toString(),
+                                    imageUrl: snapshot.data.docs[index]['Url'],
                                     fit: BoxFit.fill,
                                     placeholder: (context, url) => Container(
                                       color: Colors.black12,

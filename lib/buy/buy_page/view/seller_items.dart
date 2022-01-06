@@ -114,7 +114,7 @@ class _SellerItemState extends State<SellerItem> {
                                   children: [
                                     Text('Color',
                                         style: TextStyle(
-                                            color: Colors.black, fontSize: 15)),
+                                            color: Colors.black, fontSize: 20)),
                                     Container(
                                       height: heights * .03,
                                       width: widths * .2,
@@ -149,7 +149,7 @@ class _SellerItemState extends State<SellerItem> {
                                   children: [
                                     Text('Size',
                                         style: TextStyle(
-                                            color: Colors.black, fontSize: 15)),
+                                            color: Colors.black, fontSize: 20)),
                                     Text(
                                       cartController.size,
                                       style: TextStyle(
@@ -160,13 +160,14 @@ class _SellerItemState extends State<SellerItem> {
                                 )
                               ]),
                               SizedBox(
-                                height: heights * .02,
+                                height: heights * .03,
                               ),
                               Container(
                                 height: heights * .09,
                                 width: widths,
                                 child: SingleChildScrollView(
-                                  child: Text(cartController.description),
+                                  child: Text(cartController.description,
+                                      style: TextStyle(fontSize: 20)),
                                 ),
                               ),
                               SizedBox(
@@ -264,7 +265,8 @@ class _SellerItemState extends State<SellerItem> {
                                       onPressed: () {
                                         Get.to(() => PayView());
                                       },
-                                      child: Text('Buy Now')),
+                                      child: Text('Buy Now',
+                                          style: TextStyle(fontSize: 20))),
                                 ],
                               )
                             ],
@@ -287,7 +289,7 @@ class _SellerItemState extends State<SellerItem> {
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                   SizedBox(
-                    height: heights * .02,
+                    height: heights * .01,
                   ),
                   Text(
                     cartController.price,
