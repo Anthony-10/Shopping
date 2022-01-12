@@ -28,6 +28,7 @@ class BuyController extends GetxController {
   //Location
   double lat;
   double long;
+  var locationId;
   var address;
   var country;
 

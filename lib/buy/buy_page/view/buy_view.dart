@@ -35,6 +35,7 @@ class _BuyViewState extends State<BuyView> {
 
   Position _currentUserPosition;
   double distanceImMeter = 0;
+  List loglatid = [];
 
   Future _getTheDistance() async {
     _currentUserPosition = await Geolocator.getCurrentPosition(
@@ -43,46 +44,27 @@ class _BuyViewState extends State<BuyView> {
     print('${buyController.lat}latlatlatlatlatlatlatlatlat');
     print('${_currentUserPosition.longitude}lololololololololololololo');
     print('${buyController.long}longlonglonglonglonglonglonglonglonglong');*/
-
-    for (int i = 0;
-        i < usersRef.doc(buyController.userId).toString().length;
-        i++) {
+    print('${loglatid.length},kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+    for (int i = 0; i < loglatid.length; i++) {
+      double lat = loglatid[i]['lat'];
+      double long = loglatid[i]['long'];
+      print('$lat,ppppppppppppppppppp');
+      print('${loglatid[i]['long']},77777777777777777777777777');
+      print('$long,oooooooooooooooooooooo');
       distanceImMeter = Geolocator.distanceBetween(
           _currentUserPosition.latitude,
           _currentUserPosition.longitude,
-          buyController.lat,
-          buyController.long);
+          lat,
+          long);
       print('rerere');
       var distance = distanceImMeter.round().toInt();
       print('qeqeqe');
-      updateDistance(
+      print('$distance,llllllllllllllllllllllllllllllllllllllllllllll');
+      /*updateDistance(
           url: buyController.url,
           email: buyController.email,
           firstName: buyController.firstName,
-          distances: distance);
-    }
-  }
-
-  Future<void> updateDistance(
-      {var url, var email, var firstName, var distances}) async {
-    print('$distances,ggggggggggggggggggggggggjgjjgjgjgj');
-    if (distances != null) {
-      try {
-        await _fireStore.collection("Users").doc().update({
-          'Url': buyController.url,
-          'email': buyController.email,
-          'firstName': buyController.firstName,
-          'distances': distances,
-        });
-      } on FirebaseException catch (e) {
-        Get.snackbar(
-          "Error Adding User ",
-          e.message,
-          snackPosition: SnackPosition.BOTTOM,
-        );
-      } catch (e) {
-        rethrow;
-      }
+          distances: distance);*/
     }
   }
 
@@ -96,11 +78,19 @@ class _BuyViewState extends State<BuyView> {
         querySnapshot.docs.forEach((doc) {
           buyController.lat = doc['latitude'];
           buyController.long = doc['longitude'];
-
+          buyController.locationId = doc['uid'];
+          loglatid.add({
+            'lat': buyController.lat,
+            'long': buyController.long,
+            'locationId': buyController.locationId
+          });
+          //loglatid.add({'long': buyController.long});
+          //loglatid.add(buyController.locationId);
           print('${doc['latitude']},eeeeeeeeeeeeeeeeeeeeee');
           print('${doc['longitude']},eeeeeeeeeeeeeeeeeeeeee');
+          print('$loglatid,999999999999999999999999999999999999999999999999');
         });
-      });
+      }).whenComplete(() => _getTheDistance());
 
       /*DocumentSnapshot documentSnapshot =
           await*/
@@ -138,6 +128,29 @@ class _BuyViewState extends State<BuyView> {
     }
   }
 
+  Future<void> updateDistance(
+      {var url, var email, var firstName, var distances}) async {
+    print('$distances,ggggggggggggggggggggggggjgjjgjgjgj');
+    if (distances != null) {
+      try {
+        await _fireStore.collection("Users").doc().update({
+          'Url': buyController.url,
+          'email': buyController.email,
+          'firstName': buyController.firstName,
+          'distances': distances,
+        });
+      } on FirebaseException catch (e) {
+        Get.snackbar(
+          "Error Adding User ",
+          e.message,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      } catch (e) {
+        rethrow;
+      }
+    }
+  }
+
   Future<void> getUserData() async {
     DocumentSnapshot documentSnapshot =
         await FirebaseFirestore.instance.collection('Users').doc().get();
@@ -157,8 +170,8 @@ class _BuyViewState extends State<BuyView> {
   @override
   void initState() {
     // TODO: implement initSttData();*/
-    /* getData();
-    _getTheDistance();*/
+    getData();
+    /*_getTheDistance();*/
     super.initState();
   }
 
