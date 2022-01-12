@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
@@ -130,16 +129,21 @@ class _AddProductsViewState extends State<AddProductsView> {
                         ElevatedButton(
                           onPressed: () async {
                             //adding Await
-                            await databaseService.userImage();
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (context) => BottomSheet2(),
-                                isScrollControlled: true,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                )));
-                            buyController.getCategories();
+                            if (addProductsController.image.isNotEmpty) {
+                              await databaseService.userImage();
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => BottomSheet2(),
+                                  isScrollControlled: true,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  )));
+                              buyController.getCategories();
+                            } else {
+                              Get.snackbar('Massage', 'Select Image',
+                                  snackPosition: SnackPosition.TOP);
+                            }
                           },
                           child: Text('Continue'),
                           style: ElevatedButton.styleFrom(

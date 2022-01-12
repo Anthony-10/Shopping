@@ -47,12 +47,11 @@ class _FavouritesState extends State<Favourites> {
             )),
             Expanded(
               //Changed from stream to future
-              child: FutureBuilder<dynamic>(
-                  future: _fireStore
-                      .collection('Favorite')
-                      .doc()
-                      .collection("currentUser")
+              child: FutureBuilder<DocumentSnapshot>(
+                  future: users
                       .doc(FirebaseAuth.instance.currentUser.uid)
+                      .collection("currentUser")
+                      .doc('0F47Ktd9rrgDbTvAmkrm2F0q2CP2')
                       .get(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
@@ -62,6 +61,9 @@ class _FavouritesState extends State<Favourites> {
                         );
                       } else {
                         if (snapshot.hasData) {
+                          Map<String, dynamic> data =
+                              snapshot.data.data() as Map<String, dynamic>;
+                          print('$snapshot,mmmmmmmmmmmmmmmmmmmmm');
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -69,8 +71,10 @@ class _FavouritesState extends State<Favourites> {
                             primary: false,
                             padding: const EdgeInsets.all(15),
                             physics: BouncingScrollPhysics(),
-                            itemCount: snapshot.data.toString().length,
+                            itemCount: data.length,
                             itemBuilder: (context, index) {
+                              print(
+                                  '${FirebaseAuth.instance.currentUser.uid},,,,,,,,,,,,,,,,,,');
                               print(
                                   '888888888888888888888888888888888888888888');
 
@@ -93,9 +97,8 @@ class _FavouritesState extends State<Favourites> {
                                         child: CachedNetworkImage(
                                           cacheManager:
                                               buyController.customCacheManager,
-                                          imageUrl: snapshot.data
-                                              .data()
-                                              .docs[index]['image']
+                                          imageUrl: snapshot.data[index]
+                                                  ['image']
                                               .toString(),
                                           fit: BoxFit.fill,
                                           placeholder: (context, url) =>

@@ -37,7 +37,7 @@ class _SellerImageState extends State<SellerImage> {
       child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("Products")
-              .where('Url', isEqualTo: buyController.image)
+              .where('Url', isEqualTo: buyController.images)
               .where("userId", isEqualTo: buyController.id)
               .where('productElement', isEqualTo: buyController.productElement)
               .where('itemElement', isEqualTo: wre = buyController.itemElement)
@@ -52,7 +52,7 @@ class _SellerImageState extends State<SellerImage> {
               } else {
                 if (snapshot.hasData) {
                   print(
-                      '${buyController.id},${buyController.productElement},${buyController.itemElement},${buyController.image},lllllllllllllllllllllllllllllll');
+                      '${buyController.id},${buyController.productElement},${buyController.itemElement},${buyController.images},lllllllllllllllllllllllllllllll');
                   var wewe = snapshot.data.docs.toString();
                   print('$wewe,wwwwwwwwwwwwwwwwwwwwwwwwwww');
                   return Column(

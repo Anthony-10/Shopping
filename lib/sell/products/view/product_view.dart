@@ -86,7 +86,7 @@ class _ProductViewState extends State<ProductView> {
                                     width: Get.width * 0.5,
                                     child: GestureDetector(
                                       onTap: () {
-                                        buyController.image =
+                                        buyController.images =
                                             snapshot.data.docs[index]['Url'];
                                         buyController.id = snapshot
                                             .data.docs[index]["userId"]
@@ -124,7 +124,6 @@ class _ProductViewState extends State<ProductView> {
                                         semanticContainer: true,
                                         clipBehavior:
                                             Clip.antiAliasWithSaveLayer,
-                                        elevation: 20.0,
                                         color: Colors.white,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -137,9 +136,9 @@ class _ProductViewState extends State<ProductView> {
                                     height: 20,
                                   ),
                                   Text(
-                                    snapshot.data.docs[index]['itemElement']
-                                        .toString(),
-                                  )
+                                      snapshot.data.docs[index]['itemElement']
+                                          .toString(),
+                                      style: TextStyle(fontSize: 17))
                                 ],
                               );
                             },

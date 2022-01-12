@@ -9,7 +9,8 @@ class BuyController extends GetxController {
   var name;
   var id;
   var userUid;
-  List image = [];
+  var image;
+  List images = [];
   var item;
 
   var productElement;
@@ -55,9 +56,9 @@ class BuyController extends GetxController {
       if (uid != null) {
         await _fireStore
             .collection("Favorite")
-            .doc(userUid)
-            .collection("currentUser")
             .doc(uid)
+            .collection("currentUser")
+            .doc(userUid)
             .set({
           'image': image,
           'name': name,
@@ -115,9 +116,9 @@ class BuyController extends GetxController {
       if (uid != null) {
         await _fireStore
             .collection("Favorite")
-            .doc(id)
-            .collection("currentUser")
             .doc(uid)
+            .collection("currentUser")
+            .doc(id)
             .delete();
       } else {
         print('Uid null');

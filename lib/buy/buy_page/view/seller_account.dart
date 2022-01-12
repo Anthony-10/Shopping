@@ -1,11 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/locations/location.dart';
-import 'package:shopping_app/buy/buy_page/view/seller_items.dart';
 import 'package:shopping_app/buy/buy_page/widget/sellerCategories.dart';
 import 'package:shopping_app/buy/buy_page/widget/sellerInfo.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
@@ -74,9 +72,9 @@ class _SellerAccountState extends State<SellerAccount> {
                                   //TODO
                                   FirebaseFirestore.instance
                                       .collection("Favorite")
-                                      .doc(buyController.id)
-                                      .collection("currentUser")
                                       .doc(uid)
+                                      .collection("currentUser")
+                                      .doc(buyController.id)
                                       .get()
                                       .then(
                                           (DocumentSnapshot documentSnapshot) {
@@ -134,42 +132,6 @@ class _SellerAccountState extends State<SellerAccount> {
           SellerCategories(),
           // The Products
           SellerProducts(),
-          /*StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection("Products")
-                  .where("productElement", isEqualTo: item)
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-
-                return Expanded(
-                  child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, childAspectRatio: 0.75),
-                      primary: false,
-                      padding: const EdgeInsets.all(15),
-                      physics: BouncingScrollPhysics(),
-                      itemCount: snapshot.data.size,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          height: Get.height * 0.2,
-                          child: Card(
-                            child: Image.network(
-                              snapshot.data.docs[index]['Url'].toString(),
-                              fit: BoxFit.fill,
-                            ),
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            elevation: 20.0,
-                            color: Colors.blue,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                        );
-                      }),
-                );
-              }),*/
         ]),
       ),
     );
@@ -178,9 +140,9 @@ class _SellerAccountState extends State<SellerAccount> {
   void colorFunction() {
     FirebaseFirestore.instance
         .collection("Favorite")
-        .doc(buyController.id)
-        .collection("currentUser")
         .doc(uid)
+        .collection("currentUser")
+        .doc(buyController.id)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
