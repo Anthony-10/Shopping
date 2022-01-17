@@ -31,6 +31,7 @@ class BuyController extends GetxController {
   var locationId;
   var address;
   var country;
+  var postalCode;
 
   int counter = 0;
 

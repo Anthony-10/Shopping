@@ -122,22 +122,28 @@ class _LocationState extends State<Location> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: false,
-          title: const Text('Google Maps'),
+          title: const Text('Location'),
           actions: [
             if (position != null)
               TextButton(
                   onPressed: () => mapController.animateCamera(
                       CameraUpdate.newCameraPosition(CameraPosition(
                           target: LatLng(position.latitude.toDouble(),
-                              position.longitude.toDouble())))),
-                  child: Text('ORIGIN')),
+                              position.longitude.toDouble()),
+                          zoom: 18.0))),
+                  child: Text(
+                    'ORIGIN',
+                    style: TextStyle(color: Colors.black),
+                  )),
             if (length == 1)
               TextButton(
                   onPressed: () => mapController.animateCamera(
                       CameraUpdate.newCameraPosition(CameraPosition(
                           target: LatLng(position.latitude.toDouble(),
-                              position.longitude.toDouble())))),
-                  child: Text('ORIGIN'))
+                              position.longitude.toDouble()),
+                          zoom: 18.0))),
+                  child: Text('DESTINATION',
+                      style: TextStyle(color: Colors.black)))
           ],
         ),
         body: Stack(
@@ -155,7 +161,7 @@ class _LocationState extends State<Location> {
                   CameraPosition(target: _center, zoom: 18.0),
               markers: Set<Marker>.of(markers.values),
             ),
-            Positioned(
+            /*Positioned(
                 top: Get.height * .03,
                 left: Get.width * .03,
                 child: IconButton(
@@ -163,7 +169,7 @@ class _LocationState extends State<Location> {
                   onPressed: () {
                     Get.back();
                   },
-                ))
+                ))*/
           ],
         ),
         /*floatingActionButton:FloatingActionButton(

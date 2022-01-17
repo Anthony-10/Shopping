@@ -27,6 +27,7 @@ class _SellLocationState extends State<SellLocation> {
   String country1;
   String address;
   Placemark place;
+  int distances = 0;
   //Geolocator _geolocator = Geolocator();
 
   void getMarkers(double lat, double long) {
@@ -181,9 +182,14 @@ class _SellLocationState extends State<SellLocation> {
               padding: const EdgeInsets.symmetric(horizontal: 70.0),
               child: ElevatedButton(
                   onPressed: () async {
+                    if (postalCode.isEmpty) {
+                      postalCode = 'N/B';
+                    } else {
+                      return;
+                    }
                     await FirebaseFirestore.instance
                         .collection('location')
-                        .doc()
+                        .doc(uid)
                         .set({
                       'latitude': position.latitude,
                       'longitude': position.longitude,
@@ -191,6 +197,7 @@ class _SellLocationState extends State<SellLocation> {
                       'Country': country,
                       'postalCode': postalCode,
                       'uid': uid,
+                      'distances': distances,
                       /*final coordinated = new geoCo.Coordinates(
                         position.latitude, position.longitude);
                     var address = await geoCo.Geocoder.local

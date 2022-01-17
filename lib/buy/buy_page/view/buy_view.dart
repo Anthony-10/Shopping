@@ -60,11 +60,14 @@ class _BuyViewState extends State<BuyView> {
       var distance = distanceImMeter.round().toInt();
       print('qeqeqe');
       print('$distance,llllllllllllllllllllllllllllllllllllllllllllll');
-      /*updateDistance(
-          url: buyController.url,
-          email: buyController.email,
-          firstName: buyController.firstName,
-          distances: distance);*/
+      updateDistance(
+          address: buyController.address,
+          country: buyController.country,
+          postalCode: buyController.postalCode,
+          latitude: buyController.lat,
+          longitude: buyController.long,
+          uid: buyController.locationId,
+          distances: distance);
     }
   }
 
@@ -79,6 +82,9 @@ class _BuyViewState extends State<BuyView> {
           buyController.lat = doc['latitude'];
           buyController.long = doc['longitude'];
           buyController.locationId = doc['uid'];
+          buyController.address = doc['Address'];
+          buyController.postalCode = doc['postalCode'];
+          buyController.country = doc['Country'];
           loglatid.add({
             'lat': buyController.lat,
             'long': buyController.long,
@@ -129,17 +135,35 @@ class _BuyViewState extends State<BuyView> {
   }
 
   Future<void> updateDistance(
-      {var url, var email, var firstName, var distances}) async {
+      {var address,
+      var country,
+      var latitude,
+      var longitude,
+      var postalCode,
+      var uid,
+      var distances}) async {
     print('$distances,ggggggggggggggggggggggggjgjjgjgjgj');
+    print('$address,ggggggggggggggggggggggggjgjjgjgjgj');
+    print('$country,ggggggggggggggggggggggggjgjjgjgjgj');
+    print('$latitude,ggggggggggggggggggggggggjgjjgjgjgj');
+    print('$longitude,ggggggggggggggggggggggggjgjjgjgjgj');
+    print('$postalCode,ggggggggggggggggggggggggjgjjgjgjgj');
+    print('$uid,ggggggggggggggggggggggggjgjjgjgjgj');
     if (distances != null) {
+      print('$distances,jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
       try {
-        await _fireStore.collection("Users").doc().update({
-          'Url': buyController.url,
-          'email': buyController.email,
-          'firstName': buyController.firstName,
+        await _fireStore.collection("location").doc(uid).update({
+          'latitude': latitude,
+          'longitude': longitude,
+          'Address': address,
+          'Country': country,
+          'postalCode': postalCode,
+          'uid': uid,
           'distances': distances,
         });
       } on FirebaseException catch (e) {
+        print('${e.code},kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+        print('${e.message},kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
         Get.snackbar(
           "Error Adding User ",
           e.message,
