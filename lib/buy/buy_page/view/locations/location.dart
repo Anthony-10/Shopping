@@ -139,8 +139,7 @@ class _LocationState extends State<Location> {
               TextButton(
                   onPressed: () => mapController.animateCamera(
                       CameraUpdate.newCameraPosition(CameraPosition(
-                          target: LatLng(position.latitude.toDouble(),
-                              position.longitude.toDouble()),
+                          target: LatLng(buyController.lat, buyController.long),
                           zoom: 18.0))),
                   child: Text('DESTINATION',
                       style: TextStyle(color: Colors.black)))
