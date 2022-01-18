@@ -28,8 +28,6 @@ class AddProductsController extends GetxController {
   var colorElement;
   bool colorValue = false;
 
-  final formKey = GlobalKey<FormState>();
-
   final TextEditingController productName = TextEditingController();
   final TextEditingController productSize = TextEditingController();
   final TextEditingController productAmount = TextEditingController();

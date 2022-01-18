@@ -32,6 +32,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
   final DatabaseService databaseService = Get.put(DatabaseService());
   var height = Get.height;
   var width = Get.width;
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +214,7 @@ class _BottomSheet2State extends State<BottomSheet2> {
                     addProductsController.itemElement != null &&
                     addProductsController.productElement !=
                         ProductCategories.others &&
-                    addProductsController.formKey.currentState.validate()
+                    formKey.currentState.validate()
                 ? setState(() {
                     addProductsController.initialIndex = 3;
                   })

@@ -61,12 +61,10 @@ class _BuyViewState extends State<BuyView> {
       print('qeqeqe');
       print('$distance,llllllllllllllllllllllllllllllllllllllllllllll');
       updateDistance(
-          address: buyController.address,
-          country: buyController.country,
-          postalCode: buyController.postalCode,
-          latitude: buyController.lat,
-          longitude: buyController.long,
-          uid: buyController.locationId,
+          email: buyController.email,
+          firstName: buyController.firstName,
+          url: buyController.url,
+          uid: buyController.userId,
           distances: distance);
     }
   }
@@ -82,9 +80,9 @@ class _BuyViewState extends State<BuyView> {
           buyController.lat = doc['latitude'];
           buyController.long = doc['longitude'];
           buyController.locationId = doc['uid'];
-          buyController.address = doc['Address'];
+          /*buyController.address = doc['Address'];
           buyController.postalCode = doc['postalCode'];
-          buyController.country = doc['Country'];
+          buyController.country = doc['Country'];*/
           loglatid.add({
             'lat': buyController.lat,
             'long': buyController.long,
@@ -134,32 +132,29 @@ class _BuyViewState extends State<BuyView> {
     }
   }
 
-  Future<void> updateDistance(
-      {var address,
-      var country,
-      var latitude,
-      var longitude,
-      var postalCode,
-      var uid,
-      var distances}) async {
+  Future<void> updateDistance({
+    var email,
+    var firstName,
+    var url,
+    var userId,
+    var distances,
+    var uid,
+  }) async {
+    print('$email,ggggggggggggggggggggggggjgjjgjgjgj');
+    print('$firstName,ggggggggggggggggggggggggjgjjgjgjgj');
+    print('$url,ggggggggggggggggggggggggjgjjgjgjgj');
+    print('$userId,ggggggggggggggggggggggggjgjjgjgjgj');
     print('$distances,ggggggggggggggggggggggggjgjjgjgjgj');
-    print('$address,ggggggggggggggggggggggggjgjjgjgjgj');
-    print('$country,ggggggggggggggggggggggggjgjjgjgjgj');
-    print('$latitude,ggggggggggggggggggggggggjgjjgjgjgj');
-    print('$longitude,ggggggggggggggggggggggggjgjjgjgjgj');
-    print('$postalCode,ggggggggggggggggggggggggjgjjgjgjgj');
     print('$uid,ggggggggggggggggggggggggjgjjgjgjgj');
     if (distances != null) {
       print('$distances,jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
       try {
-        await _fireStore.collection("location").doc(uid).update({
-          'latitude': latitude,
-          'longitude': longitude,
-          'Address': address,
-          'Country': country,
-          'postalCode': postalCode,
-          'uid': uid,
-          'distances': distances,
+        await _fireStore.collection("Users").doc(uid).update({
+          'email': email,
+          'firstName': firstName,
+          'Url': url,
+          'userId': userId,
+          'distances': distances
         });
       } on FirebaseException catch (e) {
         print('${e.code},kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
@@ -176,9 +171,18 @@ class _BuyViewState extends State<BuyView> {
   }
 
   Future<void> getUserData() async {
-    DocumentSnapshot documentSnapshot =
-        await FirebaseFirestore.instance.collection('Users').doc().get();
-    if (documentSnapshot.exists) {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        buyController.url = doc['Url'];
+        buyController.email = doc['email'];
+        buyController.firstName = doc['firstName'];
+        buyController.userId = doc['userId'];
+      });
+    });
+    /*if (documentSnapshot.exists) {
       setState(() {
         buyController.url = documentSnapshot.get('Url');
         buyController.email = documentSnapshot.get('email');
@@ -188,13 +192,14 @@ class _BuyViewState extends State<BuyView> {
       print('${buyController.lat} getUserData:::::::::::::::::::::::::');
     } else {
       print('wewe');
-    }
+    }*/
   }
 
   @override
   void initState() {
     // TODO: implement initSttData();*/
-    getData();
+
+    getUserData().whenComplete(() => getData());
     /*_getTheDistance();*/
     super.initState();
   }

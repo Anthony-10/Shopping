@@ -12,7 +12,7 @@ class PriceSection extends StatefulWidget {
 class _PriceSectionState extends State<PriceSection> {
   AddProductsController addProductsController =
       Get.put(AddProductsController());
-
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -22,7 +22,7 @@ class _PriceSectionState extends State<PriceSection> {
         //height: Get.height * 0.07,
         width: Get.width * 0.4,
         child: Form(
-          key: addProductsController.formKey,
+          key: formKey,
           child: Column(
             children: [
               TextFormField(
