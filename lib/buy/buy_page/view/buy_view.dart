@@ -19,7 +19,7 @@ class _BuyViewState extends State<BuyView> {
   final buyController = Get.put(BuyController());
   final controller = SlideController();
   final drawerFunctions = Get.put(DrawerFunctions());
-  final uid = FirebaseAuth.instance.currentUser;
+  final uid = FirebaseAuth.instance.currentUser.uid;
   final DatabaseService databaseService = Get.put(DatabaseService());
 
   final usersRef = FirebaseFirestore.instance.collection('location');
@@ -35,8 +35,8 @@ class _BuyViewState extends State<BuyView> {
 
   Position _currentUserPosition;
   double distanceImMeter = 0;
-  List loglatid = [];
-
+  List userInfo = [];
+  List getUserDataList = [];
   Future _getTheDistance() async {
     _currentUserPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -44,12 +44,16 @@ class _BuyViewState extends State<BuyView> {
     print('${buyController.lat}latlatlatlatlatlatlatlatlat');
     print('${_currentUserPosition.longitude}lololololololololololololo');
     print('${buyController.long}longlonglonglonglonglonglonglonglonglong');*/
-    print('${loglatid.length},kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-    for (int i = 0; i < loglatid.length; i++) {
-      double lat = loglatid[i]['lat'];
-      double long = loglatid[i]['long'];
+    print('${userInfo.length},kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+    for (int i = 0; i < userInfo.length; i++) {
+      double lat = userInfo[i]['lat'];
+      double long = userInfo[i]['long'];
+      var url = userInfo[i]['url'];
+      var email = userInfo[i]['email'];
+      var userId = userInfo[i]['userId'];
+      var firstName = userInfo[i]['firstName'];
       print('$lat,ppppppppppppppppppp');
-      print('${loglatid[i]['long']},77777777777777777777777777');
+      print('${userInfo[i]['long']},77777777777777777777777777');
       print('$long,oooooooooooooooooooooo');
       distanceImMeter = Geolocator.distanceBetween(
           _currentUserPosition.latitude,
@@ -60,39 +64,49 @@ class _BuyViewState extends State<BuyView> {
       var distance = distanceImMeter.round().toInt();
       print('qeqeqe');
       print('$distance,llllllllllllllllllllllllllllllllllllllllllllll');
+
       updateDistance(
-          email: buyController.email,
-          firstName: buyController.firstName,
-          url: buyController.url,
-          uid: buyController.userId,
+          email: email,
+          firstName: firstName,
+          url: url,
+          userId: userId,
           distances: distance);
     }
   }
 
   Future<void> getData() async {
     print('getData888888888888888888888888');
+    print('$uid,uid ooooooooooooooooooooooooooooooooooooo');
     try {
       FirebaseFirestore.instance
-          .collection('location')
+          .collection('Users')
+          /*.where('userId', isNotEqualTo: uid)*/
+          .where('longitude', isGreaterThan: 0)
           .get()
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((doc) {
           buyController.lat = doc['latitude'];
           buyController.long = doc['longitude'];
-          buyController.locationId = doc['uid'];
+          buyController.url = doc['Url'];
+          buyController.email = doc['email'];
+          buyController.userId = doc['userId'];
+          buyController.firstName = doc['firstName'];
           /*buyController.address = doc['Address'];
           buyController.postalCode = doc['postalCode'];
           buyController.country = doc['Country'];*/
-          loglatid.add({
+          userInfo.add({
             'lat': buyController.lat,
             'long': buyController.long,
-            'locationId': buyController.locationId
+            'url': buyController.url,
+            'email': buyController.email,
+            'userId': buyController.userId,
+            'firstName': buyController.firstName
           });
           //loglatid.add({'long': buyController.long});
           //loglatid.add(buyController.locationId);
           print('${doc['latitude']},eeeeeeeeeeeeeeeeeeeeee');
           print('${doc['longitude']},eeeeeeeeeeeeeeeeeeeeee');
-          print('$loglatid,999999999999999999999999999999999999999999999999');
+          print('$userInfo,999999999999999999999999999999999999999999999999');
         });
       }).whenComplete(() => _getTheDistance());
 
@@ -138,18 +152,16 @@ class _BuyViewState extends State<BuyView> {
     var url,
     var userId,
     var distances,
-    var uid,
   }) async {
     print('$email,ggggggggggggggggggggggggjgjjgjgjgj');
     print('$firstName,ggggggggggggggggggggggggjgjjgjgjgj');
     print('$url,ggggggggggggggggggggggggjgjjgjgjgj');
     print('$userId,ggggggggggggggggggggggggjgjjgjgjgj');
     print('$distances,ggggggggggggggggggggggggjgjjgjgjgj');
-    print('$uid,ggggggggggggggggggggggggjgjjgjgjgj');
     if (distances != null) {
       print('$distances,jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
       try {
-        await _fireStore.collection("Users").doc(uid).update({
+        await _fireStore.collection("Users").doc(userId).update({
           'email': email,
           'firstName': firstName,
           'Url': url,
@@ -178,10 +190,21 @@ class _BuyViewState extends State<BuyView> {
       querySnapshot.docs.forEach((doc) {
         buyController.url = doc['Url'];
         buyController.email = doc['email'];
-        buyController.firstName = doc['firstName'];
         buyController.userId = doc['userId'];
+        buyController.firstName = doc['firstName'];
+        getUserDataList.add({
+          'Urls': buyController.url,
+          'email': buyController.email,
+          'userId': buyController.userId,
+          'firstName': buyController.firstName
+        });
       });
     });
+    print('$getUserDataList,9999999999999999999999999999999');
+    /*print('${buyController.url},000000000000000000000000000000000');
+    print('${buyController.email},9999999999999999999999999999999');
+    print('${buyController.firstName},22222222222222222222222222222');
+    print('${buyController.userId},44444444444444444444444444444444');*/
     /*if (documentSnapshot.exists) {
       setState(() {
         buyController.url = documentSnapshot.get('Url');
@@ -199,8 +222,9 @@ class _BuyViewState extends State<BuyView> {
   void initState() {
     // TODO: implement initSttData();*/
 
-    getUserData().whenComplete(() => getData());
+    /*getUserData().whenComplete(() => getData());*/
     /*_getTheDistance();*/
+    getData();
     super.initState();
   }
 

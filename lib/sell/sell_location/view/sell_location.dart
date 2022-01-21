@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 
 class SellLocation extends StatefulWidget {
   const SellLocation({Key key}) : super(key: key);
@@ -15,10 +16,12 @@ class SellLocation extends StatefulWidget {
 
 class _SellLocationState extends State<SellLocation> {
   //GoogleMapController googleMapController;
+  final DatabaseService databaseService = Get.put(DatabaseService());
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   final LatLng _center = const LatLng(45.521563, -122.677433);
   GoogleMapController mapController;
   String uid = FirebaseAuth.instance.currentUser.uid;
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   Position position;
   String addressLocation;
@@ -27,8 +30,12 @@ class _SellLocationState extends State<SellLocation> {
   String country1;
   String address;
   Placemark place;
-  int distances = 0;
   //Geolocator _geolocator = Geolocator();
+  var email;
+  var firstName;
+  var url;
+  var distances;
+  var userId;
 
   void getMarkers(double lat, double long) {
     MarkerId markerId = MarkerId(lat.toString() + long.toString());
@@ -129,6 +136,7 @@ class _SellLocationState extends State<SellLocation> {
   @override
   void initState() {
     // TODO: implement initState
+    getUserData();
     getCurrentLocation();
     super.initState();
   }
@@ -197,7 +205,6 @@ class _SellLocationState extends State<SellLocation> {
                       'Country': country,
                       'postalCode': postalCode,
                       'uid': uid,
-                      'distances': distances,
                       /*final coordinated = new geoCo.Coordinates(
                         position.latitude, position.longitude);
                     var address = await geoCo.Geocoder.local
@@ -223,6 +230,16 @@ class _SellLocationState extends State<SellLocation> {
                               "Success message",
                               'Location Added',
                             ));
+                    {
+                      upDateUserData(
+                          email: email,
+                          firstName: firstName,
+                          url: url,
+                          distances: distances,
+                          latitude: position.latitude,
+                          longitude: position.longitude,
+                          userId: userId);
+                    }
                   },
                   child: Text('Save'),
                   style: ElevatedButton.styleFrom(
@@ -234,5 +251,53 @@ class _SellLocationState extends State<SellLocation> {
         ],
       ),
     );
+  }
+
+  void getUserData() {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          email = documentSnapshot.get('email');
+          firstName = documentSnapshot.get('firstName');
+          distances = documentSnapshot.get('distances');
+          url = documentSnapshot.get('Url');
+          userId = documentSnapshot.get('userId');
+        });
+        print('$email :::::::::::::::::::::::::');
+        print('$firstName :::::::::::::::::::::::::');
+        print('$distances :::::::::::::::::::::::::');
+        print('$url :::::::::::::::::::::::::');
+        print('$userId :::::::::::::::::::::::::');
+      } else {
+        print('wewe');
+      }
+    });
+  }
+
+  void upDateUserData(
+      {var email,
+      var firstName,
+      var url,
+      var userId,
+      var distances,
+      var latitude,
+      var longitude}) async {
+    try {
+      await _fireStore.collection("Users").doc(uid).update({
+        'email': email,
+        'firstName': firstName,
+        'Url': url,
+        'userId': userId,
+        'distances': distances,
+        'latitude': latitude,
+        'longitude': longitude,
+      });
+    } on FirebaseException catch (e) {
+      print(e.message);
+    }
   }
 }

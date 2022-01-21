@@ -13,6 +13,7 @@ class UserStaff extends StatelessWidget {
   final user = FirebaseFirestore.instance
       .collection("Users")
       .where("userId", isNotEqualTo: FirebaseAuth.instance.currentUser.uid)
+      /*.orderBy('distances')*/
       .snapshots();
   @override
   Widget build(BuildContext context) {

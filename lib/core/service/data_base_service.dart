@@ -27,7 +27,12 @@ class DatabaseService extends GetxController {
   var itemProducts;
 
   Future<void> addUserInfo(
-      {String email, String firstName, var url, var distances}) async {
+      {String email,
+      String firstName,
+      var url,
+      var distances,
+      var latitude,
+      var longitude}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       if (uid != null) {
@@ -37,6 +42,8 @@ class DatabaseService extends GetxController {
           'Url': url,
           'userId': uid,
           'distances': distances,
+          'latitude': latitude,
+          'longitude': longitude,
         });
       }
     } on FirebaseException catch (e) {

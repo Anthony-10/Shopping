@@ -19,7 +19,9 @@ class AuthController extends GetxController {
   final DatabaseService databaseService = Get.put(DatabaseService());
   final uid = FirebaseAuth.instance.currentUser;
   var defaulImage;
-  var usrDistance = 0;
+  var userDistance = 0;
+  var latitude = 0;
+  var longitude = 0;
 
   @override
   void onInit() {
@@ -38,7 +40,9 @@ class AuthController extends GetxController {
                 email: email,
                 firstName: firstName,
                 url: defaulImage,
-                distances: usrDistance)
+                distances: userDistance,
+                latitude: latitude,
+                longitude: longitude)
             .then((value) => Get.off(() => DrawerView()));
       }
     } on FirebaseAuthException catch (e) {
