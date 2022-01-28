@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/onboarding_screen/controller/onboarding_controller.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingView extends StatelessWidget {
   final _controller = OnboardingController();
@@ -20,7 +22,7 @@ class OnboardingView extends StatelessWidget {
                     children: [
                       Image.asset(
                         _controller.onboardingPages[index].imageAsset,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                         height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width,
                       ),
@@ -36,9 +38,23 @@ class OnboardingView extends StatelessWidget {
                 );
               }),
           Positioned(
-            bottom: 20,
-            left: 20,
-            child: Row(
+              bottom: 20,
+              left: 20,
+              child: Obx(() {
+                return AnimatedSmoothIndicator(
+                  activeIndex: _controller.selectedPageIndex.value,
+                  count: _controller.onboardingPages.length,
+                  effect: JumpingDotEffect(
+                    activeDotColor: Colors.red,
+                    dotColor: Colors.white,
+                    dotHeight: 10,
+                    dotWidth: 10,
+                    spacing: 16,
+                    verticalOffset: 10,
+                  ),
+                );
+              })
+              /*Row(
               children: List.generate(
                   _controller.onboardingPages.length,
                   (index) => Obx(() {
@@ -54,8 +70,8 @@ class OnboardingView extends StatelessWidget {
                               shape: BoxShape.circle),
                         );
                       })),
-            ),
-          ),
+            ),*/
+              ),
           Positioned(
             right: 20,
             bottom: 20,
