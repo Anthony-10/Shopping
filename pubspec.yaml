@@ -56,6 +56,7 @@ dependencies:
   geolocator: ^7.1.1
   geocoding: ^2.0.1
   #geocoder: ^0.2.1
+  shared_preferences: ^2.0.12
 
 
 dev_dependencies:

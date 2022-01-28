@@ -18,6 +18,7 @@ class _FavouritesState extends State<Favourites> {
   final buyController = Get.put(BuyController());
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('Favorite');
+  var me;
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +48,12 @@ class _FavouritesState extends State<Favourites> {
             )),
             Expanded(
               //Changed from stream to future
+
               child: FutureBuilder<DocumentSnapshot>(
                   future: users
                       .doc(FirebaseAuth.instance.currentUser.uid)
                       .collection("currentUser")
-                      .doc('0F47Ktd9rrgDbTvAmkrm2F0q2CP2')
+                      .doc('YkE8qDFIWzPRoxzPcqPuhjUanBP2')
                       .get(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
@@ -71,8 +73,9 @@ class _FavouritesState extends State<Favourites> {
                             primary: false,
                             padding: const EdgeInsets.all(15),
                             physics: BouncingScrollPhysics(),
-                            itemCount: data.length,
+                            itemCount: me = data.length,
                             itemBuilder: (context, index) {
+                              print('$me,kkkkkkkkkkkkkkkkkkkkk');
                               print(
                                   '${FirebaseAuth.instance.currentUser.uid},,,,,,,,,,,,,,,,,,');
                               print(

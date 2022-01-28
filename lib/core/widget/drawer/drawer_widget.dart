@@ -137,6 +137,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                           imageUrl: drawerFunctions.images =
                                               snapshot.data.docs[index]['Url']
                                                   .toString(),
+                                          height: Get.height * .28,
+                                          width: Get.width * .28,
                                           fit: BoxFit.fill,
                                           placeholder: (context, url) =>
                                               Container(

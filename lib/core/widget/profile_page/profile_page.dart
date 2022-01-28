@@ -270,6 +270,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   cacheManager: buyController.customCacheManager,
                   imageUrl: drawerFunctions.images =
                       snapshot.data.docs[index]['Url'].toString(),
+                  height: Get.height * .5,
+                  width: Get.width * .5,
                   fit: BoxFit.fill,
                   placeholder: (context, url) => Container(
                     color: Colors.black12,

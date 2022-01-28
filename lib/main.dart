@@ -13,6 +13,7 @@ import 'authentication/view/auth_view.dart';
 import 'buy/buy_page/view/buy_view.dart';
 import 'core/widget/drawer/drawer_view/drawer_view.dart';
 import 'extras/tab_bar.dart';
+import 'loading_screen/loading_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,8 +58,13 @@ class MyApp extends StatelessWidget {
             name: "/register_status",
             page: () => RegisterStatus(),
             binding: AuthBinding()),
+        GetPage(
+          name: "/loading_screen",
+          page: () => LoadingScreen(),
+            binding: AuthBinding()
+        ),
       ],
-      initialRoute: "/register_status",
+      initialRoute: "/loading_screen",
     );
   }
 }

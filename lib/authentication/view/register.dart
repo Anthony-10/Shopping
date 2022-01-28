@@ -45,6 +45,7 @@ class _RegisterState extends State<Register> {
               TextFormField(
                 key: const ValueKey("UserEmail"),
                 textAlign: TextAlign.start,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: "Email",
                 ),

@@ -22,7 +22,7 @@ class _AuthViewState extends State<AuthView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        reverse: true,
+        /*reverse: true,*/
         child: Stack(
           children: [
             Container(

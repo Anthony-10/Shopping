@@ -12,6 +12,7 @@ class PriceSection extends StatefulWidget {
 class _PriceSectionState extends State<PriceSection> {
   AddProductsController addProductsController =
       Get.put(AddProductsController());
+
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/controller/auth_controller.dart';
 import 'package:shopping_app/authentication/view/forget_password.dart';
@@ -32,6 +33,7 @@ class _LoginState extends State<Login> {
                   TextFormField(
                     key: const ValueKey("UserEmail"),
                     textAlign: TextAlign.start,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       hintText: "Email",
                     ),

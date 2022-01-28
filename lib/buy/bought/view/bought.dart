@@ -30,71 +30,76 @@ class BoughtItem extends StatelessWidget {
                       physics: BouncingScrollPhysics(),
                       itemCount: snapshot.data.size,
                       itemBuilder: (context, index) {
-                        return Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(9.0),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  height: Get.height * .15,
-                                  width: Get.width * .25,
-                                  child: Card(
-                                    child: CachedNetworkImage(
-                                      cacheManager:
-                                          buyController.customCacheManager,
-                                      imageUrl: snapshot
-                                          .data.docs[index]['image']
-                                          .toString(),
-                                      fit: BoxFit.fill,
-                                      placeholder: (context, url) => Container(
-                                        color: Colors.black12,
+                        return FittedBox(
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(9.0),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height: Get.height * .15,
+                                    width: Get.width * .25,
+                                    child: Card(
+                                      child: CachedNetworkImage(
+                                        cacheManager:
+                                            buyController.customCacheManager,
+                                        imageUrl: snapshot
+                                            .data.docs[index]['image']
+                                            .toString(),
+                                        fit: BoxFit.fill,
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          color: Colors.black12,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Container(
+                                          color: Colors.black12,
+                                          child: Icon(Icons.error,
+                                              color: Colors.red),
+                                        ),
                                       ),
-                                      errorWidget: (context, url, error) =>
-                                          Container(
-                                        color: Colors.black12,
-                                        child: Icon(Icons.error,
-                                            color: Colors.red),
+                                      semanticContainer: true,
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      elevation: 20.0,
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
                                       ),
-                                    ),
-                                    semanticContainer: true,
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    elevation: 20.0,
-                                    color: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: Get.width * .2,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        'Name: ${snapshot.data.docs[index]['name'].toString()}'),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                        'Price: ${snapshot.data.docs[index]['price'].toString()}'),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                        'Size: ${snapshot.data.docs[index]['size'].toString()}'),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                        'Date: ${snapshot.data.docs[index]['date'].toString()}'),
-                                  ],
-                                )
-                              ],
+                                  SizedBox(
+                                    width: Get.width * .2,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          'Name: ${snapshot.data.docs[index]['name'].toString()}'),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                          'Price: ${snapshot.data.docs[index]['price'].toString()}'),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                          'Size: ${snapshot.data.docs[index]['size'].toString()}'),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                          'Date: ${snapshot.data.docs[index]['date'].toString()}'),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                           ),
                         );
                       });

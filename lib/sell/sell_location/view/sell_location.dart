@@ -287,15 +287,23 @@ class _SellLocationState extends State<SellLocation> {
       var latitude,
       var longitude}) async {
     try {
-      await _fireStore.collection("Users").doc(uid).update({
-        'email': email,
-        'firstName': firstName,
-        'Url': url,
-        'userId': userId,
-        'distances': distances,
-        'latitude': latitude,
-        'longitude': longitude,
-      });
+      if (email != null &&
+          firstName != null &&
+          url != null &&
+          userId != null &&
+          distances != null) {
+        await _fireStore.collection("Users").doc(uid).update({
+          'email': email,
+          'firstName': firstName,
+          'Url': url,
+          'userId': userId,
+          'distances': distances,
+          'latitude': latitude,
+          'longitude': longitude,
+        });
+      } else {
+        print('String empty');
+      }
     } on FirebaseException catch (e) {
       print(e.message);
     }
