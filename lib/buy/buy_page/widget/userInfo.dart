@@ -9,7 +9,7 @@ import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
 class UserStaff extends StatelessWidget {
   //const UserStaff({Key key}) : super(key: key);
   final buyController = Get.put(BuyController());
-  var me;
+
   final user = FirebaseFirestore.instance
       .collection("Users")
       .where("userId", isNotEqualTo: FirebaseAuth.instance.currentUser.uid)
@@ -38,9 +38,8 @@ class UserStaff extends StatelessWidget {
                     primary: false,
                     padding: const EdgeInsets.all(15),
                     physics: BouncingScrollPhysics(),
-                    itemCount: me = snapshot.data.size,
+                    itemCount: snapshot.data.size,
                     itemBuilder: (context, index) {
-                      print('$me,mmmmmmmmmmmmmmmmmmmmm');
                       return Container(
                         height: Get.height * 0.9,
                         width: Get.width * 0.5,

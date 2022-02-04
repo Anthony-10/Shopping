@@ -74,7 +74,8 @@ class _SellerImageState extends State<SellerImage> {
                                   child: CachedNetworkImage(
                                     cacheManager:
                                         buyController.customCacheManager,
-                                    imageUrl: snapshot.data.docs[index]['Url'],
+                                    imageUrl: snapshot.data.docs[index]['Url']
+                                        .toString(),
                                     fit: BoxFit.fill,
                                     placeholder: (context, url) => Container(
                                       color: Colors.black12,

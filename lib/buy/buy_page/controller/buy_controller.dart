@@ -33,7 +33,7 @@ class BuyController extends GetxController {
   var country;
   var postalCode;
 
-  int counter = 0;
+  int counter = 1;
 
   int likeCount = 0;
   Map likes;

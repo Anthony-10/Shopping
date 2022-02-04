@@ -13,7 +13,6 @@ class _PriceSectionState extends State<PriceSection> {
   AddProductsController addProductsController =
       Get.put(AddProductsController());
 
-  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -23,7 +22,7 @@ class _PriceSectionState extends State<PriceSection> {
         //height: Get.height * 0.07,
         width: Get.width * 0.4,
         child: Form(
-          key: formKey,
+          key: addProductsController.formKey,
           child: Column(
             children: [
               TextFormField(
@@ -50,7 +49,8 @@ class _PriceSectionState extends State<PriceSection> {
                 textAlign: TextAlign.start,
                 decoration: InputDecoration(labelText: "ProductSize"),
                 validator: (value) {
-                  if (value.isEmpty || RegExp(r'^[0-9]+$').hasMatch(value)) {
+                  if (value.isEmpty ||
+                      RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
                     return 'Enter correct ProductSize';
                   } else {
                     return null;
