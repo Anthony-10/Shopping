@@ -69,13 +69,18 @@ class _PayViewState extends State<PayView> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      boughtController.boughtInfo(
-                          price: cartController.price,
-                          size: cartController.size,
-                          amount: buyController.counter,
-                          image: buyController.sellerProduct,
-                          name: cartController.name,
-                          sellUid: buyController.id);
+                      boughtController
+                          .boughtInfo(
+                              price: cartController.price,
+                              size: cartController.size,
+                              amount: buyController.counter,
+                              image: buyController.sellerProduct,
+                              name: cartController.name,
+                              sellUid: buyController.id)
+                          .then((value) => Get.snackbar(
+                              "Success", 'product bought successful',
+                              snackPosition: SnackPosition.TOP));
+
                       Get.to(() => DrawerView());
                     },
                     child: Container(

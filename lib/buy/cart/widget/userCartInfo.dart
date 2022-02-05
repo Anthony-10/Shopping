@@ -25,6 +25,9 @@ class _UserCartInfoState extends State<UserCartInfo> {
       .where('userId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
       .snapshots();
 
+  var selectedPrice;
+  var selectedAmount;
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -122,6 +125,18 @@ class _UserCartInfoState extends State<UserCartInfo> {
                                         //TODO
                                         //Adding the numbers even
                                         // when removing the items
+                                        selectedPrice = snapshot
+                                            .data.docs[index]['price']
+                                            .toString();
+                                        selectedAmount = snapshot
+                                            .data.docs[index]['amount']
+                                            .toString();
+                                        int sPrice = int.parse(selectedPrice);
+                                        int sAmount = int.parse(selectedAmount);
+                                        cartController.sumAmountPrice =
+                                            sPrice * sAmount;
+                                        print(
+                                            '${cartController.sumAmountPrice},lllllllllllllllll');
                                         cartController.subFunction();
                                       },
                                       icon: Icon(Icons.close)),

@@ -16,7 +16,11 @@ class CartController extends GetxController {
 
   var afterPrice;
   var sum = 0.obs;
-  final value = 0;
+  final math = [].obs;
+  var selectedPrice;
+  var values = 0;
+  var afterAmount;
+  var sumAmountPrice;
 
   Future<void> cartInfo({
     var price,
@@ -58,19 +62,32 @@ class CartController extends GetxController {
         .get()
         .then((QuerySnapshot querySnapshot) {
       print('ooooooooooooooooooooooooooooooooooo');
+      math.clear();
+      sum.value = 0;
+      values = 0;
       if (querySnapshot.docs.isNotEmpty) {
         querySnapshot.docs.forEach((doc) {
-          print('$sum,888888888888888');
-          afterPrice = doc['price'];
-          print(
-              '$afterPrice,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+          afterPrice = doc['price'].toString();
+          afterAmount = doc['amount'].toString();
+          print('$afterAmount,bbbbbbbbbbbbbbbbbbbbbb');
           int pValue = int.parse(afterPrice);
-          print('$pValue,llllllllllllllllllllllllll');
-          print('$sum,00000000000000000000000000');
-          sum += pValue;
-
-          print('$sum,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+          int aValue = int.parse(afterAmount);
+          sumAmountPrice = aValue * pValue;
+          print('$sumAmountPrice,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+          math.add(sumAmountPrice);
+          /*math.clear();
+          sum.value = 0;
+          values = 0;*/
         });
+        print('$math,jjjjjjjjjjjjjjjjjjjjjjjj');
+        /* for (var i = 0; i < math.length; i++) {
+          value += math[i];
+        }*/
+        math.forEach((e) => values += e);
+
+        print('$values,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+
+        sum += values;
       } else {
         print('wewe');
       }
@@ -87,15 +104,20 @@ class CartController extends GetxController {
       print('ooooooooooooooooooooooooooooooooooo');
       if (querySnapshot.docs.isNotEmpty) {
         querySnapshot.docs.forEach((doc) {
-          afterPrice = doc['price'];
-          print(
-              '$afterPrice,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-          int pValue = int.parse(afterPrice);
+          //afterPrice = doc['price'];
+          /*print(
+              '$afterPrice,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');*/
+          //int pValue = int.parse(afterPrice);
+          //print('$pValue,+++++++++++++++++++++++++');
+          //print('$sum,==============================');
+          //math.clear();
+          //math.remove(afterPrice);
 
-          sum -= pValue;
-
-          print('$sum,subSum////////////////////');
+          //int pValue = int.parse(sumAmountPrice);
         });
+        sum = sum - sumAmountPrice;
+
+        print('$sum,subSum////////////////////');
       } else {
         sum.value = 0;
         print('$sum,llllllllllllllllllllll');
