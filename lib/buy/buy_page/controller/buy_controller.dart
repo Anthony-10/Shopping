@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 
 class BuyController extends GetxController {
   var name;
@@ -159,7 +158,7 @@ class BuyController extends GetxController {
           items = doc['Item'];
           itemsCatego.add(items);
           print('$itemsCatego,ggggggggggggggggggggggggggggggggg');
-          print('${items},yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+          print('$items,yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
         });
       } else {
         print("No data");

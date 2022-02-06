@@ -26,16 +26,16 @@ class _PayViewState extends State<PayView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    /*print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
     getData();
-    print('$ehe,llllllllllllllllllll');
+    print('$ehe,llllllllllllllllllll');*/
   }
 
   var ehe;
   @override
   Widget build(BuildContext context) {
-    print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-    getData();
+    /*print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    getData();*/
     return SafeArea(
       child: Scaffold(
         body: Column(

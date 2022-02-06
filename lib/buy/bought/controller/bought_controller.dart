@@ -28,8 +28,7 @@ class BoughtController extends GetxController {
       print(
           "---------------------- Uploading User data  ----------------------");
     } on FirebaseException catch (e) {
-      print(
-          "---------------------- Uploading User data  ----------------------");
+      print("---------------------- Uploading User data ${e.message}");
       Get.snackbar(
         "User data uploaded",
         e.message,

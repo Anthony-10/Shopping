@@ -126,4 +126,21 @@ class CartController extends GetxController {
       }
     });
   }
+
+  Future<void> deleteCartInfo() async {
+    try {
+      var collection = FirebaseFirestore.instance.collection("Cart");
+      var snapshot = await collection.get();
+      for (var doc in snapshot.docs) {
+        await doc.reference.delete();
+      }
+      /*print('deleteCartInfo,KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK');
+      await _fireStore.collection("Cart").doc().delete();
+      print('deleteCartInfo,ppppppppppppppppppppppppppppppppppppppppppp');*/
+    } on FirebaseException catch (e) {
+      print('${e.message},NNNNNNNNNNNNNNNNNNNNNNNNN');
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

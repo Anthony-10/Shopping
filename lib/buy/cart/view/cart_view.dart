@@ -121,6 +121,7 @@ class _CartViewState extends State<CartView> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50))),
                     onPressed: () {
+                      cartController.deleteCartInfo();
                       Get.to(() => PayView());
                     },
                     child: Text('Checkout')),
