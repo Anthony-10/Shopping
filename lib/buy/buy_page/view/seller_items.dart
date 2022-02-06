@@ -23,6 +23,8 @@ class _SellerItemState extends State<SellerItem> {
   final heights = Get.height;
   final widths = Get.width;
 
+  var min = 2;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -214,9 +216,14 @@ class _SellerItemState extends State<SellerItem> {
                                                   BorderRadius.circular(70)),
                                           child: GestureDetector(
                                               onTap: () {
-                                                setState(() {
-                                                  buyController.counter--;
-                                                });
+                                                if (buyController.counter >=
+                                                    min) {
+                                                  setState(() {
+                                                    buyController.counter--;
+                                                  });
+                                                } else {
+                                                  return;
+                                                }
                                               },
                                               child: Icon(Icons.remove))),
                                     ],
