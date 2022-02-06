@@ -25,14 +25,13 @@ class _SellerAccountState extends State<SellerAccount> {
 
   var name2;
 
-  var color;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   String uid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   void initState() {
     // TODO: implement initState
-    colorFunction();
+    buyController.colorFunction();
     super.initState();
   }
 
@@ -70,38 +69,14 @@ class _SellerAccountState extends State<SellerAccount> {
                                 onPressed: () {
                                   print('2222222222222222');
                                   //TODO
-                                  FirebaseFirestore.instance
-                                      .collection("Favorite")
-                                      .doc(uid)
-                                      .collection("currentUser")
-                                      .doc(buyController.id)
-                                      .get()
-                                      .then(
-                                          (DocumentSnapshot documentSnapshot) {
-                                    if (documentSnapshot.exists) {
-                                      buyController.removeFavorite(
-                                          image: buyController.image,
-                                          name: buyController.name,
-                                          userUid: buyController.id);
-                                      setState(() {
-                                        color = 0;
-                                      });
-                                      print(
-                                          'removeFavorite, ############################################');
-                                    } else {
-                                      buyController.addFavorite(
-                                          image: buyController.image,
-                                          name: buyController.name,
-                                          userUid: buyController.id);
-                                      setState(() {
-                                        color = 1;
-                                      });
-                                      print(
-                                          'addFavorite, *******************************************');
-                                    }
-                                  });
+                                  buyController.checkForLikes();
                                 },
-                                icon: buildIcon()),
+                                icon: Obx(() => Icon(Icons.favorite,
+                                    color: buyController.color.value == 0
+                                        ? Colors.grey
+                                        : buyController.color.value == 1
+                                            ? Colors.red
+                                            : Colors.grey))),
                             IconButton(
                                 onPressed: () {
                                   Get.to(() => Location());
@@ -137,36 +112,7 @@ class _SellerAccountState extends State<SellerAccount> {
     );
   }
 
-  void colorFunction() {
-    FirebaseFirestore.instance
-        .collection("Favorite")
-        .doc(uid)
-        .collection("currentUser")
-        .doc(buyController.id)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          color = 1;
-        });
-      } else {
-        setState(() {
-          color = 0;
-        });
-      }
-    });
-  }
-
-  Icon buildIcon() {
-    return Icon(Icons.favorite,
-        color: color == 0
-            ? Colors.grey
-            : color == 1
-                ? Colors.red
-                : Colors.grey);
-  }
-
-  Future favorite({var image, String name}) async {
+  /*Future favorite({var image, String name}) async {
     try {
       String uid = FirebaseAuth.instance.currentUser.uid;
       dynamic likes;
@@ -178,7 +124,7 @@ class _SellerAccountState extends State<SellerAccount> {
           likes[uid] = false;
         });
       }
-      /*var value = 1;
+      */ /*var value = 1;
       DocumentReference documentReference =
           FirebaseFirestore.instance.collection('love').doc(uid);
 
@@ -191,7 +137,7 @@ class _SellerAccountState extends State<SellerAccount> {
         }
         int newAmount = snapshot.get('love') + 1;
         transaction.update(documentReference, {'Love': newAmount});
-      });*/
+      });*/ /*
     } on FirebaseException catch (e) {
       Get.snackbar(
         "Error Adding User Info",
@@ -201,9 +147,9 @@ class _SellerAccountState extends State<SellerAccount> {
     } catch (e) {
       rethrow;
     }
-  }
+  }*/
 
-  Future<void> getData() async {
+  /*Future<void> getData() async {
     try {
       buyController.item = FirebaseFirestore.instance
           .collection("Products")
@@ -213,5 +159,5 @@ class _SellerAccountState extends State<SellerAccount> {
     } catch (e) {
       print(e);
     }
-  }
+  }*/
 }

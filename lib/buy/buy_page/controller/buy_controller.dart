@@ -24,6 +24,8 @@ class BuyController extends GetxController {
 
   List fileURLList = [];
 
+  var color = 0.obs;
+
   //Location
   double lat;
   double long;
@@ -41,6 +43,7 @@ class BuyController extends GetxController {
 
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   //final addProductsController = Get.put(AddProductsController());
+  String uid = FirebaseAuth.instance.currentUser.uid;
 
   final customCacheManager = CacheManager(
     Config(
@@ -163,6 +166,46 @@ class BuyController extends GetxController {
       } else {
         print("No data");
         return;
+      }
+    });
+  }
+
+  void checkForLikes() {
+    FirebaseFirestore.instance
+        .collection("Favorite")
+        .doc(uid)
+        .collection("currentUser")
+        .doc(id)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        removeFavorite(image: image, name: name, userUid: id);
+
+        color.value = 0;
+
+        print('removeFavorite, ############################################');
+      } else {
+        addFavorite(image: image, name: name, userUid: id);
+
+        color.value = 1;
+
+        print('addFavorite, *******************************************');
+      }
+    });
+  }
+
+  void colorFunction() {
+    FirebaseFirestore.instance
+        .collection("Favorite")
+        .doc(uid)
+        .collection("currentUser")
+        .doc(id)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        color.value = 1;
+      } else {
+        color.value = 0;
       }
     });
   }
