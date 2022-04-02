@@ -26,7 +26,7 @@ class _BoughtViewState extends State<BoughtView> {
         body: TabBarView(
           children: [
             Center(
-              child: Text('Pending'),
+              child: Text('Pending...'),
             ),
             BoughtItem()
           ],

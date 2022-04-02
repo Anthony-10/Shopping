@@ -57,6 +57,8 @@ class UserStaff extends StatelessWidget {
                                       snapshot.data.docs[index]['userId'];
                                   buyController.image =
                                       snapshot.data.docs[index]['Url'];
+                                  print(
+                                      'ttttttttttttttttt,${buyController.id}');
                                 },
                                 child: Card(
                                   child: CachedNetworkImage(

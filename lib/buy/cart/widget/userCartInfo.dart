@@ -18,8 +18,6 @@ class _UserCartInfoState extends State<UserCartInfo> {
 
   final cartController = Get.put(CartController());
 
-  String uid = FirebaseAuth.instance.currentUser.uid;
-
   final user = FirebaseFirestore.instance
       .collection("Cart")
       .where('userId', isEqualTo: FirebaseAuth.instance.currentUser.uid)

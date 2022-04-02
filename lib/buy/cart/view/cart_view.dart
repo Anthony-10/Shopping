@@ -1,13 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/pay_view.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
-import 'package:shopping_app/buy/buy_page/view/seller_image.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
 import 'package:shopping_app/buy/cart/widget/userCartInfo.dart';
 
@@ -22,8 +18,6 @@ class _CartViewState extends State<CartView> {
   final buyController = Get.put(BuyController());
 
   final cartController = Get.put(CartController());
-
-  String uid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   void initState() {
@@ -135,7 +129,4 @@ class _CartViewState extends State<CartView> {
       ),
     );
   }
-
-//TODO
-
 }

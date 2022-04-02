@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shopping_app/onboarding_screen/controller/onboarding_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -12,26 +13,28 @@ class OnboardingView extends StatelessWidget {
       body: SafeArea(
         child: Stack(children: [
           PageView.builder(
+              physics: BouncingScrollPhysics(),
               controller: _controller.pageController,
               onPageChanged: _controller.selectedPageIndex,
               itemCount: _controller.onboardingPages.length,
               itemBuilder: (context, index) {
                 return Container(
-                  child: Stack(
+                  child: Column(
                     children: [
-                      Image.asset(
+                      Lottie.asset(
                         _controller.onboardingPages[index].imageAsset,
                         fit: BoxFit.fill,
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
+                        height: Get.height * .5,
+                        width: Get.width,
                       ),
-                      Center(
-                        child: Text(_controller.onboardingPages[index].title,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 50.0,
-                                color: Colors.amberAccent)),
+                      SizedBox(
+                        height: Get.height * .01,
                       ),
+                      Text(_controller.onboardingPages[index].title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 50.0,
+                              color: Colors.blue)),
                     ],
                   ),
                 );
@@ -45,7 +48,7 @@ class OnboardingView extends StatelessWidget {
                   count: _controller.onboardingPages.length,
                   effect: JumpingDotEffect(
                     activeDotColor: Colors.red,
-                    dotColor: Colors.white,
+                    dotColor: Colors.grey,
                     dotHeight: 10,
                     dotWidth: 10,
                     spacing: 16,

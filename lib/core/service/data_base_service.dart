@@ -16,13 +16,13 @@ class DatabaseService extends GetxController {
   var fileURL;
 
   List fileURLList = [];
-  int count;
 
   var categories = 0;
   var products = 0;
   var sold = 0;
   var returns = 0;
   var order = 0;
+  var likes = 0;
 
   var itemProducts;
 
@@ -148,6 +148,7 @@ class DatabaseService extends GetxController {
               sold: sold,
               returns: returns,
               order: order,
+              likes: likes,
               userid: uid);
         }
         {
@@ -180,12 +181,6 @@ class DatabaseService extends GetxController {
     }
   }
 
-  /*Future<void>userCategories()async {
-    if(){
-
-    }
-  }*/
-
   Future<void> getCounterNumber() async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
@@ -214,7 +209,8 @@ class DatabaseService extends GetxController {
       var sold,
       var order,
       var returns,
-      var userid}) async {
+      var userid,
+      var likes}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
         .collection("Counter")
@@ -228,6 +224,7 @@ class DatabaseService extends GetxController {
           'sold': sold,
           'order': order,
           'returns': returns,
+          'likes': likes,
           'uid': userid
         });
         print('set,9999999999999999');

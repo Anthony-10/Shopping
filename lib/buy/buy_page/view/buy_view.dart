@@ -25,13 +25,8 @@ class _BuyViewState extends State<BuyView> {
   final usersRef = FirebaseFirestore.instance.collection('location');
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-  bool isLiked = false;
-  int likeCount = 0;
-  var name;
-
   var height = Get.height;
   var width = Get.width;
-  int activeIndex = 0;
 
   Position _currentUserPosition;
   double distanceImMeter = 0;

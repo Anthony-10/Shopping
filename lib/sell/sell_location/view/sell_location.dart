@@ -6,6 +6,10 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
+import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
+import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
+import 'package:shopping_app/sell/add_products/widget/bottom_sheet.dart';
+import 'package:shopping_app/sell/sell_location/widget/locationBottomSheet.dart';
 
 class SellLocation extends StatefulWidget {
   const SellLocation({Key key}) : super(key: key);
@@ -16,7 +20,9 @@ class SellLocation extends StatefulWidget {
 
 class _SellLocationState extends State<SellLocation> {
   //GoogleMapController googleMapController;
+  final addProductsController = Get.put(AddProductsController());
   final DatabaseService databaseService = Get.put(DatabaseService());
+  final bottomSheetView = Get.put(BottomSheetView());
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   final LatLng _center = const LatLng(45.521563, -122.677433);
   GoogleMapController mapController;
@@ -190,6 +196,14 @@ class _SellLocationState extends State<SellLocation> {
               padding: const EdgeInsets.symmetric(horizontal: 70.0),
               child: ElevatedButton(
                   onPressed: () async {
+                    /*showModalBottomSheet(
+                        context: context,
+                        builder: (context) => LocationBottomSheet(),
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        )));*/
                     if (postalCode.isEmpty) {
                       postalCode = 'N/B';
                     } else {

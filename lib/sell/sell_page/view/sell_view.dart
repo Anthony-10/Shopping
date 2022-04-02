@@ -17,7 +17,7 @@ class SellView extends StatefulWidget {
 class _SellViewState extends State<SellView> {
   SellViewItems element = SellViewCategory.products;
   var lengths;
-  Query query;
+
   @override
   void initState() {
     // TODO: implement initState

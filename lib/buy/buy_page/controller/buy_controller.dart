@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 
 class BuyController extends GetxController {
   var name;
@@ -22,8 +23,6 @@ class BuyController extends GetxController {
   var firstName;
   var userId;
 
-  List fileURLList = [];
-
   var color = 0.obs;
 
   //Location
@@ -36,14 +35,13 @@ class BuyController extends GetxController {
 
   int counter = 1;
 
-  int likeCount = 0;
-  Map likes;
+  var countLikes = 0;
+  var countDisLikes = 0;
+
   var items;
   List itemsCatego = [];
-
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   //final addProductsController = Get.put(AddProductsController());
-  String uid = FirebaseAuth.instance.currentUser.uid;
 
   final customCacheManager = CacheManager(
     Config(
@@ -53,7 +51,7 @@ class BuyController extends GetxController {
     ),
   );
 
-  Future addFavorite({var image, String name, var userUid}) async {
+  /*Future addFavorite({var image, String name, var userUid}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
 
     try {
@@ -69,6 +67,18 @@ class BuyController extends GetxController {
           'uid': uid,
           'userUid': userUid,
         });
+        {
+          */ /*print('start of databaseService.counterNumber,uuuuuuuuuuuuuuuuu');
+          databaseService.counterNumber(
+              categories: categories,
+              products: FieldValue.increment(1),
+              sold: databaseService.sold,
+              returns: databaseService.returns,
+              order: databaseService.order,
+              likes: databaseService.likes,
+              userid: uid);
+          print('end of databaseService.counterNumber,uuuuuuuuuuuuuuuuu');*/ /*
+        }
       } else {
         print('Uid null');
       }
@@ -81,7 +91,7 @@ class BuyController extends GetxController {
     } catch (e) {
       rethrow;
     }
-  }
+  }*/
 
   Future handleLikePost() async {
     String uid = FirebaseAuth.instance.currentUser.uid;
@@ -113,34 +123,9 @@ class BuyController extends GetxController {
     }
   }
 
-  Future removeFavorite({var image, String name, var userUid}) async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-
-    try {
-      if (uid != null) {
-        await _fireStore
-            .collection("Favorite")
-            .doc(uid)
-            .collection("currentUser")
-            .doc(id)
-            .delete();
-      } else {
-        print('Uid null');
-      }
-    } on FirebaseException catch (e) {
-      Get.snackbar(
-        "Error Adding User Info",
-        e.message,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   void categories({var items}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
-    await _fireStore.collection("Categories").doc().set({
+    await _fireStore.collection("Categories").doc(uid).set({
       'Item': items,
       'userId': uid,
     });
@@ -171,6 +156,7 @@ class BuyController extends GetxController {
   }
 
   void checkForLikes() {
+    String uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
         .collection("Favorite")
         .doc(uid)
@@ -194,7 +180,97 @@ class BuyController extends GetxController {
     });
   }
 
+  Future addFavorite({var image, String name, var userUid}) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+
+    try {
+      if (uid != null) {
+        await _fireStore
+            .collection("Favorite")
+            .doc(uid)
+            .collection("currentUser")
+            .doc(userUid)
+            .set({
+          'image': image,
+          'name': name,
+          'uid': uid,
+          'userUid': userUid,
+        });
+        {
+          likeCounts(countLikes: FieldValue.increment(1), likeUid: id);
+        }
+      } else {
+        print('Uid null');
+      }
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future removeFavorite({var image, String name, var userUid}) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+
+    try {
+      if (uid != null) {
+        await _fireStore
+            .collection("Favorite")
+            .doc(uid)
+            .collection("currentUser")
+            .doc(id)
+            .delete();
+        {
+          dislikeCount(countDisLikes: FieldValue.increment(-1), disLikeUid: id);
+        }
+      } else {
+        print('Uid null');
+      }
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void likeCounts({var countLikes, var likeUid}) async {
+    FirebaseFirestore.instance
+        .collection("likeCounts")
+        .where('id', isEqualTo: likeUid)
+        .get()
+        .then((QuerySnapshot querySnapshot) async {
+      if (querySnapshot.docs.isEmpty) {
+        await _fireStore.collection("likeCounts").doc(likeUid).set({
+          'likes': countLikes,
+          'id': likeUid,
+        });
+      } else {
+        await _fireStore.collection("likeCounts").doc(likeUid).update({
+          'likes': countLikes,
+          'id': likeUid,
+        });
+      }
+    });
+    print('...........$likeUid');
+  }
+
+  void dislikeCount({var countDisLikes, var disLikeUid}) async {
+    await _fireStore.collection("likeCounts").doc(disLikeUid).update({
+      'likes': countDisLikes,
+      'id': disLikeUid,
+    });
+  }
+
   void colorFunction() {
+    String uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
         .collection("Favorite")
         .doc(uid)

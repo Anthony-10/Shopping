@@ -9,15 +9,16 @@ class Orders extends StatelessWidget {
   Orders({Key key}) : super(key: key);
   final buyController = Get.put(BuyController());
 
+  var bought = FirebaseFirestore.instance
+      .collection("Bought")
+      .where("sellUid", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+      .snapshots();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection("Bought")
-              .where("sellUid",
-                  isEqualTo: FirebaseAuth.instance.currentUser.uid)
-              .snapshots(),
+          stream: bought,
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {

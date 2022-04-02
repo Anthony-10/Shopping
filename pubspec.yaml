@@ -57,6 +57,7 @@ dependencies:
   geocoding: ^2.0.1
   #geocoder: ^0.2.1
   shared_preferences: ^2.0.12
+  lottie: ^1.2.1
 
 
 dev_dependencies:

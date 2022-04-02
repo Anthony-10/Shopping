@@ -17,7 +17,7 @@ class CartController extends GetxController {
   var afterPrice;
   var sum = 0.obs;
   final math = [].obs;
-  var selectedPrice;
+
   var values = 0;
   var afterAmount;
   var sumAmountPrice;

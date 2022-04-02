@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
@@ -7,6 +5,7 @@ import 'package:shopping_app/buy/buy_page/view/locations/location.dart';
 import 'package:shopping_app/buy/buy_page/widget/sellerCategories.dart';
 import 'package:shopping_app/buy/buy_page/widget/sellerInfo.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 
 class SellerAccount extends StatefulWidget {
@@ -20,13 +19,7 @@ class _SellerAccountState extends State<SellerAccount> {
   final buyController = Get.put(BuyController());
   final cartController = Get.put(CartController());
   final addProductsController = Get.put(AddProductsController());
-  bool isLiked = false;
-  int likeCount;
-
-  var name2;
-
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  String uid = FirebaseAuth.instance.currentUser.uid;
+  final databaseService = Get.put(DatabaseService());
 
   @override
   void initState() {

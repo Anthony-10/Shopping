@@ -18,8 +18,6 @@ class _ProductViewState extends State<ProductView> {
   final buyController = Get.put(BuyController());
   final databaseService = Get.put(DatabaseService());
 
-  List itemProduct = [];
-
   @override
   void initState() {
     // TODO: implement initState

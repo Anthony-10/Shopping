@@ -9,14 +9,16 @@ class BoughtItem extends StatelessWidget {
   BoughtItem({Key key}) : super(key: key);
   final buyController = Get.put(BuyController());
 
+  final bought = FirebaseFirestore.instance
+      .collection("Bought")
+      .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+      .snapshots();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection("Bought")
-              .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
-              .snapshots(),
+          stream: bought,
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
@@ -87,6 +89,11 @@ class BoughtItem extends StatelessWidget {
                                       ),
                                       Text(
                                           'Size: ${snapshot.data.docs[index]['size'].toString()}'),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                          'Amount: ${snapshot.data.docs[index]['amount'].toString()}'),
                                       SizedBox(
                                         height: 10,
                                       ),

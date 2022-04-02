@@ -115,7 +115,7 @@ class DrawerFunctions extends GetxController {
   }*/
   //}
 
-  Future<void> getData() async {
+  /*Future<void> getData() async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       DocumentSnapshot documentSnapshot =
@@ -134,5 +134,5 @@ class DrawerFunctions extends GetxController {
     } catch (e) {
       print(e);
     }
-  }
+  }*/
 }

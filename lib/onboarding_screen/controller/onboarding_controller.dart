@@ -16,8 +16,9 @@ class OnboardingController extends GetxController {
   }
 
   List<OnboardingModel> onboardingPages = [
-    OnboardingModel("assets/onboarding/photo1.jpg", "Trade"),
-    OnboardingModel("assets/onboarding/photo2.jpg", "Buy"),
-    OnboardingModel("assets/onboarding/photo3.jpeg", "Sell")
+    OnboardingModel("assets/onboarding/58915-online-shop.json", "Online"),
+    OnboardingModel("assets/onboarding/36605-shopping-cart.json", "Buy"),
+    OnboardingModel("assets/onboarding/76119-shop.json", "Sell"),
+    OnboardingModel("assets/onboarding/4901-location-finding.json", "Location")
   ];
 }

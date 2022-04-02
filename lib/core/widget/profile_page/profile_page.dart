@@ -26,7 +26,10 @@ class _ProfilePageState extends State<ProfilePage> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   final buyController = Get.put(BuyController());
 
-  var names;
+  final user = FirebaseFirestore.instance
+      .collection("Users")
+      .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Padding(
         padding: const EdgeInsets.only(top: 30, right: 10, left: 10),
         child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection("Users")
-                .where("userId",
-                    isEqualTo: FirebaseAuth.instance.currentUser.uid)
-                .snapshots(),
+            stream: user,
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {

@@ -24,7 +24,6 @@ class _AddProductsViewState extends State<AddProductsView> {
 
   final bottomSheetView = Get.put(BottomSheetView());
 
-  bool value = false;
   final buyController = Get.put(BuyController());
 
   ValueChanged<ProductItems> onClickProduct;
