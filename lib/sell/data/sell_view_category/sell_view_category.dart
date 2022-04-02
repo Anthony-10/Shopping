@@ -1,44 +1,79 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/sell/models/sell_view_model.dart';
 
-class SellViewCategory {
-  static const SellViewItems users = SellViewItems(
+class SellViewCategory extends GetxController {
+  /*static var categories;
+  static var products;
+  static var solds;
+  static var orders;
+  static var returnsItem;
+  static var userid;
+  static var users;*/
+  static final databaseService = Get.put(DatabaseService());
+
+  static SellViewItems user = SellViewItems(
     label: "Users",
     subtitle: '7',
     icon: Icons.people_outline,
   );
-  static const SellViewItems categories = SellViewItems(
+  static SellViewItems categorie = SellViewItems(
     label: "Categories",
-    subtitle: '20',
+    subtitle: '${databaseService.categories}',
     icon: Icons.category,
   );
-  static const SellViewItems products = SellViewItems(
+  static SellViewItems product = SellViewItems(
     label: "Products",
-    subtitle: '2000',
+    subtitle: '${databaseService.products}',
     icon: Icons.track_changes,
   );
-  static const SellViewItems sold = SellViewItems(
+  static SellViewItems sold = SellViewItems(
     label: "Sold",
-    subtitle: '1000',
+    subtitle: '${databaseService.sold}',
     icon: Icons.tag_faces,
   );
-  static const SellViewItems orders = SellViewItems(
+  static SellViewItems order = SellViewItems(
     label: "Orders",
-    subtitle: '14',
+    subtitle: '${databaseService.order}',
     icon: Icons.shopping_cart_rounded,
   );
-  static const SellViewItems returns = SellViewItems(
+  static SellViewItems returns = SellViewItems(
     label: "Returns",
-    subtitle: '7',
+    subtitle: '${databaseService.returns}',
     icon: Icons.close,
   );
 
   static final List<SellViewItems> all = [
-    users,
-    categories,
-    products,
+    user,
+    categorie,
+    product,
     sold,
-    orders,
+    order,
     returns,
   ];
+
+  /*Future<void> getCounterNumber() async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    FirebaseFirestore.instance
+        .collection("Counter")
+        .where('uid', isEqualTo: uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((doc) {
+          categories = doc['categories'];
+          products = doc['products'];
+          solds = doc['sold'];
+          orders = doc['order'];
+          returnsItem = doc['returns'];
+        });
+      } else {
+        print(
+            'there is no data,llllllllllllllllllllllllllllllllllllllllllllllll');
+      }
+    });
+  }*/
 }

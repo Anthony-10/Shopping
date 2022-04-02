@@ -54,14 +54,15 @@ class _LocationState extends State<Location> {
     //setPolylines();
   }
 
-  var wewe;
-  var mimi;
+  var destinationLat;
+  var destinationLong;
   initMarker(specify, specifyId) async {
     var markerIdVal = specifyId;
     final MarkerId markerId = MarkerId(markerIdVal);
     final Marker marker = Marker(
       markerId: markerId,
-      position: LatLng(wewe = specify['latitude'], mimi = specify['longitude']),
+      position: LatLng(destinationLat = specify['latitude'],
+          destinationLong = specify['longitude']),
       infoWindow: InfoWindow(title: 'shop', snippet: specify['Address']),
     );
     setState(() {
@@ -139,10 +140,10 @@ class _LocationState extends State<Location> {
               TextButton(
                   onPressed: () => mapController.animateCamera(
                       CameraUpdate.newCameraPosition(CameraPosition(
-                          target: LatLng(buyController.lat, buyController.long),
+                          target: LatLng(destinationLat, destinationLong),
                           zoom: 18.0))),
                   child: Text('DESTINATION',
-                      style: TextStyle(color: Colors.black)))
+                      style: TextStyle(color: Colors.black))),
           ],
         ),
         body: Stack(
@@ -188,13 +189,14 @@ backgroundColor:  Theme.of(context).primaryColorDark,
         googleAPIKey,
         PointLatLng(
             position.latitude.toDouble(), position.longitude.toDouble()),
-        PointLatLng(wewe, mimi),
+        PointLatLng(destinationLat, destinationLong),
         travelMode: TravelMode.walking);
     print('${result.errorMessage},[[[[[[[[[[[[[[[[[[[[[[[[[[[');
     print(
         "${position.latitude},${position.longitude},ppppppppppppppppppppppppppppppppppppppp");
     print("$googleAPIKey,fffffffffffffffffffffffffffffffffffffffffffffffffff");
-    print("$wewe,$mimi,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+    print(
+        "$destinationLat,$destinationLong,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
     print('${result.status}, ggggggggggggggggggggggggggggggggggggggg');
     if (result.status == "OK") {
       print('${result.status},wwwwwwwwwwwwwwwwwwwwwwwwwww');

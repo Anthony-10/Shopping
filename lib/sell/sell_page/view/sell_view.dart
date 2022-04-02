@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/sell/data/sell_view_category/sell_view_category.dart';
 import 'package:shopping_app/sell/models/sell_view_model.dart';
 import 'package:shopping_app/sell/orders/view/orders_view.dart';
 import 'package:shopping_app/sell/products/view/product_view.dart';
+import 'package:shopping_app/sell/sell_page/controller/sell_controller.dart';
 
 class SellView extends StatefulWidget {
   const SellView({Key key}) : super(key: key);
@@ -15,14 +17,17 @@ class SellView extends StatefulWidget {
 }
 
 class _SellViewState extends State<SellView> {
-  SellViewItems element = SellViewCategory.products;
+  SellViewItems element = SellViewCategory.product;
+  final DatabaseService databaseService = Get.put(DatabaseService());
+
   var lengths;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getData();
+    /*getData();*/
+    databaseService.getCounterNumber();
     print('$lengths,----------------------');
   }
 
@@ -83,7 +88,7 @@ class _SellViewState extends State<SellView> {
                                     setState(() {
                                       this.element = element;
                                     });
-                                    getPage();
+                                    /*getPage();*/
                                     print('${element.label},llllllllllllll');
                                   },
                                   icon: Icon(element.icon),
@@ -109,24 +114,24 @@ class _SellViewState extends State<SellView> {
     );
   }
 
-  Widget getPage() {
+  /*Widget getPage() {
     print(element);
     switch (element) {
-      /*case SellViewCategory.products:
-        return ProductView();*/
+      */ /*case SellViewCategory.products:
+        return ProductView();*/ /*
       case SellViewCategory.orders:
         return OrdersView();
-      /* case SellViewCategory.users:
-        return BoughtView();*/
-      /* case BuyDrawerItems.location:
-        return BuyerLocation();*/
+      */ /* case SellViewCategory.users:
+        return BoughtView();*/ /*
+      */ /* case BuyDrawerItems.location:
+        return BuyerLocation();*/ /*
       case SellViewCategory.products:
       default:
         return ProductView();
     }
-  }
+  }*/
 
-  Future<int> getData() async {
+  /*Future<int> getData() async {
     try {
       Query<Map<String, dynamic>> documentSnapshot = FirebaseFirestore.instance
           .collection('Users')
@@ -142,7 +147,7 @@ class _SellViewState extends State<SellView> {
       print(e);
     }
     return lengths;
-  }
+  }*/
 
   /*Future<void> getData() async {
     final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -161,4 +166,5 @@ class _SellViewState extends State<SellView> {
       print(e);
     }
   }*/
+
 }
