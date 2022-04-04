@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 
 class BoughtController extends GetxController {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+  final DatabaseService databaseService = Get.put(DatabaseService());
+  final buyController = Get.put(BuyController());
 
   Future<void> boughtInfo(
       {var price,
@@ -25,6 +29,17 @@ class BoughtController extends GetxController {
         'sellUid': sellUid,
         'date': date,
       });
+
+      {
+        databaseService.counterNumber(
+            categories: databaseService.categories,
+            products: databaseService.products,
+            sold: databaseService.sold,
+            returns: databaseService.returns,
+            order: FieldValue.increment(1),
+            likes: databaseService.likes,
+            uuid: buyController.id);
+      }
       print(
           "---------------------- Uploading User data  ----------------------");
     } on FirebaseException catch (e) {

@@ -37,6 +37,7 @@ class BuyController extends GetxController {
 
   var countLikes = 0;
   var countDisLikes = 0;
+  var likes = 0;
 
   var items;
   List itemsCatego = [];
@@ -241,16 +242,17 @@ class BuyController extends GetxController {
     }
   }
 
-  void likeCounts({var countLikes, var likeUid}) async {
+  Future<void> likeCounts({var countLikes, var likeUid}) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
         .collection("likeCounts")
         .where('id', isEqualTo: likeUid)
         .get()
         .then((QuerySnapshot querySnapshot) async {
       if (querySnapshot.docs.isEmpty) {
-        await _fireStore.collection("likeCounts").doc(likeUid).set({
+        await _fireStore.collection("likeCounts").doc(uid).set({
           'likes': countLikes,
-          'id': likeUid,
+          'id': uid,
         });
       } else {
         await _fireStore.collection("likeCounts").doc(likeUid).update({
@@ -266,6 +268,24 @@ class BuyController extends GetxController {
     await _fireStore.collection("likeCounts").doc(disLikeUid).update({
       'likes': countDisLikes,
       'id': disLikeUid,
+    });
+  }
+
+  Future<void> getLikeCount() async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    FirebaseFirestore.instance
+        .collection("likeCounts")
+        .where('id', isEqualTo: uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((doc) {
+          likes = doc['likes'];
+        });
+      } else {
+        print(
+            'there is no data,llllllllllllllllllllllllllllllllllllllllllllllll');
+      }
     });
   }
 

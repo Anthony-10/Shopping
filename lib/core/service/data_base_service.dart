@@ -143,13 +143,13 @@ class DatabaseService extends GetxController {
         });
         {
           counterNumber(
-              categories: categories,
+              categories: FieldValue.increment(1),
               products: FieldValue.increment(1),
               sold: sold,
               returns: returns,
               order: order,
               likes: likes,
-              userid: uid);
+              uuid: uid);
         }
         {
           if (buyController.itemsCatego.isNotEmpty) {
@@ -209,8 +209,8 @@ class DatabaseService extends GetxController {
       var sold,
       var order,
       var returns,
-      var userid,
-      var likes}) async {
+      var likes,
+      var uuid}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
         .collection("Counter")
@@ -218,26 +218,25 @@ class DatabaseService extends GetxController {
         .get()
         .then((QuerySnapshot querySnapshot) {
       if (querySnapshot.docs.isEmpty) {
-        _fireStore.collection("Counter").doc(userid).set({
+        _fireStore.collection("Counter").doc(uid).set({
           'categories': categories,
           'products': products,
           'sold': sold,
           'order': order,
           'returns': returns,
-          'likes': likes,
-          'uid': userid
+          'uid': uid
         });
         print('set,9999999999999999');
       } else {
         print(
-            '$categories,$products,$sold,$order,$returns,$userid,oooooooooooooooooooooooooooooooo');
-        _fireStore.collection("Counter").doc(userid).update({
+            '$categories,$products,$sold,$order,$returns,$uid,oooooooooooooooooooooooooooooooo');
+        _fireStore.collection("Counter").doc(uuid).update({
           'categories': categories,
           'products': products,
           'sold': sold,
           'order': order,
           'returns': returns,
-          'uid': userid
+          'uid': uuid
         });
         print('update,9999999999999999');
       }

@@ -35,7 +35,7 @@ class _LoginState extends State<Login> {
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      hintText: "Email",
+                      labelText: "Email",
                     ),
                     controller: _userEmail,
                   ),
@@ -47,7 +47,7 @@ class _LoginState extends State<Login> {
                     key: const ValueKey("UserPassWord"),
                     textAlign: TextAlign.start,
                     decoration: InputDecoration(
-                      hintText: "PassWord",
+                      labelText: "PassWord",
                     ),
                     controller: _userPassWord,
                   ),

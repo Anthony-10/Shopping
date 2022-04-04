@@ -13,45 +13,45 @@ class SellViewCategory extends GetxController {
   static var returnsItem;
   static var userid;
   static var users;*/
-  static final databaseService = Get.put(DatabaseService());
+  final databaseService = Get.put(DatabaseService());
 
   static SellViewItems user = SellViewItems(
     label: "Users",
     subtitle: '7',
     icon: Icons.people_outline,
   );
-  static SellViewItems categorie = SellViewItems(
+  SellViewItems categorie = SellViewItems(
     label: "Categories",
-    subtitle: '${databaseService.categories}',
+    //subtitle: '${databaseService.categories}',
     icon: Icons.category,
   );
-  static SellViewItems product = SellViewItems(
+  SellViewItems product = SellViewItems(
     label: "Products",
-    subtitle: '${databaseService.products}',
+    //subtitle: '${databaseService.products}',
     icon: Icons.track_changes,
   );
-  static SellViewItems sold = SellViewItems(
+  SellViewItems sold = SellViewItems(
     label: "Sold",
-    subtitle: '${databaseService.sold}',
+    //subtitle: '${databaseService.sold}',
     icon: Icons.tag_faces,
   );
-  static SellViewItems order = SellViewItems(
+  SellViewItems order = SellViewItems(
     label: "Orders",
-    subtitle: '${databaseService.order}',
+    //subtitle: '${databaseService.order}',
     icon: Icons.shopping_cart_rounded,
   );
   static SellViewItems returns = SellViewItems(
     label: "Returns",
-    subtitle: '${databaseService.returns}',
+    //subtitle: '${databaseService.returns}',
     icon: Icons.close,
   );
 
   static final List<SellViewItems> all = [
     user,
-    categorie,
-    product,
-    sold,
-    order,
+    //categorie,
+    //product,
+    //sold,
+    //order,
     returns,
   ];
 
