@@ -94,7 +94,7 @@ class _SellerItemState extends State<SellerItem> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(top: heights * .28),
+                      padding: EdgeInsets.only(top: heights * .25),
                       child: Container(
                         width: Get.width,
                         decoration: BoxDecoration(
@@ -173,7 +173,7 @@ class _SellerItemState extends State<SellerItem> {
                                 ),
                               ),
                               SizedBox(
-                                height: heights * .02,
+                                height: heights * .01,
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -309,11 +309,11 @@ class _SellerItemState extends State<SellerItem> {
               ),
             ),
             Positioned(
-                top: heights * .18,
+                top: heights * .28,
                 right: widths * .1,
                 child: Container(
-                  height: heights * .35,
-                  width: widths * .5,
+                  height: heights * .3,
+                  width: widths * .52,
                   child: GestureDetector(
                     onTap: () {
                       print(

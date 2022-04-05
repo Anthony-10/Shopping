@@ -19,6 +19,7 @@ class _FavouritesState extends State<Favourites> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('Favorite');
   var me;
+  String uid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +51,15 @@ class _FavouritesState extends State<Favourites> {
               //Changed from stream to future
 
               child: FutureBuilder<DocumentSnapshot>(
-                  future: users
-                      .doc(FirebaseAuth.instance.currentUser.uid)
+                  future: FirebaseFirestore.instance
+                      .collection('Favorite')
+                      .doc()
                       .collection("currentUser")
-                      .doc('YkE8qDFIWzPRoxzPcqPuhjUanBP2')
+                      .doc(uid)
                       .get(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    print(
+                        'builder,lllllllllllllllllllllllllllllllllllllllllllllll');
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (!snapshot.hasData) {
                         return const Center(
@@ -63,9 +67,9 @@ class _FavouritesState extends State<Favourites> {
                         );
                       } else {
                         if (snapshot.hasData) {
-                          Map<String, dynamic> data =
+                          Map<String, dynamic> datas =
                               snapshot.data.data() as Map<String, dynamic>;
-                          print('$snapshot,mmmmmmmmmmmmmmmmmmmmm');
+                          print('${datas},mmmmmmmmmmmmmmmmmmmmm');
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -73,7 +77,7 @@ class _FavouritesState extends State<Favourites> {
                             primary: false,
                             padding: const EdgeInsets.all(15),
                             physics: BouncingScrollPhysics(),
-                            itemCount: me = data.length,
+                            itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
                               print('$me,kkkkkkkkkkkkkkkkkkkkk');
                               print(
