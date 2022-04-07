@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_items.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
@@ -38,6 +39,8 @@ class SellerProducts extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
+                            buyController.image =
+                                snapshot.data.docs[index]['Url'];
                             buyController.id =
                                 snapshot.data.docs[index]['userId'].toString();
                             buyController.productElement = snapshot
@@ -64,7 +67,7 @@ class SellerProducts extends StatelessWidget {
                                 .data.docs[index]['otherProductDescription']
                                 .toString();
                             print(
-                                '>>>>>>>>>>>>>>>${buyController.id},${buyController.productElement},${buyController.itemElement}');
+                                '>>>>>>>>>>>>>>>${buyController.id},${buyController.productElement},${buyController.itemElement},${buyController.image}');
                             Get.to(() => SellerItem());
                           },
                           child: Container(
@@ -98,7 +101,46 @@ class SellerProducts extends StatelessWidget {
             }
             return null;
           } else {
-            return Center(child: Text('Loading.....'));
+            return Expanded(
+              child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, childAspectRatio: 0.75),
+                  primary: false,
+                  padding: const EdgeInsets.all(15),
+                  physics: BouncingScrollPhysics(),
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return Shimmer.fromColors(
+                      baseColor: Colors.grey[500],
+                      highlightColor: Colors.grey[100],
+                      child: Container(
+                        height: Get.height * 0.2,
+                        child: Card(
+                          /* child: CachedNetworkImage(
+                            cacheManager: buyController.customCacheManager,
+                            imageUrl: snapshot.data.docs[index]['Url'][0]
+                                .toString(),
+                            fit: BoxFit.fill,
+                            placeholder: (context, url) => Container(
+                              color: Colors.black12,
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              color: Colors.black12,
+                              child: Icon(Icons.error, color: Colors.red),
+                            ),
+                          ),*/
+                          color: Colors.grey,
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          elevation: 20.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            );
           }
         });
   }

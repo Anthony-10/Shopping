@@ -28,7 +28,6 @@ class _SellViewState extends State<SellView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    /*getData();*/
     databaseService.getCounterNumber();
     buyController.getLikeCount();
     print('$lengths,----------------------');
@@ -36,6 +35,8 @@ class _SellViewState extends State<SellView> {
 
   @override
   Widget build(BuildContext context) {
+    databaseService.getCounterNumber();
+    buyController.getLikeCount();
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(

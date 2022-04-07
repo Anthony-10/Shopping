@@ -37,7 +37,7 @@ class _SellerImageState extends State<SellerImage> {
       child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("Products")
-              .where('Url', isEqualTo: buyController.images)
+              .where('Url', isEqualTo: buyController.image)
               .where("userId", isEqualTo: buyController.id)
               .where('productElement', isEqualTo: buyController.productElement)
               .where('itemElement', isEqualTo: wre = buyController.itemElement)
@@ -52,7 +52,7 @@ class _SellerImageState extends State<SellerImage> {
               } else {
                 if (snapshot.hasData) {
                   print(
-                      '${buyController.id},${buyController.productElement},${buyController.itemElement},${buyController.images},lllllllllllllllllllllllllllllll');
+                      '${buyController.id},${buyController.productElement},${buyController.itemElement},${buyController.image},lllllllllllllllllllllllllllllll');
                   var wewe = snapshot.data.docs.toString();
                   print('$wewe,wwwwwwwwwwwwwwwwwwwwwwwwwww');
                   return Column(
@@ -60,11 +60,12 @@ class _SellerImageState extends State<SellerImage> {
                       Expanded(
                         child: PageView.builder(
                             physics: BouncingScrollPhysics(),
-                            //controller: controller.controller,
-                            /*onPageChanged: controller.selectedPageIndex,*/
-                            itemCount: snapshot.data.size,
+                            controller: controller.controller,
+                            //onPageChanged: controller.selectedPageIndex,
+                            itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
                               print('uuuuuuuuuuuuuuuuuuuuuu');
+                              var cachImage = snapshot.data.docs[index]['Url'];
                               return Container(
                                 margin: const EdgeInsets.all(16),
                                 height: heights * .5,
@@ -74,8 +75,7 @@ class _SellerImageState extends State<SellerImage> {
                                   child: CachedNetworkImage(
                                     cacheManager:
                                         buyController.customCacheManager,
-                                    imageUrl: snapshot.data.docs[index]['Url']
-                                        .toString(),
+                                    imageUrl: cachImage.toString(),
                                     fit: BoxFit.fill,
                                     placeholder: (context, url) => Container(
                                       color: Colors.black12,
@@ -98,12 +98,13 @@ class _SellerImageState extends State<SellerImage> {
                             }),
                       ),
                       SmoothPageIndicator(
+                        count: snapshot.data.docs.length,
                         controller: controller.controller,
                         //activeIndex: ,
-                        count: snapshot.data.docs.length,
+
                         effect: JumpingDotEffect(
                           activeDotColor: Colors.red,
-                          dotColor: Colors.white,
+                          dotColor: Colors.blue,
                           dotHeight: 10,
                           dotWidth: 10,
                           spacing: 16,
