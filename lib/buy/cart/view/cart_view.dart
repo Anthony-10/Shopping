@@ -44,7 +44,8 @@ class _CartViewState extends State<CartView> {
                 icon: Icon(Icons.arrow_back),
               )),
               Padding(
-                padding: EdgeInsets.only(left: Get.width * .07),
+                padding: EdgeInsets.only(
+                    left: Get.width * .07, bottom: Get.height * .02),
                 child: Container(
                     child: Text(
                   'Cart',

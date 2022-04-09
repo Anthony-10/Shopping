@@ -8,13 +8,14 @@ import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
 
 class UserStaff extends StatelessWidget {
-  //const UserStaff({Key key}) : super(key: key);
+  UserStaff({Key key}) : super(key: key);
   final buyController = Get.put(BuyController());
 
   final user = FirebaseFirestore.instance
       .collection("Users")
       .where("userId", isNotEqualTo: FirebaseAuth.instance.currentUser.uid)
-      /*.orderBy('distances')*/
+      // Where cant be writen with orderBy
+      //.orderBy('distances')
       .snapshots();
   @override
   Widget build(BuildContext context) {
@@ -92,7 +93,7 @@ class UserStaff extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: Get.height * .02,
                             ),
                             Container(
                               width: Get.width * 0.3,
@@ -107,7 +108,7 @@ class UserStaff extends StatelessWidget {
                                         fontSize: 20),
                                   ),
                                   SizedBox(
-                                    height: 10,
+                                    height: Get.height * .02,
                                   ),
                                   Row(
                                       mainAxisAlignment:
@@ -157,22 +158,6 @@ class UserStaff extends StatelessWidget {
                             height: Get.height * 0.30,
                             width: Get.width * 0.5,
                             child: Card(
-                              /* child: CachedNetworkImage(
-                                cacheManager:
-                                    buyController.customCacheManager,
-                                imageUrl: snapshot.data.docs[index]['Url']
-                                    .toString(),
-                                fit: BoxFit.fill,
-                                //maxHeightDiskCache: 75,
-                                placeholder: (context, url) => Container(
-                                  color: Colors.black12,
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    Container(
-                                  color: Colors.black12,
-                                  child: Icon(Icons.error, color: Colors.red),
-                                ),
-                              ),*/
                               color: Colors.grey,
                               semanticContainer: true,
                               clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -183,7 +168,7 @@ class UserStaff extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: Get.height * .02,
                           ),
                           Container(
                             width: Get.width * 0.3,
@@ -191,22 +176,18 @@ class UserStaff extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  height: 10,
-                                  width: Get.width * .1,
+                                  height: Get.height * .03,
+                                  width: Get.width * .3,
+                                  color: Colors.grey,
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: Get.height * .02,
                                 ),
-                                Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '30',
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                      Icon(Icons.favorite),
-                                    ])
+                                Container(
+                                  height: Get.height * .03,
+                                  width: Get.width * .3,
+                                  color: Colors.grey,
+                                ),
                               ],
                             ),
                           )

@@ -87,7 +87,30 @@ class _SellerCategoriesState extends State<SellerCategories> {
                 '###############################$name2##########################');*/
             return null;
           } else {
-            return Text('Loading......');
+            return Container(
+                height: 80,
+                width: Get.width,
+                child: ListView.builder(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 6,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          height: 30,
+                          width: 90,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[400],
+                              borderRadius: BorderRadius.circular(20)),
+                        ),
+                      ],
+                    );
+                  },
+                ));
           }
         });
   }
