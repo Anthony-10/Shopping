@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 
 class BoughtView extends StatefulWidget {
@@ -151,55 +152,73 @@ class _BoughtViewState extends State<BoughtView> {
                       } else {
                         return ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount: 7,
+                            itemCount: 4,
                             itemBuilder: (context, index) {
-                              return FittedBox(
+                              return Shimmer.fromColors(
+                                baseColor: Colors.grey[500],
+                                highlightColor: Colors.grey[100],
                                 child: Card(
                                   child: Padding(
                                     padding: const EdgeInsets.all(9.0),
-                                    child: Row(
+                                    child: Column(
                                       children: [
-                                        SizedBox(
-                                          height: Get.height * .15,
-                                          width: Get.width * .25,
-                                          child: Card(
-                                            semanticContainer: true,
-                                            clipBehavior:
-                                                Clip.antiAliasWithSaveLayer,
-                                            elevation: 20.0,
-                                            color: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: Get.width * .2,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        Row(
                                           children: [
-                                            Container(),
-                                            SizedBox(
-                                              height: 10,
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              height: Get.height * .15,
+                                              width: Get.width * .25,
+                                              child: Card(
+                                                semanticContainer: true,
+                                                clipBehavior:
+                                                    Clip.antiAliasWithSaveLayer,
+                                                elevation: 20.0,
+                                                color: Colors.grey,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                ),
+                                              ),
                                             ),
-                                            Container(),
                                             SizedBox(
-                                              height: 10,
+                                              width: Get.width * .15,
                                             ),
-                                            Container(),
-                                            SizedBox(
-                                              height: 10,
+                                            Container(
+                                              width: Get.width * .2,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    height: Get.height * .01,
+                                                    width: Get.width * .3,
+                                                    color: Colors.grey,
+                                                  ),
+                                                  SizedBox(
+                                                    height: Get.height * .02,
+                                                  ),
+                                                  Container(
+                                                    height: Get.height * .01,
+                                                    width: Get.width * .3,
+                                                    color: Colors.grey,
+                                                  ),
+                                                  SizedBox(
+                                                    height: Get.height * .02,
+                                                  ),
+                                                  Container(
+                                                    height: Get.height * .01,
+                                                    width: Get.width * .3,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                            Container(),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Container(),
                                           ],
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),

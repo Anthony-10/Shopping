@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_image.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
@@ -145,7 +146,57 @@ class _ProductViewState extends State<ProductView> {
                       }
                       return null;
                     } else {
-                      return Center(child: Text('Loading.....'));
+                      return GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 1 / 1.8,
+                          mainAxisSpacing: 9,
+                          crossAxisSpacing: 5,
+                          crossAxisCount: 2,
+                        ),
+                        primary: false,
+                        padding: const EdgeInsets.all(15),
+                        physics: BouncingScrollPhysics(),
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[500],
+                            highlightColor: Colors.grey[100],
+                            child: Container(
+                              height: Get.height * 0.9,
+                              width: Get.width * 0.5,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: Get.height * 0.30,
+                                    width: Get.width * 0.5,
+                                    child: Card(
+                                      color: Colors.grey,
+                                      semanticContainer: true,
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      elevation: 20.0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: Get.height * .02,
+                                  ),
+                                  Container(
+                                    width: Get.width * 0.3,
+                                    child: Container(
+                                      height: Get.height * .03,
+                                      width: Get.width * .3,
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     }
                   }),
             ),
