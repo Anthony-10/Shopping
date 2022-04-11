@@ -57,6 +57,7 @@ class _BuyerLocationState extends State<BuyerLocation> {
     }
 
     return Scaffold(
+      appBar: AppBar(),
       body: Stack(
         children: [
           GoogleMap(

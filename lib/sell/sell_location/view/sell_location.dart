@@ -157,6 +157,7 @@ class _SellLocationState extends State<SellLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Stack(
         children: [
           GoogleMap(
