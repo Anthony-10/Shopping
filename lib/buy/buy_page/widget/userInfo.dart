@@ -52,7 +52,6 @@ class UserStaff extends StatelessWidget {
                               width: Get.width * 0.5,
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.to(() => SellerAccount());
                                   buyController.name =
                                       snapshot.data.docs[index]['firstName'];
                                   buyController.id =
@@ -63,6 +62,7 @@ class UserStaff extends StatelessWidget {
                                       'ttttttttttttttttt,${buyController.id}');
                                   print(
                                       'ttttttttttttttttt,${buyController.image}');
+                                  Get.to(() => SellerAccount());
                                 },
                                 child: Card(
                                   child: CachedNetworkImage(
@@ -110,7 +110,7 @@ class UserStaff extends StatelessWidget {
                                   SizedBox(
                                     height: Get.height * .02,
                                   ),
-                                  Row(
+                                  /*Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
@@ -119,7 +119,7 @@ class UserStaff extends StatelessWidget {
                                           style: TextStyle(fontSize: 20),
                                         ),
                                         Icon(Icons.favorite),
-                                      ])
+                                      ])*/
                                 ],
                               ),
                             )

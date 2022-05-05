@@ -25,6 +25,9 @@ class _SellerAccountState extends State<SellerAccount> {
   void initState() {
     // TODO: implement initState
     buyController.colorFunction();
+
+    print(
+        'SellerAccount bbbbbbbbbbbbbbbbbbbbbbbbbb${buyController.likes.value}');
     super.initState();
   }
 
@@ -70,6 +73,10 @@ class _SellerAccountState extends State<SellerAccount> {
                                         : buyController.color.value == 1
                                             ? Colors.red
                                             : Colors.grey))),
+                            Obx(() => Text(
+                                  '${buyController.likes.value}',
+                                  style: TextStyle(fontSize: 20),
+                                )),
                             IconButton(
                                 onPressed: () {
                                   Get.to(() => Location());

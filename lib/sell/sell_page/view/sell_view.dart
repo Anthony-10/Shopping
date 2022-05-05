@@ -23,7 +23,6 @@ class _SellViewState extends State<SellView> {
   final buyController = Get.put(BuyController());
 
   var lengths;
-
   @override
   void initState() {
     // TODO: implement initState

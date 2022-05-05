@@ -37,7 +37,8 @@ class BuyController extends GetxController {
 
   var countLikes = 0;
   var countDisLikes = 0;
-  var likes = 0;
+  var likes = 0.obs;
+  var addLike = 1;
 
   var items;
   List itemsCatego = [];
@@ -198,7 +199,20 @@ class BuyController extends GetxController {
           'userUid': userUid,
         });
         {
-          likeCounts(countLikes: FieldValue.increment(1), likeUid: id);
+          print("likeCounts, ooooooooooooooooo");
+          FirebaseFirestore.instance
+              .collection("likeCounts")
+              .where('id', isEqualTo: id)
+              .get()
+              .then((QuerySnapshot querySnapshot) async {
+            if (querySnapshot.docs.isEmpty) {
+              likeCounts(countLikes: addLike, likeUid: id);
+              print("$addLike, $id, lllllllllllllll");
+            } else {
+              likeCounts(countLikes: FieldValue.increment(1), likeUid: id);
+              print("no data, $id, lllllllllllllll");
+            }
+          });
         }
       } else {
         print('Uid null');
@@ -227,6 +241,7 @@ class BuyController extends GetxController {
             .delete();
         {
           dislikeCount(countDisLikes: FieldValue.increment(-1), disLikeUid: id);
+          print("0000000000000000000$id");
         }
       } else {
         print('Uid null');
@@ -243,6 +258,8 @@ class BuyController extends GetxController {
   }
 
   Future<void> likeCounts({var countLikes, var likeUid}) async {
+    print('likeCounts function');
+    print('$countLikes, $likeUid,hhhhhhhhhhhhhhhhhhhhhhhhhhhh');
     String uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
         .collection("likeCounts")
@@ -250,15 +267,21 @@ class BuyController extends GetxController {
         .get()
         .then((QuerySnapshot querySnapshot) async {
       if (querySnapshot.docs.isEmpty) {
-        await _fireStore.collection("likeCounts").doc(uid).set({
+        print('isEmpty, llllllllllllll');
+        print('$countLikes, $likeUid,hhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+        await _fireStore.collection("likeCounts").doc(likeUid).set({
           'likes': countLikes,
-          'id': uid,
+          'id': likeUid,
         });
       } else {
+        print('isNotEmpty, llllllllllllll');
         await _fireStore.collection("likeCounts").doc(likeUid).update({
           'likes': countLikes,
           'id': likeUid,
         });
+      }
+      {
+        getLikeCount1();
       }
     });
     print('...........$likeUid');
@@ -269,6 +292,9 @@ class BuyController extends GetxController {
       'likes': countDisLikes,
       'id': disLikeUid,
     });
+    {
+      getLikeCount1();
+    }
   }
 
   Future<void> getLikeCount() async {
@@ -280,11 +306,30 @@ class BuyController extends GetxController {
         .then((QuerySnapshot querySnapshot) {
       if (querySnapshot.docs.isNotEmpty) {
         querySnapshot.docs.forEach((doc) {
-          likes = doc['likes'];
+          likes.value = doc['likes'];
         });
       } else {
         print(
             'there is no data,llllllllllllllllllllllllllllllllllllllllllllllll');
+      }
+    });
+  }
+
+  Future<void> getLikeCount1() async {
+    print('////////////////////////$id');
+    FirebaseFirestore.instance
+        .collection("likeCounts")
+        .where('id', isEqualTo: id)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((doc) {
+          likes.value = doc['likes'];
+          print('lllllllll${likes.value}');
+        });
+      } else {
+        print(
+            'there is no data,kllllllllllllllmmmmmllllllllllllllllllllllllllllllllll');
       }
     });
   }

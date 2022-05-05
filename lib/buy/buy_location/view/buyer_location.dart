@@ -57,7 +57,12 @@ class _BuyerLocationState extends State<BuyerLocation> {
     }
 
     return Scaffold(
-      appBar: AppBar(),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        //iconTheme: Icon,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Stack(
         children: [
           GoogleMap(
