@@ -22,6 +22,7 @@ class BuyController extends GetxController {
   var email;
   var firstName;
   var userId;
+  var distance;
 
   var color = 0.obs;
 

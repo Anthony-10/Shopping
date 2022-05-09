@@ -110,16 +110,11 @@ class UserStaff extends StatelessWidget {
                                   SizedBox(
                                     height: Get.height * .02,
                                   ),
-                                  /*Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '30',
-                                          style: TextStyle(fontSize: 20),
-                                        ),
-                                        Icon(Icons.favorite),
-                                      ])*/
+                                  Text(
+                                    '${snapshot.data.docs[index]['distances']} KM'
+                                        .toString(),
+                                    style: TextStyle(fontSize: 17),
+                                  ),
                                 ],
                               ),
                             )

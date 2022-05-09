@@ -32,10 +32,6 @@ class BuyLocationList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.arrow_back),
-                    ),
-                    IconButton(
                       onPressed: () => Get.to(BuyerLocation()),
                       icon: Icon(Icons.map),
                     ),
@@ -45,7 +41,7 @@ class BuyLocationList extends StatelessWidget {
                   padding: EdgeInsets.only(
                       top: Get.height * .03, left: Get.width * .09),
                   child: Text(
-                    'My Location List',
+                    'Location List',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                 ),

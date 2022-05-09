@@ -39,7 +39,12 @@ class _SellerAccountState extends State<SellerAccount> {
           Container(
             height: Get.height * 0.33,
             decoration: BoxDecoration(
-                color: Colors.blue,
+                gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+                  Colors.indigo[800],
+                  Colors.indigo[600],
+                  Colors.indigo[400],
+                  Colors.indigo[300]
+                ]),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20))),
@@ -56,7 +61,8 @@ class _SellerAccountState extends State<SellerAccount> {
                           alignment: Alignment.topLeft,
                           child: IconButton(
                               onPressed: () => Get.back(),
-                              icon: Icon(Icons.arrow_back))),
+                              icon: Icon(Icons.arrow_back,
+                                  color: Colors.white54))),
                       Align(
                         alignment: Alignment.topRight,
                         child: Row(
@@ -93,7 +99,7 @@ class _SellerAccountState extends State<SellerAccount> {
                         alignment: Alignment.bottomLeft,
                         child: Text(
                           buyController.name,
-                          style: TextStyle(fontSize: 25),
+                          style: TextStyle(fontSize: 25, color: Colors.white54),
                         )),
                   )
                 ],
