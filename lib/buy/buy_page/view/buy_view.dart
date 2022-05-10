@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
 import 'package:shopping_app/buy/buy_page/widget/carouselSlider.dart';
 import 'package:shopping_app/buy/buy_page/widget/userInfo.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
@@ -27,11 +29,18 @@ class _BuyViewState extends State<BuyView> {
 
   var height = Get.height;
   var width = Get.width;
+  var emptyText = 'search';
 
   Position _currentUserPosition;
   double distanceImMeter = 0;
   List userInfo = [];
   List getUserDataList = [];
+  final TextEditingController searchBar = TextEditingController();
+
+  QuerySnapshot snapshotData;
+  bool isExecuted = false;
+
+  int clickedValue = 0;
   Future _getTheDistance() async {
     _currentUserPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -216,7 +225,6 @@ class _BuyViewState extends State<BuyView> {
   @override
   void initState() {
     // TODO: implement initSttData();*/
-
     /*getUserData().whenComplete(() => getData());*/
     /*_getTheDistance();*/
     getData();
@@ -225,6 +233,106 @@ class _BuyViewState extends State<BuyView> {
 
   @override
   Widget build(BuildContext context) {
+    Widget searchData() {
+      return isExecuted
+          ? Expanded(
+              child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 1 / 1.8,
+                    mainAxisSpacing: 9,
+                    crossAxisSpacing: 5,
+                    crossAxisCount: 2,
+                  ),
+                  primary: false,
+                  padding: const EdgeInsets.all(15),
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshotData.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      height: Get.height * 0.9,
+                      width: Get.width * 0.5,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: Get.height * 0.30,
+                            width: Get.width * 0.5,
+                            child: GestureDetector(
+                              onTap: () {
+                                buyController.name =
+                                    snapshotData.docs[index]['firstName'];
+                                buyController.id =
+                                    snapshotData.docs[index]['userId'];
+                                buyController.image =
+                                    snapshotData.docs[index]['Url'];
+                                print('ttttttttttttttttt,${buyController.id}');
+                                print(
+                                    'ttttttttttttttttt,${buyController.image}');
+                                Get.to(() => SellerAccount());
+                              },
+                              child: Card(
+                                child: CachedNetworkImage(
+                                  cacheManager:
+                                      buyController.customCacheManager,
+                                  imageUrl: snapshotData.docs[index]['Url']
+                                      .toString(),
+                                  fit: BoxFit.fill,
+                                  //maxHeightDiskCache: 75,
+                                  placeholder: (context, url) => Container(
+                                    color: Colors.black12,
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                    color: Colors.black12,
+                                    child: Icon(Icons.error, color: Colors.red),
+                                  ),
+                                ),
+                                semanticContainer: true,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                elevation: 20.0,
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: Get.height * .02,
+                          ),
+                          Container(
+                            width: Get.width * 0.3,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  snapshotData.docs[index]['firstName']
+                                      .toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 20),
+                                ),
+                                SizedBox(
+                                  height: Get.height * .02,
+                                ),
+                                Text(
+                                  '${snapshotData.docs[index]['distances']} KM'
+                                      .toString(),
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+            )
+          : Container(
+              color: Colors.blue,
+              child: Center(child: Text('search')),
+            );
+    }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -237,17 +345,41 @@ class _BuyViewState extends State<BuyView> {
                 height: Get.height * 0.06,
                 width: Get.width,
                 child: TextFormField(
+                  key: const ValueKey("searchBar"),
                   decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.search),
+                      hintText: "search",
+                      suffixIcon: GetBuilder<BuyController>(
+                          init: BuyController(),
+                          builder: (val) {
+                            return IconButton(
+                                icon: clickedValue == 0
+                                    ? Icon(Icons.search)
+                                    : Icon(Icons.cancel),
+                                onPressed: () {
+                                  setState(() {
+                                    clickedValue == 0
+                                        ? clickedValue = 1
+                                        : clickedValue = 0;
+                                  });
+                                  val.queryData(searchBar.text).then((value) {
+                                    snapshotData = value;
+                                    setState(() {
+                                      isExecuted = true;
+                                    });
+                                  });
+                                });
+                          }),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30))),
+                  keyboardType: TextInputType.text,
+                  controller: searchBar,
                 ),
               ),
             ),
             SizedBox(
               height: 15,
             ),
-            UserStaff(),
+            clickedValue == 0 ? UserStaff() : searchData(),
           ],
         ),
       ),

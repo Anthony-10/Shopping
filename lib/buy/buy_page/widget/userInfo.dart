@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/buy/buy_page/view/buy_view.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
+
 
 class UserStaff extends StatelessWidget {
   UserStaff({Key key}) : super(key: key);
   final buyController = Get.put(BuyController());
+  final buyView = Get.put(BuyView());
 
   final user = FirebaseFirestore.instance
       .collection("Users")

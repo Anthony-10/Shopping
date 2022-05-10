@@ -21,6 +21,7 @@ class _SellViewState extends State<SellView> {
   //SellViewItems element = SellViewCategory.product;
   final DatabaseService databaseService = Get.put(DatabaseService());
   final buyController = Get.put(BuyController());
+  String uid = FirebaseAuth.instance.currentUser.uid;
 
   var lengths;
   @override
@@ -28,14 +29,14 @@ class _SellViewState extends State<SellView> {
     // TODO: implement initState
     super.initState();
     databaseService.getCounterNumber();
-    buyController.getLikeCount();
+    buyController.getLikeCount(ids: uid);
     print('$lengths,----------------------');
   }
 
   @override
   Widget build(BuildContext context) {
     databaseService.getCounterNumber();
-    buyController.getLikeCount();
+    buyController.getLikeCount(ids: uid);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
