@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
@@ -27,7 +28,6 @@ class BottomSheet2 extends StatefulWidget {
 }
 
 class _BottomSheet2State extends State<BottomSheet2> {
-  int initialIndex1 = 0;
   final AddProductsController addProductsController =
       Get.put(AddProductsController());
   final DatabaseService databaseService = Get.put(DatabaseService());
@@ -62,43 +62,35 @@ class _BottomSheet2State extends State<BottomSheet2> {
                   Column(
                     children: [
                       Container(
-                        child: addProductsController.initialIndex == 0
-                            ? Text(
-                                'Select a category',
-                                style: TextStyle(fontSize: 20.0),
-                              )
-                            : addProductsController.initialIndex == 1 &&
-                                    addProductsController.productElement !=
-                                        ProductCategories.others
-                                ? Text(
-                                    'Select a item',
-                                    style: TextStyle(fontSize: 20.0),
-                                  )
-                                : addProductsController.initialIndex == 1 &&
-                                        addProductsController.productElement ==
-                                            ProductCategories.others
-                                    ? Text(
-                                        'Write',
-                                        style: TextStyle(fontSize: 20.0),
-                                      )
-                                    : addProductsController.initialIndex == 2
-                                        ? Text(
-                                            'Select size',
-                                            style: TextStyle(fontSize: 20.0),
-                                          )
-                                        : addProductsController.initialIndex ==
-                                                3
-                                            ? Text(
-                                                'Select Color',
-                                                style:
-                                                    TextStyle(fontSize: 20.0),
-                                              )
-                                            : Text(
-                                                'Select Price',
-                                                style:
-                                                    TextStyle(fontSize: 20.0),
-                                              ),
-                      ),
+                          child: addProductsController.initialIndex == 0
+                              ? Text(
+                                  'Select a category',
+                                  style: TextStyle(fontSize: 20.0),
+                                )
+                              : addProductsController.initialIndex == 1 &&
+                                      addProductsController.productElement !=
+                                          ProductCategories.others
+                                  ? Text(
+                                      'Select a item',
+                                      style: TextStyle(fontSize: 20.0),
+                                    )
+                                  : addProductsController.initialIndex == 1 &&
+                                          addProductsController
+                                                  .productElement ==
+                                              ProductCategories.others
+                                      ? Text(
+                                          'Write',
+                                          style: TextStyle(fontSize: 20.0),
+                                        )
+                                      : addProductsController.initialIndex == 2
+                                          ? Text(
+                                              'Select Price',
+                                              style: TextStyle(fontSize: 20.0),
+                                            )
+                                          : Text(
+                                              'Fill the blanks',
+                                              style: TextStyle(fontSize: 20.0),
+                                            )),
                       SizedBox(
                         height: height * .04,
                       ),
@@ -113,13 +105,13 @@ class _BottomSheet2State extends State<BottomSheet2> {
                                   : addProductsController.initialIndex == 1
                                       ? getPage(
                                           addProductsController.productElement)
-                                      : addProductsController.initialIndex == 2
-                                          ? SizeCheckBox()
-                                          : addProductsController
+                                      : PriceSection()
+
+                              /*: addProductsController
                                                       .initialIndex ==
                                                   3
                                               ? ColorChekBox()
-                                              : PriceSection()
+                                              : PriceSection()*/
                             ],
                           ),
                         ),
@@ -204,42 +196,38 @@ class _BottomSheet2State extends State<BottomSheet2> {
             addProductsController.initialIndex = 1;
           })
         : addProductsController.initialIndex == 1 &&
-                addProductsController.productElement ==
-                    ProductCategories.fashion
+                /* addProductsController.productElement ==
+                    ProductCategories.fashion &&*/
+                addProductsController.productElement != null &&
+                addProductsController.itemElement != null
             ? setState(() {
                 addProductsController.initialIndex = 2;
               })
-            : addProductsController.initialIndex == 2 &&
+            /*: addProductsController.initialIndex == 2 &&
                     addProductsController.productElement != null &&
                     addProductsController.itemElement != null
                 ? setState(() {
                     addProductsController.initialIndex = 3;
+                  })*/
+            : addProductsController.initialIndex == 2 &&
+                    addProductsController.productElement != null &&
+                    addProductsController.itemElement != null &&
+                    addProductsController.productElement !=
+                        ProductCategories.others &&
+                    addProductsController.formKey.currentState.validate()
+                ? setState(() {
+                    addProductsController.initialIndex = 3;
                   })
-                : addProductsController.initialIndex == 3 ||
-                        addProductsController.initialIndex == 1 &&
-                            addProductsController.productElement !=
-                                ProductCategories.others &&
-                            addProductsController.productName != null &&
-                            addProductsController.otherProductPrice != null &&
-                            addProductsController.otherProductDescription !=
-                                null &&
-                            addProductsController.productName.text != null &&
-                            addProductsController.productSize.text != null &&
-                            addProductsController.productAmount.text != null
-                    ? setState(() {
-                        addProductsController.initialIndex = 4;
-                      })
-                    : addProductsController.initialIndex == 4
-                        ? uploadPicks()
-                            .whenComplete(() => Navigator.pop(context))
-                        : addProductsController.productElement == null
-                            ? Get.snackbar('Massage', 'Select product',
-                                snackPosition: SnackPosition.BOTTOM)
-                            : addProductsController.itemElement == null
-                                ? Get.snackbar('Massage', 'Select Item',
-                                    snackPosition: SnackPosition.BOTTOM)
-                                : Get.snackbar('Massage', 'Select product',
-                                    snackPosition: SnackPosition.BOTTOM);
+                : addProductsController.initialIndex == 3
+                    ? uploadPicks().whenComplete(() => Navigator.pop(context))
+                    : addProductsController.productElement == null
+                        ? Get.snackbar('Massage', 'Select product',
+                            snackPosition: SnackPosition.TOP)
+                        : addProductsController.itemElement == null
+                            ? Get.snackbar('Massage', 'Select Item',
+                                snackPosition: SnackPosition.TOP)
+                            : Get.snackbar('Massage', 'Fill the blanks',
+                                snackPosition: SnackPosition.TOP);
   }
 
   Future<void> uploadPicks() async {
@@ -258,6 +246,8 @@ class _BottomSheet2State extends State<BottomSheet2> {
             addProductsController.otherProductDescription.text,
       );
     } else {
+      Get.snackbar('Massage', 'Select Product',
+          snackPosition: SnackPosition.TOP);
       print('fileURLList null');
     }
   }

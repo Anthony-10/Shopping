@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shopping_app/authentication/view/auth_view.dart';
+import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
 
@@ -15,10 +17,14 @@ class AuthController extends GetxController {
   GoogleSignInAccount get users => _users;
 
   int initialIndexAuth = 0;
-
+  final buyController = Get.put(BuyController());
   final DatabaseService databaseService = Get.put(DatabaseService());
   final uid = FirebaseAuth.instance.currentUser;
+
   var defaulImage;
+  var userDistance = 0;
+  var latitude = 0;
+  var longitude = 0;
 
   @override
   void onInit() {
@@ -32,8 +38,27 @@ class AuthController extends GetxController {
       await _auth.createUserWithEmailAndPassword(
           email: email.trim(), password: password.trim());
       {
-        databaseService
-            .addUserInfo(email: email, firstName: firstName, url: defaulImage)
+        databaseService.addUserInfo(
+            email: email,
+            firstName: firstName,
+            url: defaulImage,
+            distances: userDistance,
+            latitude: latitude,
+            longitude: longitude);
+      }
+      {
+        databaseService.counterNumber(
+          categories: databaseService.categories,
+          products: databaseService.products,
+          sold: databaseService.sold,
+          returns: databaseService.returns,
+          order: databaseService.order,
+        );
+      }
+
+      {
+        buyController
+            .likeCounts(countLikes: buyController.likes)
             .then((value) => Get.off(() => DrawerView()));
       }
     } on FirebaseAuthException catch (e) {
@@ -87,7 +112,7 @@ class AuthController extends GetxController {
 
   Future<void> signOut() async {
     try {
-      await _auth.signOut();
+      await _auth.signOut().then((value) => Get.off(() => AuthView()));
       _googleSignIn.disconnect().then((value) => Get.off(() => AuthView()));
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error signOut account", e.message,

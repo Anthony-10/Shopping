@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/controller/auth_controller.dart';
 import 'package:shopping_app/authentication/view/forget_password.dart';
@@ -32,8 +33,9 @@ class _LoginState extends State<Login> {
                   TextFormField(
                     key: const ValueKey("UserEmail"),
                     textAlign: TextAlign.start,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      hintText: "Email",
+                      labelText: "Email",
                     ),
                     controller: _userEmail,
                   ),
@@ -45,7 +47,7 @@ class _LoginState extends State<Login> {
                     key: const ValueKey("UserPassWord"),
                     textAlign: TextAlign.start,
                     decoration: InputDecoration(
-                      hintText: "PassWord",
+                      labelText: "PassWord",
                     ),
                     controller: _userPassWord,
                   ),
@@ -64,7 +66,7 @@ class _LoginState extends State<Login> {
                           alignment: Alignment.centerRight,
                           child: Text('Forgot PassWord?'))),
                   SizedBox(
-                    height: 20.0,
+                    height: Get.height * 0.007,
                   ),
                   ElevatedButton(
                       onPressed: () {

@@ -5,5 +5,5 @@ class SellViewItems {
   final String subtitle;
   final IconData icon;
 
-  const SellViewItems({this.label, this.subtitle, this.icon});
+  SellViewItems({this.label, this.subtitle, this.icon});
 }

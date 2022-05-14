@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class SellerImage extends StatefulWidget {
@@ -16,6 +17,7 @@ class SellerImage extends StatefulWidget {
 class _SellerImageState extends State<SellerImage> {
   final buyController = Get.put(BuyController());
   final controller = SlideController();
+  final databaseService = Get.put(DatabaseService());
 
   var heights = Get.height;
 
@@ -23,17 +25,22 @@ class _SellerImageState extends State<SellerImage> {
 
   var activeIndex = 0;
 
+  var ware;
+  var wre;
+
   @override
   Widget build(BuildContext context) {
+    print('SellerImage,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
     return Container(
       height: heights * .5,
       width: widths * .8,
       child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("Products")
+              .where('Url', isEqualTo: buyController.image)
               .where("userId", isEqualTo: buyController.id)
               .where('productElement', isEqualTo: buyController.productElement)
-              .where('itemElement', isEqualTo: buyController.itemElement)
+              .where('itemElement', isEqualTo: wre = buyController.itemElement)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -44,6 +51,10 @@ class _SellerImageState extends State<SellerImage> {
                 );
               } else {
                 if (snapshot.hasData) {
+                  print(
+                      '${buyController.id},${buyController.productElement},${buyController.itemElement},${buyController.image},lllllllllllllllllllllllllllllll');
+                  var wewe = snapshot.data.docs.toString();
+                  print('$wewe,wwwwwwwwwwwwwwwwwwwwwwwwwww');
                   return Column(
                     children: [
                       Expanded(
@@ -51,8 +62,10 @@ class _SellerImageState extends State<SellerImage> {
                             physics: BouncingScrollPhysics(),
                             controller: controller.controller,
                             //onPageChanged: controller.selectedPageIndex,
-                            itemCount: snapshot.data.size,
+                            itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
+                              print('uuuuuuuuuuuuuuuuuuuuuu');
+                              var cachImage = snapshot.data.docs[index]['Url'];
                               return Container(
                                 margin: const EdgeInsets.all(16),
                                 height: heights * .5,
@@ -62,12 +75,8 @@ class _SellerImageState extends State<SellerImage> {
                                   child: CachedNetworkImage(
                                     cacheManager:
                                         buyController.customCacheManager,
-                                    imageUrl: snapshot
-                                        .data.docs[index]['Url'][0]
-                                        .toString()
-                                        .characters
-                                        .iterator
-                                        .current,
+                                    imageUrl: cachImage.toString(),
+                                    fit: BoxFit.fill,
                                     placeholder: (context, url) => Container(
                                       color: Colors.black12,
                                     ),
@@ -89,12 +98,13 @@ class _SellerImageState extends State<SellerImage> {
                             }),
                       ),
                       SmoothPageIndicator(
+                        count: snapshot.data.docs.length,
                         controller: controller.controller,
                         //activeIndex: ,
-                        count: snapshot.data.size,
+
                         effect: JumpingDotEffect(
                           activeDotColor: Colors.red,
-                          dotColor: Colors.white,
+                          dotColor: Colors.blue,
                           dotHeight: 10,
                           dotWidth: 10,
                           spacing: 16,
@@ -105,6 +115,7 @@ class _SellerImageState extends State<SellerImage> {
                   );
                 }
               }
+              print('$ware,mmmmmmmmmmmmmmpppppppppppppppppppppppppppp');
               return null;
             } else {
               return Center(child: Text('Loading.....'));

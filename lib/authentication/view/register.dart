@@ -35,7 +35,7 @@ class _RegisterState extends State<Register> {
                 key: const ValueKey("UserName"),
                 textAlign: TextAlign.start,
                 decoration: InputDecoration(
-                  hintText: "Name",
+                  labelText: "Name",
                 ),
                 controller: _userName,
               ),
@@ -45,8 +45,9 @@ class _RegisterState extends State<Register> {
               TextFormField(
                 key: const ValueKey("UserEmail"),
                 textAlign: TextAlign.start,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  hintText: "Email",
+                  labelText: "Email",
                 ),
                 controller: _userEmail,
               ),
@@ -58,7 +59,7 @@ class _RegisterState extends State<Register> {
                 key: const ValueKey("UserPassword"),
                 textAlign: TextAlign.start,
                 decoration: InputDecoration(
-                  hintText: "PassWord",
+                  labelText: "PassWord",
                 ),
                 controller: _userPassWord,
               ),

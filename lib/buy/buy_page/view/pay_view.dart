@@ -25,16 +25,16 @@ class _PayViewState extends State<PayView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    /*print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
     getData();
-    print('$ehe,llllllllllllllllllll');
+    print('$ehe,llllllllllllllllllll');*/
   }
 
   var ehe;
   @override
   Widget build(BuildContext context) {
-    print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-    getData();
+    /*print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    getData();*/
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -68,13 +68,18 @@ class _PayViewState extends State<PayView> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      boughtController.boughtInfo(
-                          price: cartController.price,
-                          size: cartController.size,
-                          amount: cartController.amount,
-                          image: buyController.sellerProduct,
-                          name: cartController.name,
-                          sellUid: buyController.id);
+                      boughtController
+                          .boughtInfo(
+                              price: cartController.price,
+                              size: cartController.size,
+                              amount: buyController.counter,
+                              image: buyController.sellerProduct,
+                              name: cartController.name,
+                              sellUid: buyController.id)
+                          .then((value) => Get.snackbar(
+                              "Success", 'product bought successful',
+                              snackPosition: SnackPosition.TOP));
+
                       Get.to(() => DrawerView());
                     },
                     child: Container(
@@ -126,7 +131,7 @@ class _PayViewState extends State<PayView> {
     );
   }
 
-  Future<void> getData() async {
+  /*Future<void> getData() async {
     print('getData');
     try {
       ehe = FirebaseFirestore.instance
@@ -138,5 +143,5 @@ class _PayViewState extends State<PayView> {
     } catch (e) {
       print(e);
     }
-  }
+  }*/
 }

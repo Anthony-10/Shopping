@@ -2,10 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:shopping_app/sell/data/sell_view_category/sell_view_category.dart';
 import 'package:shopping_app/sell/models/sell_view_model.dart';
 import 'package:shopping_app/sell/orders/view/orders_view.dart';
 import 'package:shopping_app/sell/products/view/product_view.dart';
+import 'package:shopping_app/sell/sell_page/controller/sell_controller.dart';
 
 class SellView extends StatefulWidget {
   const SellView({Key key}) : super(key: key);
@@ -15,19 +18,25 @@ class SellView extends StatefulWidget {
 }
 
 class _SellViewState extends State<SellView> {
-  SellViewItems element = SellViewCategory.products;
+  //SellViewItems element = SellViewCategory.product;
+  final DatabaseService databaseService = Get.put(DatabaseService());
+  final buyController = Get.put(BuyController());
+  String uid = FirebaseAuth.instance.currentUser.uid;
+
   var lengths;
-  Query query;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getData();
+    databaseService.getCounterNumber();
+    buyController.getLikeCount(ids: uid);
     print('$lengths,----------------------');
   }
 
   @override
   Widget build(BuildContext context) {
+    databaseService.getCounterNumber();
+    buyController.getLikeCount(ids: uid);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
@@ -74,34 +83,146 @@ class _SellViewState extends State<SellView> {
                   mainAxisSpacing: 10.0,
                   crossAxisCount: 2,
                   physics: BouncingScrollPhysics(),
-                  children: SellViewCategory.all
-                      .map(
-                        (element) => Card(
-                          child: ListTile(
-                              title: TextButton.icon(
-                                  onPressed: () {
-                                    setState(() {
-                                      this.element = element;
-                                    });
-                                    getPage();
-                                    print('${element.label},llllllllllllll');
-                                  },
-                                  icon: Icon(element.icon),
-                                  label: Text(element.label)),
-                              subtitle: Text(
-                                element.subtitle,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.red, fontSize: 40.0),
-                              )),
-                          elevation: 20.0,
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
-                      )
-                      .toList()),
+                  children: [
+                    Card(
+                      child: ListTile(
+                          title: TextButton.icon(
+                              onPressed: () {
+                                /*setState(() {
+                                this.element = element;
+                              });
+                              */ /*getPage();*/ /*
+                              print('${element.label},llllllllllllll');*/
+                              },
+                              icon: Icon(Icons.people_outline),
+                              label: Text("Users")),
+                          subtitle: Text(
+                            '${buyController.likes}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton.icon(
+                              onPressed: () {
+                                /*setState(() {
+                                this.element = element;
+                              });
+                              */ /*getPage();*/ /*
+                              print('${element.label},llllllllllllll');*/
+                              },
+                              icon: Icon(Icons.category),
+                              label: Text("Categories")),
+                          subtitle: Text(
+                            "${databaseService.categories}",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton.icon(
+                              onPressed: () {
+                                /*setState(() {
+                                this.element = element;
+                              });
+                              */ /*getPage();*/ /*
+                              print('${element.label},llllllllllllll');*/
+                              },
+                              icon: Icon(Icons.track_changes),
+                              label: Text("Products")),
+                          subtitle: Text(
+                            '${databaseService.products}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton.icon(
+                              onPressed: () {
+                                /*setState(() {
+                                this.element = element;
+                              });
+                              */ /*getPage();*/ /*
+                              print('${element.label},llllllllllllll');*/
+                              },
+                              icon: Icon(Icons.tag_faces),
+                              label: Text("Sold")),
+                          subtitle: Text(
+                            '${databaseService.sold}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton.icon(
+                              onPressed: () {
+                                /*setState(() {
+                                this.element = element;
+                              });
+                              */ /*getPage();*/ /*
+                              print('${element.label},llllllllllllll');*/
+                              },
+                              icon: Icon(Icons.shopping_cart_rounded),
+                              label: Text("Orders")),
+                          subtitle: Text(
+                            '${databaseService.order}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                          title: TextButton.icon(
+                              onPressed: () {
+                                /*setState(() {
+                                this.element = element;
+                              });
+                              */ /*getPage();*/ /*
+                              print('${element.label},llllllllllllll');*/
+                              },
+                              icon: Icon(Icons.close),
+                              label: Text("Returns")),
+                          subtitle: Text(
+                            '${databaseService.returns}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red, fontSize: 40.0),
+                          )),
+                      elevation: 20.0,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ]),
             ),
           )
         ],
@@ -109,25 +230,24 @@ class _SellViewState extends State<SellView> {
     );
   }
 
-  Widget getPage() {
+  /*Widget getPage() {
     print(element);
     switch (element) {
-      /*case SellViewCategory.products:
-        return ProductView();*/
+      */ /*case SellViewCategory.products:
+        return ProductView();*/ /*
       case SellViewCategory.orders:
         return OrdersView();
-      /* case SellViewCategory.users:
-        return BoughtView();*/
-      /* case BuyDrawerItems.location:
-        return BuyerLocation();*/
+      */ /* case SellViewCategory.users:
+        return BoughtView();*/ /*
+      */ /* case BuyDrawerItems.location:
+        return BuyerLocation();*/ /*
       case SellViewCategory.products:
       default:
         return ProductView();
     }
-  }
+  }*/
 
-  Future<int> getData() async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
+  /*Future<int> getData() async {
     try {
       Query<Map<String, dynamic>> documentSnapshot = FirebaseFirestore.instance
           .collection('Users')
@@ -136,7 +256,6 @@ class _SellViewState extends State<SellView> {
         setState(() {
           lengths = documentSnapshot.snapshots().length;
         });
-        print('${lengths},ooooooooo');
       } else {
         print('wewe');
       }
@@ -144,7 +263,7 @@ class _SellViewState extends State<SellView> {
       print(e);
     }
     return lengths;
-  }
+  }*/
 
   /*Future<void> getData() async {
     final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -163,4 +282,5 @@ class _SellViewState extends State<SellView> {
       print(e);
     }
   }*/
+
 }

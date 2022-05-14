@@ -18,6 +18,8 @@ class _FavouritesState extends State<Favourites> {
   final buyController = Get.put(BuyController());
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('Favorite');
+  var me;
+  String uid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +49,17 @@ class _FavouritesState extends State<Favourites> {
             )),
             Expanded(
               //Changed from stream to future
-              child: FutureBuilder(
-                  future: _fireStore
+
+              child: FutureBuilder<DocumentSnapshot>(
+                  future: FirebaseFirestore.instance
                       .collection('Favorite')
                       .doc()
                       .collection("currentUser")
-                      .doc(FirebaseAuth.instance.currentUser.uid)
+                      .doc(uid)
                       .get(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    print(
+                        'builder,lllllllllllllllllllllllllllllllllllllllllllllll');
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (!snapshot.hasData) {
                         return const Center(
@@ -62,9 +67,9 @@ class _FavouritesState extends State<Favourites> {
                         );
                       } else {
                         if (snapshot.hasData) {
-                          final Map<String, dynamic> datas =
+                          Map<String, dynamic> datas =
                               snapshot.data.data() as Map<String, dynamic>;
-                          print('$datas,lllllllttttttttttttttttttttttttt');
+                          print('${datas},mmmmmmmmmmmmmmmmmmmmm');
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -72,8 +77,14 @@ class _FavouritesState extends State<Favourites> {
                             primary: false,
                             padding: const EdgeInsets.all(15),
                             physics: BouncingScrollPhysics(),
-                            itemCount: datas.length,
+                            itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
+                              print('$me,kkkkkkkkkkkkkkkkkkkkk');
+                              print(
+                                  '${FirebaseAuth.instance.currentUser.uid},,,,,,,,,,,,,,,,,,');
+                              print(
+                                  '888888888888888888888888888888888888888888');
+
                               return Column(
                                 children: [
                                   SizedBox(
@@ -81,13 +92,13 @@ class _FavouritesState extends State<Favourites> {
                                     width: Get.width * 0.5,
                                     child: GestureDetector(
                                       onTap: () {
-                                        Get.to(() => SellerAccount());
+                                        /*Get.to(() => SellerAccount());
                                         buyController.name =
                                             snapshot.data[index]['name'];
                                         buyController.id =
                                             snapshot.data[index]['userUid'];
                                         buyController.image =
-                                            snapshot.data[index]['image'];
+                                            snapshot.data[index]['image'];*/
                                       },
                                       child: Card(
                                         child: CachedNetworkImage(
@@ -124,7 +135,9 @@ class _FavouritesState extends State<Favourites> {
                                     height: 20,
                                   ),
                                   Text(
-                                    snapshot.data[index]['name'].toString(),
+                                    snapshot.data
+                                        .data()[index]['name']
+                                        .toString(),
                                   )
                                 ],
                               );

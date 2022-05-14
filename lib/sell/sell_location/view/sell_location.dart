@@ -3,7 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
+import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
+import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
+import 'package:shopping_app/sell/add_products/widget/bottom_sheet.dart';
+import 'package:shopping_app/sell/sell_location/widget/locationBottomSheet.dart';
 
 class SellLocation extends StatefulWidget {
   const SellLocation({Key key}) : super(key: key);
@@ -14,10 +20,14 @@ class SellLocation extends StatefulWidget {
 
 class _SellLocationState extends State<SellLocation> {
   //GoogleMapController googleMapController;
+  final addProductsController = Get.put(AddProductsController());
+  final DatabaseService databaseService = Get.put(DatabaseService());
+  final bottomSheetView = Get.put(BottomSheetView());
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   final LatLng _center = const LatLng(45.521563, -122.677433);
   GoogleMapController mapController;
   String uid = FirebaseAuth.instance.currentUser.uid;
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   Position position;
   String addressLocation;
@@ -27,6 +37,11 @@ class _SellLocationState extends State<SellLocation> {
   String address;
   Placemark place;
   //Geolocator _geolocator = Geolocator();
+  var email;
+  var firstName;
+  var url;
+  var distances;
+  var userId;
 
   void getMarkers(double lat, double long) {
     MarkerId markerId = MarkerId(lat.toString() + long.toString());
@@ -127,6 +142,7 @@ class _SellLocationState extends State<SellLocation> {
   @override
   void initState() {
     // TODO: implement initState
+    getUserData();
     getCurrentLocation();
     super.initState();
   }
@@ -141,6 +157,7 @@ class _SellLocationState extends State<SellLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Stack(
         children: [
           GoogleMap(
@@ -180,6 +197,19 @@ class _SellLocationState extends State<SellLocation> {
               padding: const EdgeInsets.symmetric(horizontal: 70.0),
               child: ElevatedButton(
                   onPressed: () async {
+                    /*showModalBottomSheet(
+                        context: context,
+                        builder: (context) => LocationBottomSheet(),
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        )));*/
+                    if (postalCode.isEmpty) {
+                      postalCode = 'N/B';
+                    } else {
+                      return;
+                    }
                     await FirebaseFirestore.instance
                         .collection('location')
                         .doc(uid)
@@ -211,7 +241,20 @@ class _SellLocationState extends State<SellLocation> {
                       print(
                           '????????????????????????????????????????$country$postalCode$addressLocation$firstAddress1');
                     });*/
-                    });
+                    }).whenComplete(() => Get.snackbar(
+                              "Success message",
+                              'Location Added',
+                            ));
+                    {
+                      upDateUserData(
+                          email: email,
+                          firstName: firstName,
+                          url: url,
+                          distances: distances,
+                          latitude: position.latitude,
+                          longitude: position.longitude,
+                          userId: userId);
+                    }
                   },
                   child: Text('Save'),
                   style: ElevatedButton.styleFrom(
@@ -223,5 +266,61 @@ class _SellLocationState extends State<SellLocation> {
         ],
       ),
     );
+  }
+
+  void getUserData() {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          email = documentSnapshot.get('email');
+          firstName = documentSnapshot.get('firstName');
+          distances = documentSnapshot.get('distances');
+          url = documentSnapshot.get('Url');
+          userId = documentSnapshot.get('userId');
+        });
+        print('$email :::::::::::::::::::::::::');
+        print('$firstName :::::::::::::::::::::::::');
+        print('$distances :::::::::::::::::::::::::');
+        print('$url :::::::::::::::::::::::::');
+        print('$userId :::::::::::::::::::::::::');
+      } else {
+        print('wewe');
+      }
+    });
+  }
+
+  void upDateUserData(
+      {var email,
+      var firstName,
+      var url,
+      var userId,
+      var distances,
+      var latitude,
+      var longitude}) async {
+    try {
+      if (email != null &&
+          firstName != null &&
+          url != null &&
+          userId != null &&
+          distances != null) {
+        await _fireStore.collection("Users").doc(uid).update({
+          'email': email,
+          'firstName': firstName,
+          'Url': url,
+          'userId': userId,
+          'distances': distances,
+          'latitude': latitude,
+          'longitude': longitude,
+        });
+      } else {
+        print('String empty');
+      }
+    } on FirebaseException catch (e) {
+      print(e.message);
+    }
   }
 }

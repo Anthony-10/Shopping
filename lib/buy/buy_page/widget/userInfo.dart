@@ -3,16 +3,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
+import 'package:shopping_app/buy/buy_page/view/buy_view.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
 
 class UserStaff extends StatelessWidget {
-  //const UserStaff({Key key}) : super(key: key);
+  UserStaff({Key key}) : super(key: key);
   final buyController = Get.put(BuyController());
-  var me;
+  final buyView = Get.put(BuyView());
+
   final user = FirebaseFirestore.instance
       .collection("Users")
       .where("userId", isNotEqualTo: FirebaseAuth.instance.currentUser.uid)
+      // Where cant be writen with orderBy
+      //.orderBy('distances')
       .snapshots();
   @override
   Widget build(BuildContext context) {
@@ -37,9 +42,8 @@ class UserStaff extends StatelessWidget {
                     primary: false,
                     padding: const EdgeInsets.all(15),
                     physics: BouncingScrollPhysics(),
-                    itemCount: me = snapshot.data.size,
+                    itemCount: snapshot.data.size,
                     itemBuilder: (context, index) {
-                      print('$me,mmmmmmmmmmmmmmmmmmmmm');
                       return Container(
                         height: Get.height * 0.9,
                         width: Get.width * 0.5,
@@ -50,13 +54,17 @@ class UserStaff extends StatelessWidget {
                               width: Get.width * 0.5,
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.to(() => SellerAccount());
                                   buyController.name =
                                       snapshot.data.docs[index]['firstName'];
                                   buyController.id =
                                       snapshot.data.docs[index]['userId'];
                                   buyController.image =
                                       snapshot.data.docs[index]['Url'];
+                                  print(
+                                      'ttttttttttttttttt,${buyController.id}');
+                                  print(
+                                      'ttttttttttttttttt,${buyController.image}');
+                                  Get.to(() => SellerAccount());
                                 },
                                 child: Card(
                                   child: CachedNetworkImage(
@@ -87,7 +95,7 @@ class UserStaff extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: Get.height * .02,
                             ),
                             Container(
                               width: Get.width * 0.3,
@@ -97,17 +105,18 @@ class UserStaff extends StatelessWidget {
                                   Text(
                                     snapshot.data.docs[index]['firstName']
                                         .toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 20),
                                   ),
                                   SizedBox(
-                                    height: 10,
+                                    height: Get.height * .02,
                                   ),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('30'),
-                                        Icon(Icons.favorite),
-                                      ])
+                                  Text(
+                                    '${snapshot.data.docs[index]['distances']} KM'
+                                        .toString(),
+                                    style: TextStyle(fontSize: 17),
+                                  ),
                                 ],
                               ),
                             )
@@ -121,7 +130,71 @@ class UserStaff extends StatelessWidget {
             }
             return null;
           } else {
-            return Center(child: Text('Loading.....'));
+            return Expanded(
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 1 / 1.8,
+                  mainAxisSpacing: 9,
+                  crossAxisSpacing: 5,
+                  crossAxisCount: 2,
+                ),
+                primary: false,
+                padding: const EdgeInsets.all(15),
+                physics: BouncingScrollPhysics(),
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[500],
+                    highlightColor: Colors.grey[100],
+                    child: Container(
+                      height: Get.height * 0.9,
+                      width: Get.width * 0.5,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: Get.height * 0.30,
+                            width: Get.width * 0.5,
+                            child: Card(
+                              color: Colors.grey,
+                              semanticContainer: true,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              elevation: 20.0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: Get.height * .02,
+                          ),
+                          Container(
+                            width: Get.width * 0.3,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: Get.height * .03,
+                                  width: Get.width * .3,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(
+                                  height: Get.height * .02,
+                                ),
+                                Container(
+                                  height: Get.height * .03,
+                                  width: Get.width * .3,
+                                  color: Colors.grey,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
           }
         });
   }

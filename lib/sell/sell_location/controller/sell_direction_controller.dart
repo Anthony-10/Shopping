@@ -12,7 +12,7 @@ class DirectionRepository {
 
   DirectionRepository({Dio dio}) : _dio = dio ?? Dio();
 
-  Future<Directions> getDirections({
+  /* Future<Directions> getDirections({
     @required LatLng origin,
     @required LatLng destination,
   }) async {
@@ -27,5 +27,5 @@ class DirectionRepository {
       return Directions.fromMap(response.data);
     }
     return null;
-  }
+  }*/
 }

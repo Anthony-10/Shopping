@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -8,15 +9,30 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 class DatabaseService extends GetxController {
   final addProductsController = Get.put(AddProductsController());
   final drawerFunctions = Get.put(DrawerFunctions());
+  final buyController = Get.put(BuyController());
 
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   var fileURL;
 
   List fileURLList = [];
-  int count;
 
-  Future<void> addUserInfo({String email, String firstName, var url}) async {
+  var categories = 0;
+  var products = 0;
+  var sold = 0;
+  var returns = 0;
+  var order = 0;
+  var likes = 0;
+
+  var itemProducts;
+
+  Future<void> addUserInfo(
+      {String email,
+      String firstName,
+      var url,
+      var distances,
+      var latitude,
+      var longitude}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
       if (uid != null) {
@@ -24,7 +40,10 @@ class DatabaseService extends GetxController {
           'email': email,
           'firstName': firstName,
           'Url': url,
-          'userId': uid
+          'userId': uid,
+          'distances': distances,
+          'latitude': latitude,
+          'longitude': longitude,
         });
       }
     } on FirebaseException catch (e) {
@@ -109,7 +128,7 @@ class DatabaseService extends GetxController {
         '............................................userProducts$fileURLList');
     try {
       if (uid != null) {
-        await _fireStore.collection("Products").doc(uid).set({
+        await _fireStore.collection("Products").doc().set({
           'productElement': productElement,
           'itemElement': itemElement,
           'checkBoxElement': checkBoxElement,
@@ -122,7 +141,32 @@ class DatabaseService extends GetxController {
           'otherProductDescription': otherProductDescription,
           'userId': uid,
         });
-        addProductsController.image.clear();
+        {
+          counterNumber(
+              categories: FieldValue.increment(1),
+              products: FieldValue.increment(1),
+              sold: sold,
+              returns: returns,
+              order: order,
+              likes: likes,
+              uuid: uid);
+        }
+        {
+          if (buyController.itemsCatego.isNotEmpty) {
+            if (buyController.itemsCatego.contains(
+                addProductsController.productElement.title.toString())) {
+              print('No entry,////////////////////');
+            } else {
+              buyController.categories(
+                  items: addProductsController.productElement.title.toString());
+              print('pleas enter,>>>>>>>>>>>>>>>>>');
+            }
+          } else {
+            buyController.categories(
+                items: addProductsController.productElement.title.toString());
+          }
+          buyController.itemsCatego.clear();
+        }
       } else {
         print('Uid null');
       }
@@ -135,6 +179,68 @@ class DatabaseService extends GetxController {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> getCounterNumber() async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    FirebaseFirestore.instance
+        .collection("Counter")
+        .where('uid', isEqualTo: uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((doc) {
+          categories = doc['categories'];
+          products = doc['products'];
+          sold = doc['sold'];
+          order = doc['order'];
+          returns = doc['returns'];
+        });
+      } else {
+        print(
+            'there is no data,llllllllllllllllllllllllllllllllllllllllllllllll');
+      }
+    });
+  }
+
+  Future<void> counterNumber(
+      {var categories,
+      var products,
+      var sold,
+      var order,
+      var returns,
+      var likes,
+      var uuid}) async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    FirebaseFirestore.instance
+        .collection("Counter")
+        .where('uid', isEqualTo: uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isEmpty) {
+        _fireStore.collection("Counter").doc(uid).set({
+          'categories': categories,
+          'products': products,
+          'sold': sold,
+          'order': order,
+          'returns': returns,
+          'uid': uid
+        });
+        print('set,9999999999999999');
+      } else {
+        print(
+            '$categories,$products,$sold,$order,$returns,$uid,oooooooooooooooooooooooooooooooo');
+        _fireStore.collection("Counter").doc(uuid).update({
+          'categories': categories,
+          'products': products,
+          'sold': sold,
+          'order': order,
+          'returns': returns,
+          'uid': uuid
+        });
+        print('update,9999999999999999');
+      }
+    });
   }
 
   Future<void> updateUserInfo({
@@ -171,5 +277,27 @@ class DatabaseService extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
       );
     }
+  }
+
+  void getProducts() {
+    print('getProducts,kkkkkkkkkkkkkkkkkkkkkkkkk');
+
+    FirebaseFirestore.instance
+        .collection("Products")
+        .where("userId", isEqualTo: buyController.id)
+        .where('productElement', isEqualTo: buyController.productElement)
+        .where('itemElement', isEqualTo: buyController.itemElement)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((doc) {
+          itemProducts = doc['Url'];
+        });
+        print('$itemProducts,yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+      } else {
+        print("No data");
+        return;
+      }
+    });
   }
 }

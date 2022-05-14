@@ -3,12 +3,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_image.dart';
+import 'package:shopping_app/core/service/data_base_service.dart';
 
-class ProductView extends StatelessWidget {
-   ProductView({Key key}) : super(key: key);
+class ProductView extends StatefulWidget {
+  ProductView({Key key}) : super(key: key);
+
+  @override
+  State<ProductView> createState() => _ProductViewState();
+}
+
+class _ProductViewState extends State<ProductView> {
   final buyController = Get.put(BuyController());
+  final databaseService = Get.put(DatabaseService());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    databaseService.getProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +77,7 @@ class ProductView extends StatelessWidget {
                             physics: BouncingScrollPhysics(),
                             itemCount: snapshot.data.size,
                             itemBuilder: (context, index) {
+                              print('yyyyyyyyyyyyyyyyyyyyyy');
                               return Column(
                                 children: [
                                   SizedBox(
@@ -68,6 +85,17 @@ class ProductView extends StatelessWidget {
                                     width: Get.width * 0.5,
                                     child: GestureDetector(
                                       onTap: () {
+                                        buyController.images =
+                                            snapshot.data.docs[index]['Url'];
+                                        buyController.id = snapshot
+                                            .data.docs[index]["userId"]
+                                            .toString();
+                                        buyController.productElement = snapshot
+                                            .data.docs[index]['productElement']
+                                            .toString();
+                                        buyController.itemElement = snapshot
+                                            .data.docs[index]['itemElement']
+                                            .toString();
                                         Get.defaultDialog(
                                             title: 'Products',
                                             content: SellerImage());
@@ -95,7 +123,6 @@ class ProductView extends StatelessWidget {
                                         semanticContainer: true,
                                         clipBehavior:
                                             Clip.antiAliasWithSaveLayer,
-                                        elevation: 20.0,
                                         color: Colors.white,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -108,9 +135,9 @@ class ProductView extends StatelessWidget {
                                     height: 20,
                                   ),
                                   Text(
-                                    snapshot.data.docs[index]['itemElement']
-                                        .toString(),
-                                  )
+                                      snapshot.data.docs[index]['itemElement']
+                                          .toString(),
+                                      style: TextStyle(fontSize: 17))
                                 ],
                               );
                             },
@@ -119,7 +146,57 @@ class ProductView extends StatelessWidget {
                       }
                       return null;
                     } else {
-                      return Center(child: Text('Loading.....'));
+                      return GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 1 / 1.8,
+                          mainAxisSpacing: 9,
+                          crossAxisSpacing: 5,
+                          crossAxisCount: 2,
+                        ),
+                        primary: false,
+                        padding: const EdgeInsets.all(15),
+                        physics: BouncingScrollPhysics(),
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[500],
+                            highlightColor: Colors.grey[100],
+                            child: Container(
+                              height: Get.height * 0.9,
+                              width: Get.width * 0.5,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: Get.height * 0.30,
+                                    width: Get.width * 0.5,
+                                    child: Card(
+                                      color: Colors.grey,
+                                      semanticContainer: true,
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      elevation: 20.0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: Get.height * .02,
+                                  ),
+                                  Container(
+                                    width: Get.width * 0.3,
+                                    child: Container(
+                                      height: Get.height * .03,
+                                      width: Get.width * .3,
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     }
                   }),
             ),

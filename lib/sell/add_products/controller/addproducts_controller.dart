@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,15 +7,10 @@ import 'package:shopping_app/sell/models/item_model.dart';
 import 'package:shopping_app/sell/models/product_model.dart';
 
 class AddProductsController extends GetxController {
-  final picker = ImagePicker();
   final image = [].obs;
   final drawerImage = [].obs;
-  var imageSize = ''.obs;
   int initialIndex = 0;
   int bottomIndex = 0;
-
-  firebase_storage.Reference ref;
-  CollectionReference imgRef;
 
   ProductItems productElement;
   ItemModel itemElement;
@@ -26,6 +19,8 @@ class AddProductsController extends GetxController {
 
   var colorElement;
   bool colorValue = false;
+
+  final formKey = GlobalKey<FormState>();
 
   final TextEditingController productName = TextEditingController();
   final TextEditingController productSize = TextEditingController();
