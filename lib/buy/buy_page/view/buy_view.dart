@@ -10,7 +10,10 @@ import 'package:shopping_app/buy/buy_page/widget/carouselSlider.dart';
 import 'package:shopping_app/buy/buy_page/widget/userInfo.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
+import 'package:shopping_app/core/service/local_notification_service.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shopping_app/sell/data/bottom_sheet/check_box_category.dart';
 
 class BuyView extends StatefulWidget {
   @override
@@ -229,6 +232,33 @@ class _BuyViewState extends State<BuyView> {
     /*_getTheDistance();*/
     getData();
     super.initState();
+
+    ///gives you the message on which user taps
+    ///and it opens the app from terminated state
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      print('opens the app>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      if (message != null) {
+        final routeFromMessage = message.data['/sell_view'];
+        Get.to(routeFromMessage);
+      }
+    });
+
+    ///foreground work
+    FirebaseMessaging.onMessage.listen((message) {
+      print('onMessage>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      if (message.notification != null) {
+        print(message.notification.body);
+        print(message.notification.title);
+      }
+      LocalNotificationService.display(message);
+    });
+
+    ///when the app is in background but opened and user taps
+    ///on the notification
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      final routeFromMessage = message.data['/sell_view'];
+      Get.to(routeFromMessage);
+    });
   }
 
   @override

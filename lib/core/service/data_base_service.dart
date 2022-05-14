@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,7 @@ import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:http/http.dart' as http;
 
 class DatabaseService extends GetxController {
   final addProductsController = Get.put(AddProductsController());
@@ -299,5 +302,42 @@ class DatabaseService extends GetxController {
         return;
       }
     });
+  }
+
+  sendNotification({String title, String token}) async {
+    print('sendNotification>>>>>>>>>>>>>>>>>>>>>>>>>');
+    final data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'message': title,
+    };
+    try {
+      http.Response response =
+          /*'https://api.rnfirebase.io/messaging/send'*/
+          await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+              headers: <String, String>{
+                'Content-Type': 'application/json',
+                'Authorization':
+                    'key=AAAA_tzeppI:APA91bGKpmmwRTN1Z3I-ycfSrLsD83uEIU7j-xk63ZUT1urRh32gknodGVZRSNLbv-9zHPSfA9Ck2K3udpdRblEsJXSXk3_zO_1PJokkrSqsYl0-Q4vZpA6YXzhVHvo8y-4Evnc-7t4q'
+              },
+              body: jsonEncode(<String, dynamic>{
+                'notification': <String, dynamic>{
+                  'title': title,
+                  'body': 'you are followed by someone'
+                },
+                'priority': 'high',
+                'data': data,
+                'to': '$token'
+              }));
+      print(
+          '${response.statusCode}>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      if (response.statusCode == 200) {
+        print('your notification is send');
+      } else {
+        print('Error');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

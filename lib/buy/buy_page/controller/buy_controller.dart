@@ -43,6 +43,8 @@ class BuyController extends GetxController {
 
   var items;
   List itemsCatego = [];
+
+  var token;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   //final addProductsController = Get.put(AddProductsController());
 
@@ -337,5 +339,23 @@ class BuyController extends GetxController {
         .collection('Users')
         .where('firstName', isEqualTo: queryString)
         .get();
+  }
+
+  Future<void> getUserToken() async {
+    final uuid = FirebaseAuth.instance.currentUser.uid;
+    FirebaseFirestore.instance
+        .collection("NotificationToken")
+        .where('id', isEqualTo: uuid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        querySnapshot.docs.forEach((doc) {
+          token = doc['token'];
+          print("$token, $id");
+        });
+      } else {
+        print('<<<<<<<<<<No data>>>>>>>>>>>');
+      }
+    });
   }
 }

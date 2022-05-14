@@ -25,6 +25,7 @@ class _SellerAccountState extends State<SellerAccount> {
   void initState() {
     // TODO: implement initState
     buyController.colorFunction();
+    buyController.getUserToken();
 
     print(
         'SellerAccount bbbbbbbbbbbbbbbbbbbbbbbbbb${buyController.likes.value}');
@@ -72,6 +73,12 @@ class _SellerAccountState extends State<SellerAccount> {
                                   print('2222222222222222');
                                   //TODO
                                   buyController.checkForLikes();
+
+                                  ///Displays a notification to the seller
+                                  databaseService.sendNotification(
+                                      title:
+                                          "some one added you to his favorites",
+                                      token: buyController.token);
                                 },
                                 icon: Obx(() => Icon(Icons.favorite,
                                     color: buyController.color.value == 0

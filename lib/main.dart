@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/authentication/view/login.dart';
@@ -11,13 +12,23 @@ import 'authentication/binding/binding.dart';
 import 'authentication/register_status/register_statuse.dart';
 import 'authentication/view/auth_view.dart';
 import 'buy/buy_page/view/buy_view.dart';
+import 'core/service/local_notification_service.dart';
 import 'core/widget/drawer/drawer_view/drawer_view.dart';
 import 'extras/tab_bar.dart';
 import 'loading_screen/loading_view.dart';
 
+///Receive message when app is in the background solution for a message
+Future<void> backGroundHandler(RemoteMessage message) async {
+  print("backGroundHandler>>>>>>>>>>>>>>>>>>>>>>>>>");
+  print(message.data.toString());
+  print(message.notification.title);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  LocalNotificationService.initialize();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(backGroundHandler);
   runApp(MyApp());
 }
 
@@ -59,10 +70,9 @@ class MyApp extends StatelessWidget {
             page: () => RegisterStatus(),
             binding: AuthBinding()),
         GetPage(
-          name: "/loading_screen",
-          page: () => LoadingScreen(),
-            binding: AuthBinding()
-        ),
+            name: "/loading_screen",
+            page: () => LoadingScreen(),
+            binding: AuthBinding()),
       ],
       initialRoute: "/loading_screen",
     );

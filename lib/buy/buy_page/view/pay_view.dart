@@ -7,6 +7,8 @@ import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
 import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
 
+import '../../../core/service/data_base_service.dart';
+
 class PayView extends StatefulWidget {
   PayView({Key key}) : super(key: key);
 
@@ -20,6 +22,7 @@ class _PayViewState extends State<PayView> {
   final cartController = Get.put(CartController());
 
   final buyController = Get.put(BuyController());
+  final databaseService = Get.put(DatabaseService());
 
   @override
   void initState() {
@@ -79,6 +82,11 @@ class _PayViewState extends State<PayView> {
                           .then((value) => Get.snackbar(
                               "Success", 'product bought successful',
                               snackPosition: SnackPosition.TOP));
+
+                      ///Displays a notification to the seller
+                      databaseService.sendNotification(
+                          title: "some one bought your product",
+                          token: buyController.token);
 
                       Get.to(() => DrawerView());
                     },
