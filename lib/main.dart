@@ -28,6 +28,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocalNotificationService.initialize();
   await Firebase.initializeApp();
+  print('onBackgroundMessage>>>>>>>>>>>>>>>>>>>>>>>');
   FirebaseMessaging.onBackgroundMessage(backGroundHandler);
   runApp(MyApp());
 }

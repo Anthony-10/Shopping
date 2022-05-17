@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class LocalNotificationService {
@@ -23,10 +24,14 @@ class LocalNotificationService {
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       final NotificationDetails notificationDetails = NotificationDetails(
           android: AndroidNotificationDetails("mychannel", "my channel",
-              importance: Importance.max, priority: Priority.high));
+              importance: Importance.max,
+              priority: Priority.high,
+              color: Colors.blue));
       await _notificationsPlugin.show(id, message.notification.title,
-          message.notification.title, notificationDetails);
+          message.notification.body, notificationDetails);
       print('display finished>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      print(
+          '${message.notification.title},${message.notification.body}>>>>>>>>>>>>>>>>>>>>>>>.');
     } on Exception catch (e) {
       // TODO
       print(e);

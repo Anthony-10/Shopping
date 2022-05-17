@@ -304,7 +304,7 @@ class DatabaseService extends GetxController {
     });
   }
 
-  sendNotification({String title, String token}) async {
+  sendNotification({String title, String token, String body}) async {
     print('sendNotification>>>>>>>>>>>>>>>>>>>>>>>>>');
     final data = {
       'click_action': 'FLUTTER_NOTIFICATION_CLICK',
@@ -313,7 +313,6 @@ class DatabaseService extends GetxController {
     };
     try {
       http.Response response =
-          /*'https://api.rnfirebase.io/messaging/send'*/
           await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
               headers: <String, String>{
                 'Content-Type': 'application/json',
@@ -321,10 +320,7 @@ class DatabaseService extends GetxController {
                     'key=AAAA_tzeppI:APA91bGKpmmwRTN1Z3I-ycfSrLsD83uEIU7j-xk63ZUT1urRh32gknodGVZRSNLbv-9zHPSfA9Ck2K3udpdRblEsJXSXk3_zO_1PJokkrSqsYl0-Q4vZpA6YXzhVHvo8y-4Evnc-7t4q'
               },
               body: jsonEncode(<String, dynamic>{
-                'notification': <String, dynamic>{
-                  'title': title,
-                  'body': 'you are followed by someone'
-                },
+                'notification': <String, dynamic>{'title': title, 'body': body},
                 'priority': 'high',
                 'data': data,
                 'to': '$token'

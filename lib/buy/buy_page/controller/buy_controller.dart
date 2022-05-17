@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+//import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
@@ -342,7 +342,9 @@ class BuyController extends GetxController {
   }
 
   Future<void> getUserToken() async {
+    print('getUserToken,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     final uuid = FirebaseAuth.instance.currentUser.uid;
+    print('$uuid,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     FirebaseFirestore.instance
         .collection("NotificationToken")
         .where('id', isEqualTo: uuid)
@@ -351,7 +353,6 @@ class BuyController extends GetxController {
       if (querySnapshot.docs.isNotEmpty) {
         querySnapshot.docs.forEach((doc) {
           token = doc['token'];
-          print("$token, $id");
         });
       } else {
         print('<<<<<<<<<<No data>>>>>>>>>>>');

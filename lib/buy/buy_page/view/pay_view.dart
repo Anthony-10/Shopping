@@ -85,7 +85,8 @@ class _PayViewState extends State<PayView> {
 
                       ///Displays a notification to the seller
                       databaseService.sendNotification(
-                          title: "some one bought your product",
+                          title: "bought",
+                          body: "an item was bought",
                           token: buyController.token);
 
                       Get.to(() => DrawerView());

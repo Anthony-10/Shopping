@@ -76,8 +76,9 @@ class _SellerAccountState extends State<SellerAccount> {
 
                                   ///Displays a notification to the seller
                                   databaseService.sendNotification(
-                                      title:
-                                          "some one added you to his favorites",
+                                      title: "favorites",
+                                      body:
+                                          'some one added you to his favorites',
                                       token: buyController.token);
                                 },
                                 icon: Obx(() => Icon(Icons.favorite,
