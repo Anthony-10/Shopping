@@ -36,125 +36,134 @@ class _BottomSheet2State extends State<BottomSheet2> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height * .9,
-      width: width,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-      child: Padding(
-        padding:
-            const EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 30),
-        child: Column(
-          children: [
-            Container(
-              height: height * 0.06,
-              child: Icon(
-                Icons.keyboard_arrow_up,
-                size: 40,
+    final MediaQueryData mediaQueryData = MediaQuery.of(context);
+    return Padding(
+      padding: mediaQueryData.viewInsets,
+      child: Container(
+        height: height * .9,
+        width: width,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 30),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: height * 0.06,
+                child: Icon(
+                  Icons.keyboard_arrow_up,
+                  size: 40,
+                ),
               ),
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                          child: addProductsController.initialIndex == 0
-                              ? Text(
-                                  'Select a category',
-                                  style: TextStyle(fontSize: 20.0),
-                                )
-                              : addProductsController.initialIndex == 1 &&
-                                      addProductsController.productElement !=
-                                          ProductCategories.others
-                                  ? Text(
-                                      'Select a item',
-                                      style: TextStyle(fontSize: 20.0),
-                                    )
-                                  : addProductsController.initialIndex == 1 &&
-                                          addProductsController
-                                                  .productElement ==
-                                              ProductCategories.others
-                                      ? Text(
-                                          'Write',
-                                          style: TextStyle(fontSize: 20.0),
-                                        )
-                                      : addProductsController.initialIndex == 2
-                                          ? Text(
-                                              'Select Price',
-                                              style: TextStyle(fontSize: 20.0),
-                                            )
-                                          : Text(
-                                              'Fill the blanks',
-                                              style: TextStyle(fontSize: 20.0),
-                                            )),
-                      SizedBox(
-                        height: height * .04,
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              addProductsController.initialIndex == 0
-                                  ? CategoryList()
-                                  : addProductsController.initialIndex == 1
-                                      ? getPage(
-                                          addProductsController.productElement)
-                                      : PriceSection()
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                            child: addProductsController.initialIndex == 0
+                                ? Text(
+                                    'Select a category',
+                                    style: TextStyle(fontSize: 20.0),
+                                  )
+                                : addProductsController.initialIndex == 1 &&
+                                        addProductsController.productElement !=
+                                            ProductCategories.others
+                                    ? Text(
+                                        'Select a item',
+                                        style: TextStyle(fontSize: 20.0),
+                                      )
+                                    : addProductsController.initialIndex == 1 &&
+                                            addProductsController
+                                                    .productElement ==
+                                                ProductCategories.others
+                                        ? Text(
+                                            'Write',
+                                            style: TextStyle(fontSize: 20.0),
+                                          )
+                                        : addProductsController.initialIndex ==
+                                                2
+                                            ? Text(
+                                                'Select Price',
+                                                style:
+                                                    TextStyle(fontSize: 20.0),
+                                              )
+                                            : Text(
+                                                'Fill the blanks',
+                                                style:
+                                                    TextStyle(fontSize: 20.0),
+                                              )),
+                        SizedBox(
+                          height: height * .04,
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            //reverse: true,
+                            physics: BouncingScrollPhysics(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                addProductsController.initialIndex == 0
+                                    ? CategoryList()
+                                    : addProductsController.initialIndex == 1
+                                        ? getPage(addProductsController
+                                            .productElement)
+                                        : PriceSection()
 
-                              /*: addProductsController
-                                                      .initialIndex ==
-                                                  3
-                                              ? ColorChekBox()
-                                              : PriceSection()*/
-                            ],
+                                /*: addProductsController
+                                                        .initialIndex ==
+                                                    3
+                                                ? ColorChekBox()
+                                                : PriceSection()*/
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Container(
-                      child: Row(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              //addProductsController.userImage();
-                              validation();
-                            },
-                            child: Text('save'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            width: width * .05,
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                addProductsController.initialIndex = 0;
-                              });
-                            },
-                            child: Text('back'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
-                            ),
-                          )
-                        ],
-                      ),
+                      ],
                     ),
-                  )
-                ],
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Container(
+                        child: Row(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                //addProductsController.userImage();
+                                validation();
+                              },
+                              child: Text('save'),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.black,
+                              ),
+                            ),
+                            SizedBox(
+                              width: width * .05,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  addProductsController.initialIndex = 0;
+                                });
+                              },
+                              child: Text('back'),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

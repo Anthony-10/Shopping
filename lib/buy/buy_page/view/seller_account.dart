@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/locations/location.dart';
@@ -77,8 +78,9 @@ class _SellerAccountState extends State<SellerAccount> {
                                   ///Displays a notification to the seller
                                   databaseService.sendNotification(
                                       title: "favorites",
-                                      body:
-                                          'some one added you to his favorites',
+                                      body: buyController.color.value == 0
+                                          ? 'some one removed you to his favorites'
+                                          : 'some one added you to his favorites',
                                       token: buyController.token);
                                 },
                                 icon: Obx(() => Icon(Icons.favorite,
@@ -105,9 +107,71 @@ class _SellerAccountState extends State<SellerAccount> {
                     padding: const EdgeInsets.only(left: 10),
                     child: Align(
                         alignment: Alignment.bottomLeft,
-                        child: Text(
-                          buyController.name,
-                          style: TextStyle(fontSize: 25, color: Colors.white54),
+                        child: GestureDetector(
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(16),
+                                    height: 90,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 48,
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'oh snap',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                ),
+                                                Text(
+                                                  'nice snackBar',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ]),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: -20,
+                                    left: 0,
+                                    child: Icon(
+                                      Icons.check_circle_outline_outlined,
+                                      size: 54.0,
+                                      color: Colors.blueGrey,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ));
+                          },
+                          child: Text(
+                            buyController.name,
+                            style:
+                                TextStyle(fontSize: 25, color: Colors.white54),
+                          ),
                         )),
                   )
                 ],
