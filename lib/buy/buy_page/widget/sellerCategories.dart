@@ -38,10 +38,9 @@ class _SellerCategoriesState extends State<SellerCategories> {
                     scrollDirection: Axis.horizontal,
                     itemCount: snapshot.data.size,
                     itemBuilder: (BuildContext context, int index) {
-                      //removeDuplicat by .toSet
                       final categories = snapshot.data.docs[index]['Item'];
                       print(
-                          '${snapshot.data.docs[index]['Item']},9999999999999999999999');
+                          '${snapshot.data.docs[index]['Item']},9999999999999999999999kkk');
 
                       return Row(
                         children: [
@@ -54,10 +53,13 @@ class _SellerCategoriesState extends State<SellerCategories> {
                                 buyController.id =
                                     snapshot.data.docs[index]['userId'];
                                 //TODO
-                                buyController.item = categories;
+                                buyController.item.value = categories;
                               });
                               print(
                                   '(((((((((((((((((((${buyController.id}))))))))))))))))))');
+
+                              print(
+                                  '(((((((((((((((((((${buyController.item.value}))))))))))))))))))');
                               print(
                                   '(((((((((((((((((((${buyController.productElement}))))))))))))))))))');
                             },

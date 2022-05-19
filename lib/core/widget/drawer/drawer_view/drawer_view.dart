@@ -14,9 +14,8 @@ import 'package:shopping_app/sell/models/drawer_model.dart';
 import 'package:shopping_app/sell/orders/view/orders_view.dart';
 import 'package:shopping_app/sell/products/view/product_view.dart';
 import 'package:shopping_app/sell/sell_location/view/sell_location_list.dart';
-import 'package:shopping_app/sell/settings/view/setting_view.dart';
-
 import '../../../../buy/favourite/favourites.dart';
+import '../../../../settings/view/setting_view.dart';
 import '../drawer_widget.dart';
 
 class DrawerView extends StatefulWidget {

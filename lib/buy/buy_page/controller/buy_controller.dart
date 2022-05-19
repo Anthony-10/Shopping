@@ -11,7 +11,7 @@ class BuyController extends GetxController {
   var userUid;
   var image;
   List images = [];
-  var item;
+  var item = ''.obs;
 
   var productElement;
   var itemElement;
@@ -130,7 +130,7 @@ class BuyController extends GetxController {
 
   void categories({var items}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
-    await _fireStore.collection("Categories").doc(uid).set({
+    await _fireStore.collection("Categories").doc().set({
       'Item': items,
       'userId': uid,
     });

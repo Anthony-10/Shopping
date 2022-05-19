@@ -40,6 +40,7 @@ class _SellerAccountState extends State<SellerAccount> {
         body: Column(children: [
           Container(
             height: Get.height * 0.33,
+            width: Get.width,
             decoration: BoxDecoration(
                 gradient: LinearGradient(begin: Alignment.topCenter, colors: [
                   Colors.indigo[800],
@@ -181,9 +182,11 @@ class _SellerAccountState extends State<SellerAccount> {
           SizedBox(
             height: 20,
           ),
-          // The Categories menu
+
+          /// The Categories menu
           SellerCategories(),
-          // The Products
+
+          /// The Products
           SellerProducts(),
         ]),
       ),

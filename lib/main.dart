@@ -30,6 +30,7 @@ void main() async {
   await Firebase.initializeApp();
   print('onBackgroundMessage>>>>>>>>>>>>>>>>>>>>>>>');
   FirebaseMessaging.onBackgroundMessage(backGroundHandler);
+  print('onBackgroundMessage end>>>>>>>>>>>>>>>>>>>>>>>');
   runApp(MyApp());
 }
 

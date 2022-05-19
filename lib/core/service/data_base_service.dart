@@ -20,12 +20,12 @@ class DatabaseService extends GetxController {
 
   List fileURLList = [];
 
-  var categories = 0;
-  var products = 0;
-  var sold = 0;
-  var returns = 0;
-  var order = 0;
-  var likes = 0;
+  var categories = 0.obs;
+  var products = 0.obs;
+  var sold = 0.obs;
+  var returns = 0.obs;
+  var order = 0.obs;
+  var likes = 0.obs;
 
   var itemProducts;
 
@@ -193,11 +193,11 @@ class DatabaseService extends GetxController {
         .then((QuerySnapshot querySnapshot) {
       if (querySnapshot.docs.isNotEmpty) {
         querySnapshot.docs.forEach((doc) {
-          categories = doc['categories'];
-          products = doc['products'];
-          sold = doc['sold'];
-          order = doc['order'];
-          returns = doc['returns'];
+          categories.value = doc['categories'];
+          products.value = doc['products'];
+          sold.value = doc['sold'];
+          order.value = doc['order'];
+          returns.value = doc['returns'];
         });
       } else {
         print(

@@ -119,11 +119,12 @@ class _SellViewState extends State<SellView> {
                               },
                               icon: Icon(Icons.category),
                               label: Text("Categories")),
-                          subtitle: Text(
-                            "${databaseService.categories}",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
+                          subtitle: Obx(() => Text(
+                                "${databaseService.categories}",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 40.0),
+                              ))),
                       elevation: 20.0,
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
@@ -142,11 +143,12 @@ class _SellViewState extends State<SellView> {
                               },
                               icon: Icon(Icons.track_changes),
                               label: Text("Products")),
-                          subtitle: Text(
-                            '${databaseService.products}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
+                          subtitle: Obx(() => Text(
+                                '${databaseService.products}',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 40.0),
+                              ))),
                       elevation: 20.0,
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
@@ -165,11 +167,12 @@ class _SellViewState extends State<SellView> {
                               },
                               icon: Icon(Icons.tag_faces),
                               label: Text("Sold")),
-                          subtitle: Text(
-                            '${databaseService.sold}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
+                          subtitle: Obx(() => Text(
+                                '${databaseService.sold}',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 40.0),
+                              ))),
                       elevation: 20.0,
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
@@ -188,11 +191,12 @@ class _SellViewState extends State<SellView> {
                               },
                               icon: Icon(Icons.shopping_cart_rounded),
                               label: Text("Orders")),
-                          subtitle: Text(
-                            '${databaseService.order}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
+                          subtitle: Obx(() => Text(
+                                '${databaseService.order}',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 40.0),
+                              ))),
                       elevation: 20.0,
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
@@ -211,11 +215,12 @@ class _SellViewState extends State<SellView> {
                               },
                               icon: Icon(Icons.close),
                               label: Text("Returns")),
-                          subtitle: Text(
-                            '${databaseService.returns}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.red, fontSize: 40.0),
-                          )),
+                          subtitle: Obx(() => Text(
+                                '${databaseService.returns}',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 40.0),
+                              ))),
                       elevation: 20.0,
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
