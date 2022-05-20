@@ -27,6 +27,7 @@ class _SellerAccountState extends State<SellerAccount> {
     // TODO: implement initState
     buyController.colorFunction();
     buyController.getUserToken();
+    buyController.getCategories(uid: buyController.id);
 
     print(
         'SellerAccount bbbbbbbbbbbbbbbbbbbbbbbbbb${buyController.likes.value}');

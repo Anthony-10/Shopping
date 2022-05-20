@@ -14,7 +14,7 @@ class _SellerCategoriesState extends State<SellerCategories> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   final buyController = Get.put(BuyController());
-
+  List firstCategories = [];
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -39,8 +39,8 @@ class _SellerCategoriesState extends State<SellerCategories> {
                     itemCount: snapshot.data.size,
                     itemBuilder: (BuildContext context, int index) {
                       final categories = snapshot.data.docs[index]['Item'];
-                      print(
-                          '${snapshot.data.docs[index]['Item']},9999999999999999999999kkk');
+                      //final firstCategories = snapshot.data.docs[index]['Item'];
+                      print('$firstCategories,9999999999999999999999kkk');
 
                       return Row(
                         children: [

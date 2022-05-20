@@ -98,6 +98,10 @@ class BuyController extends GetxController {
     }
   }*/
 
+  void firstCategories() {
+    item.value = itemsCatego[0];
+  }
+
   Future handleLikePost() async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     try {
@@ -136,8 +140,7 @@ class BuyController extends GetxController {
     });
   }
 
-  void getCategories() {
-    String uid = FirebaseAuth.instance.currentUser.uid;
+  void getCategories({var uid}) {
     print('getCategories,kkkkkkkkkkkkkkkkkkkkkkkkk');
     FirebaseFirestore.instance
         .collection("Categories")

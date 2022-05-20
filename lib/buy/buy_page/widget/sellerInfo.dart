@@ -7,15 +7,29 @@ import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_items.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
 
-class SellerProducts extends StatelessWidget {
+class SellerProducts extends StatefulWidget {
   SellerProducts({Key key}) : super(key: key);
+
+  @override
+  State<SellerProducts> createState() => _SellerProductsState();
+}
+
+class _SellerProductsState extends State<SellerProducts> {
   final buyController = Get.put(BuyController());
+
   final cartController = Get.put(CartController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    buyController.firstCategories();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     print(
-        '${buyController.item.value}>>>>>>>>>>>>>>>>>>SellerProducts<<<<<<<<<<<<<<<<<');
+        '${buyController.item.value}>>>>>>>>>>>>>>>>>>SellerProducts<<<<<<<<<<<<<<<<<u');
     return Obx(() {
       return StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
