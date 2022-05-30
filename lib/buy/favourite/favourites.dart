@@ -8,7 +8,9 @@ import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
 
 class Favourites extends StatefulWidget {
   //final VoidCallback openDrawer;
-  //const Favourites({Key? key, required this.openDrawer}) : super(key: key);
+  const Favourites({
+    Key key,
+  }) : super(key: key);
 
   @override
   State<Favourites> createState() => _FavouritesState();
@@ -67,9 +69,10 @@ class _FavouritesState extends State<Favourites> {
                         );
                       } else {
                         if (snapshot.hasData) {
-                          Map<String, dynamic> datas =
-                              snapshot.data.data() as Map<String, dynamic>;
-                          print('${datas},mmmmmmmmmmmmmmmmmmmmm');
+                          print(snapshot.data.length);
+                          /* Map<String, dynamic> datas =
+                              snapshot.data.data() as Map<String, dynamic>;*/
+                          // print('${datas},mmmmmmmmmmmmmmmmmmmmm');
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -77,7 +80,7 @@ class _FavouritesState extends State<Favourites> {
                             primary: false,
                             padding: const EdgeInsets.all(15),
                             physics: BouncingScrollPhysics(),
-                            itemCount: snapshot.data.length,
+                            itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
                               print('$me,kkkkkkkkkkkkkkkkkkkkk');
                               print(

@@ -14,7 +14,7 @@ class _SellerCategoriesState extends State<SellerCategories> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   final buyController = Get.put(BuyController());
-  List firstCategories = [];
+  bool _isSelected = false;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -39,9 +39,6 @@ class _SellerCategoriesState extends State<SellerCategories> {
                     itemCount: snapshot.data.size,
                     itemBuilder: (BuildContext context, int index) {
                       final categories = snapshot.data.docs[index]['Item'];
-                      //final firstCategories = snapshot.data.docs[index]['Item'];
-                      print('$firstCategories,9999999999999999999999kkk');
-
                       return Row(
                         children: [
                           SizedBox(
@@ -63,6 +60,22 @@ class _SellerCategoriesState extends State<SellerCategories> {
                               print(
                                   '(((((((((((((((((((${buyController.productElement}))))))))))))))))))');
                             },
+                            /* child: Container(
+                              height: 30,
+                              width: 90,
+                              child: ChoiceChip(
+                                  label: Text(categories.toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 17)),
+                                  selectedColor: Colors.blue,
+                                  selected: _isSelected,
+                                  onSelected: (newBoolValue) {
+                                    setState(() {
+                                      return _isSelected = newBoolValue;
+                                    });
+                                  }),
+                            ),*/
                             child: Container(
                               height: 30,
                               width: 90,

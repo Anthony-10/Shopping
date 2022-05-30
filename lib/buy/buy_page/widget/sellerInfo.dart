@@ -20,17 +20,12 @@ class _SellerProductsState extends State<SellerProducts> {
   final cartController = Get.put(CartController());
 
   @override
-  void initState() {
-    // TODO: implement initState
-    buyController.firstCategories();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     print(
         '${buyController.item.value}>>>>>>>>>>>>>>>>>>SellerProducts<<<<<<<<<<<<<<<<<u');
     return Obx(() {
+      print(
+          '${buyController.item.value}>>>>>>>>>>>>>>>>>>SellerProducts<<<<<<<<<<<<<<<<<mmm');
       return StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("Products")
@@ -46,6 +41,8 @@ class _SellerProductsState extends State<SellerProducts> {
                 );
               } else {
                 if (snapshot.hasData) {
+                  print(
+                      '${buyController.item.value}>>>>>>>>>>>>>>>>>>SellerProducts<<<<<<<<<<<<<<<<99999999');
                   return Expanded(
                     child: GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

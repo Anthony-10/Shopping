@@ -85,7 +85,7 @@ class _ProductViewState extends State<ProductView> {
                                     width: Get.width * 0.5,
                                     child: GestureDetector(
                                       onTap: () {
-                                        buyController.images =
+                                        buyController.image =
                                             snapshot.data.docs[index]['Url'];
                                         buyController.id = snapshot
                                             .data.docs[index]["userId"]

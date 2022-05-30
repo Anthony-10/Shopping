@@ -26,9 +26,15 @@ class _SellerAccountState extends State<SellerAccount> {
   void initState() {
     // TODO: implement initState
     buyController.colorFunction();
+    buyController.getLikeCount(ids: buyController.id);
     buyController.getUserToken();
-    buyController.getCategories(uid: buyController.id);
-
+    buyController
+        .getCategories(uid: buyController.id)
+        .then((value) => buyController.firstCategories());
+    //buyController.getCategories(uid: buyController.id);
+    print('SellerAccount bbbbbbbbbbbbbbbbbbbbbbbbbb${buyController.id}');
+    print(
+        'SellerAccount bbbbbbbbbbbbbbbbbbbbbbbbbb${buyController.itemsCatego}');
     print(
         'SellerAccount bbbbbbbbbbbbbbbbbbbbbbbbbb${buyController.likes.value}');
     super.initState();
@@ -81,8 +87,8 @@ class _SellerAccountState extends State<SellerAccount> {
                                   databaseService.sendNotification(
                                       title: "favorites",
                                       body: buyController.color.value == 0
-                                          ? 'some one removed you to his favorites'
-                                          : 'some one added you to his favorites',
+                                          ? 'some one added you to his favorites'
+                                          : 'some one removed you to his favorites',
                                       token: buyController.token);
                                 },
                                 icon: Obx(() => Icon(Icons.favorite,
