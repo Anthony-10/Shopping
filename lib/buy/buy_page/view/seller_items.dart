@@ -72,7 +72,8 @@ class _SellerItemState extends State<SellerItem> {
                             ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: EdgeInsets.only(
+                                top: Get.height * .01, left: Get.width * .08),
                             child: Text(
                               buyController.productElement.toString(),
                               style:
@@ -80,7 +81,10 @@ class _SellerItemState extends State<SellerItem> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: EdgeInsets.only(
+                                top: Get.height * .01,
+                                left: Get.width * .08,
+                                right: Get.width * .02),
                             child: Text(
                               buyController.itemElement.toString(),
                               style: TextStyle(
@@ -259,7 +263,6 @@ class _SellerItemState extends State<SellerItem> {
                                         image: buyController.sellerProduct,
                                         name: cartController.name,
                                       );
-                                      print('');
                                       Get.to(() => CartView());
                                     },
                                     child: Container(

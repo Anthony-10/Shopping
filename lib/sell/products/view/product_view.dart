@@ -35,22 +35,13 @@ class _ProductViewState extends State<ProductView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () => Get.back(),
-                  icon: Icon(Icons.arrow_back),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: Get.height * .03, left: Get.width * .09),
-                  child: Text(
-                    'Products',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                ),
-              ],
+                child: Padding(
+              padding:
+                  EdgeInsets.only(top: Get.height * .06, left: Get.width * .09),
+              child: Text(
+                'Products',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
             )),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(

@@ -34,14 +34,11 @@ class _BoughtViewState extends State<BoughtView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                  child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.arrow_back),
-              )),
               Padding(
                 padding: EdgeInsets.only(
-                    left: Get.width * .07, bottom: Get.height * .02),
+                    top: Get.height * .06,
+                    left: Get.width * .07,
+                    bottom: Get.height * .02),
                 child: Container(
                     child: Text(
                   'Bought',

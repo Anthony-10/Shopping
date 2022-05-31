@@ -28,24 +28,18 @@ class SellLocationList extends StatelessWidget {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.arrow_back),
-                    ),
-                    IconButton(
-                      onPressed: () => Get.to(SellLocation()),
-                      icon: Icon(Icons.map),
-                    ),
-                  ],
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () => Get.to(SellLocation()),
+                    icon: Icon(Icons.map),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(
                       top: Get.height * .03, left: Get.width * .09),
                   child: Text(
-                    'Location List',
+                    'My Location List',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                 ),

@@ -112,9 +112,17 @@ class _PriceSectionState extends State<PriceSection> {
                 height: 20,
               ),
               TextFormField(
+                maxLengthEnforcement: MaxLengthEnforcement.none,
                 key: const ValueKey("ProductDescription"),
                 textAlign: TextAlign.start,
-                decoration: InputDecoration(labelText: "ProductDescription"),
+                maxLength: 100,
+                maxLines: 8,
+                decoration: InputDecoration(
+                    labelText: "ProductDescription",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    )),
+                keyboardType: TextInputType.multiline,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Enter correct ProductDescription';

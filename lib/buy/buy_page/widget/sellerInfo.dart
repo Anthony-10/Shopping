@@ -50,7 +50,7 @@ class _SellerProductsState extends State<SellerProducts> {
                         primary: false,
                         padding: const EdgeInsets.all(15),
                         physics: BouncingScrollPhysics(),
-                        itemCount: snapshot.data.size,
+                        itemCount: snapshot.data.docs.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {

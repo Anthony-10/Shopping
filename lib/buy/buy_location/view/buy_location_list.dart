@@ -28,14 +28,12 @@ class BuyLocationList extends StatelessWidget {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () => Get.to(BuyerLocation()),
-                      icon: Icon(Icons.map),
-                    ),
-                  ],
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () => Get.to(BuyerLocation()),
+                    icon: Icon(Icons.map),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(

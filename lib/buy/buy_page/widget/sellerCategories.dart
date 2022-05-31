@@ -77,13 +77,18 @@ class _SellerCategoriesState extends State<SellerCategories> {
                                   }),
                             ),*/
                             child: Container(
-                              height: 30,
-                              width: 90,
-                              child: Center(
-                                  child: Text(categories.toString(),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 17))),
+                              height: Get.height * .06,
+                              width: Get.width * .3,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    left: Get.width * .01,
+                                    right: Get.width * .01),
+                                child: Center(
+                                    child: Text(categories.toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 17))),
+                              ),
                               decoration: BoxDecoration(
                                   color: Colors.grey[400],
                                   borderRadius: BorderRadius.circular(20)),
@@ -116,8 +121,8 @@ class _SellerCategoriesState extends State<SellerCategories> {
                           width: 10,
                         ),
                         Container(
-                          height: 30,
-                          width: 90,
+                          height: Get.height * .06,
+                          width: Get.width * .3,
                           decoration: BoxDecoration(
                               color: Colors.grey[400],
                               borderRadius: BorderRadius.circular(20)),

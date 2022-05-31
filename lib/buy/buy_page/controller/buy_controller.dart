@@ -218,7 +218,7 @@ class BuyController extends GetxController {
             .collection("Favorite")
             .doc(uid)
             .collection("currentUser")
-            .doc(id)
+            .doc(userUid)
             .delete();
         {
           dislikeCount(countDisLikes: FieldValue.increment(-1), disLikeUid: id);
@@ -240,8 +240,6 @@ class BuyController extends GetxController {
 
   Future<void> likeCounts({var countLikes, var likeUid}) async {
     print('likeCounts function');
-    print('$countLikes, $likeUid,hhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-    String uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
         .collection("likeCounts")
         .where('id', isEqualTo: likeUid)
