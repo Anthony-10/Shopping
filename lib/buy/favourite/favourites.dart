@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
-import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
+
+import '../buy_page/view/seller_account.dart';
 
 class Favourites extends StatefulWidget {
   //final VoidCallback openDrawer;
@@ -18,10 +20,6 @@ class Favourites extends StatefulWidget {
 
 class _FavouritesState extends State<Favourites> {
   final buyController = Get.put(BuyController());
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  CollectionReference users = FirebaseFirestore.instance.collection('Favorite');
-  var me;
-  String uid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -32,44 +30,31 @@ class _FavouritesState extends State<Favourites> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: Get.height * .06, left: Get.width * .09),
-                  child: Text(
-                    'Favourites',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                ),
-              ],
+                child: Padding(
+              padding:
+                  EdgeInsets.only(top: Get.height * .06, left: Get.width * .09),
+              child: Text(
+                'Favourites',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
             )),
             Expanded(
-              //Changed from stream to future
-
-              child: FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
                       .collection("Favorite")
                       .doc(FirebaseAuth.instance.currentUser.uid)
                       .collection("currentUser")
-                      .doc()
-                      .get(),
+                      .snapshots(),
                   builder: (BuildContext context,
-                      AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    print(
-                        'builder,lllllllllllllllllllllllllllllllllllllllllllllll');
-                    if (snapshot.connectionState == ConnectionState.done) {
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
                       if (!snapshot.hasData) {
                         return const Center(
                           child: Text("Check your connection"),
                         );
                       } else {
                         if (snapshot.hasData) {
-                          //print(snapshot.data.length);
-                          Map<String, dynamic> data =
-                              snapshot.data.data() as Map<String, dynamic>;
-                          print(',mmmmmmmmmmmmmmmmmmmmm');
+                          final data = snapshot.data.docs;
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -79,11 +64,6 @@ class _FavouritesState extends State<Favourites> {
                             physics: BouncingScrollPhysics(),
                             itemCount: data.length,
                             itemBuilder: (context, index) {
-                              print(
-                                  '${FirebaseAuth.instance.currentUser.uid},,,,,,,,,,,,,,,,,,');
-                              print(
-                                  '888888888888888888888888888888888888888888');
-
                               return Column(
                                 children: [
                                   SizedBox(
@@ -91,19 +71,20 @@ class _FavouritesState extends State<Favourites> {
                                     width: Get.width * 0.5,
                                     child: GestureDetector(
                                       onTap: () {
-                                        /*Get.to(() => SellerAccount());
+                                        Get.to(() => SellerAccount());
                                         buyController.name =
-                                            snapshot.data[index]['name'];
+                                            data[index]['name'];
                                         buyController.id =
-                                            snapshot.data[index]['userUid'];
+                                            data[index]['userUid'];
                                         buyController.image =
-                                            snapshot.data[index]['image'];*/
+                                            data[index]['image'];
                                       },
                                       child: Card(
                                         child: CachedNetworkImage(
                                           cacheManager:
                                               buyController.customCacheManager,
-                                          imageUrl: data['image'],
+                                          imageUrl:
+                                              data[index]['image'].toString(),
                                           fit: BoxFit.fill,
                                           placeholder: (context, url) =>
                                               Container(
@@ -132,7 +113,10 @@ class _FavouritesState extends State<Favourites> {
                                     height: 20,
                                   ),
                                   Text(
-                                    data['name'],
+                                    data[index]['name'].toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 20),
                                   )
                                 ],
                               );
@@ -142,7 +126,57 @@ class _FavouritesState extends State<Favourites> {
                       }
                       return null;
                     } else {
-                      return Center(child: Text('Loading.....'));
+                      return GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 1 / 1.8,
+                          mainAxisSpacing: 9,
+                          crossAxisSpacing: 5,
+                          crossAxisCount: 2,
+                        ),
+                        primary: false,
+                        padding: const EdgeInsets.all(15),
+                        physics: BouncingScrollPhysics(),
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[500],
+                            highlightColor: Colors.grey[100],
+                            child: Container(
+                              height: Get.height * 0.9,
+                              width: Get.width * 0.5,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: Get.height * 0.30,
+                                    width: Get.width * 0.5,
+                                    child: Card(
+                                      color: Colors.grey,
+                                      semanticContainer: true,
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      elevation: 20.0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: Get.height * .02,
+                                  ),
+                                  Container(
+                                    width: Get.width * 0.3,
+                                    child: Container(
+                                      height: Get.height * .03,
+                                      width: Get.width * .3,
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     }
                   }),
             ),

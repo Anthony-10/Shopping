@@ -28,16 +28,11 @@ class _PayViewState extends State<PayView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    /*print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-    getData();
-    print('$ehe,llllllllllllllllllll');*/
   }
 
   var ehe;
   @override
   Widget build(BuildContext context) {
-    /*print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-    getData();*/
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -139,18 +134,4 @@ class _PayViewState extends State<PayView> {
       ),
     );
   }
-
-  /*Future<void> getData() async {
-    print('getData');
-    try {
-      ehe = FirebaseFirestore.instance
-          .collection("Products")
-          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
-          .snapshots()
-          .length
-          .toString();
-    } catch (e) {
-      print(e);
-    }
-  }*/
 }

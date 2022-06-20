@@ -168,11 +168,9 @@ class BuyController extends GetxController {
 
     try {
       if (uid != null) {
-        await _fireStore
-            .collection("Favorite")
-            .doc(uid)
-            .collection("currentUser")
-            .doc(userUid)
+        await _fireStore.collection("Favorite").doc(uid)
+            /* .collection("currentUser")
+            .doc(userUid)*/
             .set({
           'image': image,
           'name': name,
@@ -218,6 +216,7 @@ class BuyController extends GetxController {
             .collection("Favorite")
             .doc(uid)
             .collection("currentUser")
+            /*.where('userUid' ,isEqualTo: userUid)*/
             .doc(userUid)
             .delete();
         {
