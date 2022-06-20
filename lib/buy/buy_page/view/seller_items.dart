@@ -184,7 +184,7 @@ class _SellerItemState extends State<SellerItem> {
                                   height: heights * .07,
                                 ),
                                 Container(
-                                  height: heights * .25,
+                                  height: heights * .35,
                                   width: widths,
                                   child: SingleChildScrollView(
                                     child: productDescription(),
@@ -377,27 +377,24 @@ class _SellerItemState extends State<SellerItem> {
         ));
   }
 
-  Padding productDescription() {
+  Column productDescription() {
     final maxLines = isReadMore ? null : 5;
     final overflow = isReadMore ? TextOverflow.visible : TextOverflow.ellipsis;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Text(cartController.description,
-              maxLines: maxLines,
-              overflow: overflow,
-              style: TextStyle(fontSize: 20)),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                isReadMore = !isReadMore;
-              });
-            },
-            child: Text(isReadMore ? 'Read Less' : 'Read More'),
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        Text(cartController.description,
+            maxLines: maxLines,
+            overflow: overflow,
+            style: TextStyle(fontSize: 20)),
+        TextButton(
+          onPressed: () {
+            setState(() {
+              isReadMore = !isReadMore;
+            });
+          },
+          child: Text(isReadMore ? 'Read Less' : 'Read More'),
+        )
+      ],
     );
   }
 }
