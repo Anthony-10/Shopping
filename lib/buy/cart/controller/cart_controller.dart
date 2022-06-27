@@ -42,8 +42,6 @@ class CartController extends GetxController {
         'userId': uid,
       });
     } on FirebaseException catch (e) {
-      print(
-          "---------------------- Uploading User data  ----------------------");
       Get.snackbar(
         "User data uploaded",
         e.message,
@@ -54,77 +52,83 @@ class CartController extends GetxController {
     }
   }
 
-  sumFunction() {
-    print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-    FirebaseFirestore.instance
-        .collection('Cart')
-        .where('userId', isEqualTo: uid)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      print('ooooooooooooooooooooooooooooooooooo');
-      math.clear();
-      sum.value = 0;
-      values = 0;
-      if (querySnapshot.docs.isNotEmpty) {
-        querySnapshot.docs.forEach((doc) {
-          afterPrice = doc['price'].toString();
-          afterAmount = doc['amount'].toString();
-          print('$afterAmount,bbbbbbbbbbbbbbbbbbbbbb');
-          int pValue = int.parse(afterPrice);
-          int aValue = int.parse(afterAmount);
-          sumAmountPrice = aValue * pValue;
-          print('$sumAmountPrice,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-          math.add(sumAmountPrice);
-          /*math.clear();
-          sum.value = 0;
-          values = 0;*/
-        });
-        print('$math,jjjjjjjjjjjjjjjjjjjjjjjj');
-        /* for (var i = 0; i < math.length; i++) {
-          value += math[i];
-        }*/
-        math.forEach((e) => values += e);
-
-        print('$values,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-
-        sum += values;
-      } else {
-        print('wewe');
-      }
-    });
+  Future<void> sumFunction() async {
+    print('sumFunctionaaaaaaaaaaaaaaaaaaaaaa');
+    try {
+      await _fireStore
+          .collection('Cart')
+          .where('userId', isEqualTo: uid)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        math.clear();
+        sum.value = 0;
+        values = 0;
+        if (querySnapshot.docs.isNotEmpty) {
+          querySnapshot.docs.forEach((doc) {
+            afterPrice = doc['price'].toString();
+            afterAmount = doc['amount'].toString();
+            int pValue = int.parse(afterPrice);
+            int aValue = int.parse(afterAmount);
+            sumAmountPrice = aValue * pValue;
+            math.add(sumAmountPrice);
+          });
+          math.forEach((e) => values += e);
+          sum += values;
+        } else {
+          print('wewe');
+        }
+      });
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  void subFunction() {
-    print('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
-    FirebaseFirestore.instance
-        .collection('Cart')
-        .where('userId', isEqualTo: uid)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      print('ooooooooooooooooooooooooooooooooooo');
-      if (querySnapshot.docs.isNotEmpty) {
-        querySnapshot.docs.forEach((doc) {
-          //afterPrice = doc['price'];
-          /*print(
+  Future<void> subFunction() async {
+    print('subFunction');
+    try {
+      await _fireStore
+          .collection('Cart')
+          .where('userId', isEqualTo: uid)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        if (querySnapshot.docs.isNotEmpty) {
+          querySnapshot.docs.forEach((doc) {
+            //afterPrice = doc['price'];
+            /*print(
               '$afterPrice,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');*/
-          //int pValue = int.parse(afterPrice);
-          //print('$pValue,+++++++++++++++++++++++++');
-          //print('$sum,==============================');
-          //math.clear();
-          //math.remove(afterPrice);
+            //int pValue = int.parse(afterPrice);
+            //print('$pValue,+++++++++++++++++++++++++');
+            //print('$sum,==============================');
+            //math.clear();
+            //math.remove(afterPrice);
 
-          //int pValue = int.parse(sumAmountPrice);
-        });
-        sum = sum - sumAmountPrice;
+            //int pValue = int.parse(sumAmountPrice);
+          });
+          sum = sum - sumAmountPrice;
 
-        print('$sum,subSum////////////////////');
-      } else {
-        sum.value = 0;
-        print('$sum,llllllllllllllllllllll');
+          print('$sum,subSum////////////////////');
+        } else {
+          sum.value = 0;
+          print('$sum,llllllllllllllllllllll');
 
-        print('wewe');
-      }
-    });
+          print('wewe');
+        }
+      });
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> deleteCartInfo() async {
@@ -134,11 +138,12 @@ class CartController extends GetxController {
       for (var doc in snapshot.docs) {
         await doc.reference.delete();
       }
-      /*print('deleteCartInfo,KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK');
-      await _fireStore.collection("Cart").doc().delete();
-      print('deleteCartInfo,ppppppppppppppppppppppppppppppppppppppppppp');*/
     } on FirebaseException catch (e) {
-      print('${e.message},NNNNNNNNNNNNNNNNNNNNNNNNN');
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } catch (e) {
       rethrow;
     }

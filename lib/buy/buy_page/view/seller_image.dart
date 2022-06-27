@@ -1,11 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
-import 'package:shopping_app/core/service/data_base_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class SellerImage extends StatefulWidget {
@@ -17,20 +14,13 @@ class SellerImage extends StatefulWidget {
 class _SellerImageState extends State<SellerImage> {
   final buyController = Get.put(BuyController());
   final controller = SlideController();
-  final databaseService = Get.put(DatabaseService());
 
   var heights = Get.height;
 
   var widths = Get.width;
 
-  var activeIndex = 0;
-
-  var ware;
-  var wre;
-
   @override
   Widget build(BuildContext context) {
-    print('SellerImage,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
     return Container(
         height: heights * .5,
         width: widths * .8,

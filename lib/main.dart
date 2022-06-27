@@ -14,7 +14,6 @@ import 'authentication/view/auth_view.dart';
 import 'buy/buy_page/view/buy_view.dart';
 import 'core/service/local_notification_service.dart';
 import 'core/widget/drawer/drawer_view/drawer_view.dart';
-import 'extras/tab_bar.dart';
 import 'loading_screen/loading_view.dart';
 
 ///Receive message when app is in the background solution for a message
@@ -48,10 +47,10 @@ class MyApp extends StatelessWidget {
             name: "/sell_view",
             page: () => SellView(),
             binding: AddProductcBinding()),
-        GetPage(
+        /*GetPage(
             name: "/tab_bar",
             page: () => TabBarPage(),
-            binding: AddProductcBinding()),
+            binding: AddProductcBinding()),*/
         GetPage(
             name: "/add_products_view",
             page: () => AddProductsView(),

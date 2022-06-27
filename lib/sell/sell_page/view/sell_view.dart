@@ -1,14 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
-import 'package:shopping_app/sell/data/sell_view_category/sell_view_category.dart';
-import 'package:shopping_app/sell/models/sell_view_model.dart';
-import 'package:shopping_app/sell/orders/view/orders_view.dart';
-import 'package:shopping_app/sell/products/view/product_view.dart';
-import 'package:shopping_app/sell/sell_page/controller/sell_controller.dart';
 
 class SellView extends StatefulWidget {
   const SellView({Key key}) : super(key: key);
@@ -18,19 +12,16 @@ class SellView extends StatefulWidget {
 }
 
 class _SellViewState extends State<SellView> {
-  //SellViewItems element = SellViewCategory.product;
   final DatabaseService databaseService = Get.put(DatabaseService());
   final buyController = Get.put(BuyController());
   String uid = FirebaseAuth.instance.currentUser.uid;
 
-  var lengths;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     databaseService.getCounterNumber();
     buyController.getLikeCount(ids: uid);
-    print('$lengths,----------------------');
   }
 
   @override
@@ -234,58 +225,4 @@ class _SellViewState extends State<SellView> {
       ),
     );
   }
-
-  /*Widget getPage() {
-    print(element);
-    switch (element) {
-      */ /*case SellViewCategory.products:
-        return ProductView();*/ /*
-      case SellViewCategory.orders:
-        return OrdersView();
-      */ /* case SellViewCategory.users:
-        return BoughtView();*/ /*
-      */ /* case BuyDrawerItems.location:
-        return BuyerLocation();*/ /*
-      case SellViewCategory.products:
-      default:
-        return ProductView();
-    }
-  }*/
-
-  /*Future<int> getData() async {
-    try {
-      Query<Map<String, dynamic>> documentSnapshot = FirebaseFirestore.instance
-          .collection('Users')
-          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid);
-      if (documentSnapshot != null) {
-        setState(() {
-          lengths = documentSnapshot.snapshots().length;
-        });
-      } else {
-        print('wewe');
-      }
-    } catch (e) {
-      print(e);
-    }
-    return lengths;
-  }*/
-
-  /*Future<void> getData() async {
-    final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-    try {
-      query = _fireStore
-          .collection("Products")
-          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
-          .parameters
-          .length;
-      print('$query,----------------------');
-      */ /*.where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
-          .snapshots()
-          .length;*/ /*
-
-    } catch (e) {
-      print(e);
-    }
-  }*/
-
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/locations/location.dart';
@@ -31,12 +30,6 @@ class _SellerAccountState extends State<SellerAccount> {
     buyController
         .getCategories(uid: buyController.id)
         .then((value) => buyController.firstCategories());
-    //buyController.getCategories(uid: buyController.id);
-    print('SellerAccount bbbbbbbbbbbbbbbbbbbbbbbbbb${buyController.id}');
-    print(
-        'SellerAccount bbbbbbbbbbbbbbbbbbbbbbbbbb${buyController.itemsCatego}');
-    print(
-        'SellerAccount bbbbbbbbbbbbbbbbbbbbbbbbbb${buyController.likes.value}');
     super.initState();
   }
 
@@ -199,53 +192,4 @@ class _SellerAccountState extends State<SellerAccount> {
       ),
     );
   }
-
-  /*Future favorite({var image, String name}) async {
-    try {
-      String uid = FirebaseAuth.instance.currentUser.uid;
-      dynamic likes;
-      bool _isLiked = likes[uid] == true;
-      if (_isLiked) {
-        setState(() {
-          likeCount -= 1;
-          isLiked = false;
-          likes[uid] = false;
-        });
-      }
-      */ /*var value = 1;
-      DocumentReference documentReference =
-          FirebaseFirestore.instance.collection('love').doc(uid);
-
-      return FirebaseFirestore.instance.runTransaction((transaction) async {
-        DocumentSnapshot snapshot = await transaction.get(documentReference);
-
-        if (!snapshot.exists) {
-          documentReference.set(
-              {'love': value});
-        }
-        int newAmount = snapshot.get('love') + 1;
-        transaction.update(documentReference, {'Love': newAmount});
-      });*/ /*
-    } on FirebaseException catch (e) {
-      Get.snackbar(
-        "Error Adding User Info",
-        e.message,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }*/
-
-  /*Future<void> getData() async {
-    try {
-      buyController.item = FirebaseFirestore.instance
-          .collection("Products")
-          .where("productElement",
-              isEqualTo: "productElement".startsWith("productElement"))
-          .snapshots();
-    } catch (e) {
-      print(e);
-    }
-  }*/
 }

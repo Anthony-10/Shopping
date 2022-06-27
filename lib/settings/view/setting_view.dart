@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/sell/data/profile_category/product_category.dart';
+import 'package:shopping_app/settings/settings_data.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({Key key}) : super(key: key);
@@ -40,23 +40,77 @@ class _SettingViewState extends State<SettingView> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: Get.width * 0.11, top: Get.height * 0.05),
-                child: Column(children: [
-                  Text('GENERAL'),
-                  Container(
-                    width: Get.width,
-                    height: Get.height,
-                    child: ListView(
-                        children:
-                            ListTile.divideTiles(context: context, tiles: [
-                      ListTile(
-                        title: Text('Theme mode'),
-                      )
-                    ]).toList()),
-                  )
-                ]),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      left: Get.width * 0.05,
+                      right: Get.width * 0.05,
+                      top: Get.height * 0.05,
+                      bottom: Get.height * 0.05),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('GENERAL'),
+                        Card(
+                          child: Column(
+                            children: SettingsGenegalData.all
+                                .map(
+                                  (item) => ListTile(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 20.0, vertical: 8.0),
+                                    leading: Icon(
+                                      item.iconData,
+                                      color: Colors.black,
+                                    ),
+                                    title: Text(
+                                      item.name,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    trailing: Icon(Icons.arrow_forward_ios),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text('FEEDBACK'),
+                        Card(
+                          child: Column(
+                            children: SettingsFeedBackData.all
+                                .map(
+                                  (item) => ListTile(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 20.0, vertical: 8.0),
+                                    leading: Icon(
+                                      item.iconData,
+                                      color: Colors.black,
+                                    ),
+                                    title: Text(
+                                      item.name,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    trailing: Icon(Icons.arrow_forward_ios),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ]),
+                ),
               ),
             )
           ],

@@ -95,13 +95,6 @@ class _SellerItemState extends State<SellerItem> {
                                     fontSize: 40),
                               ),
                             ),
-                            /*Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Text(
-                              'Price',
-                              style: TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ),*/
                           ],
                         ),
                       ),

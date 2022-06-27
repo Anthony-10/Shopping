@@ -57,14 +57,6 @@ class _DeleteAccountState extends State<DeleteAccount> {
             SizedBox(
               height: 20.0,
             ),
-            /*TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          initialIndex = 1;
-                                        });
-                                        //Get.to(() => SignUp());
-                                      },
-                                      child: Text('Sign Up'))*/
           ],
         ),
       ),

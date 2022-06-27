@@ -6,10 +6,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
-import 'package:shopping_app/core/widget/bottom_image_selection/bottom_sheet_chose.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:shopping_app/sell/add_products/widget/bottom_sheet.dart';
-import 'package:shopping_app/sell/sell_location/widget/locationBottomSheet.dart';
 
 class SellLocation extends StatefulWidget {
   const SellLocation({Key key}) : super(key: key);
@@ -65,57 +63,12 @@ class _SellLocationState extends State<SellLocation> {
     getAddressFromLatLong();
   }
 
-  void getCurrentAddress() async {
-    /*final coordinated =
-        new geoCo.Coordinates(position.latitude, position.longitude);
-    var address =
-        await geoCo.Geocoder.local.findAddressesFromCoordinates(coordinated);
-    var firstAddress1 = address.first;
-    getMarkers(position.latitude, position.longitude);
-    setState(() {
-      country = firstAddress1.countryName;
-      postalCode = firstAddress1.postalCode;
-      addressLocation = firstAddress1.addressLine;
-      print(
-          '????????????????????????????????????????$country$postalCode$addressLocation$firstAddress1');
-    });*/
-  }
-  /*Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      await Geolocator.openLocationSettings();
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    return await Geolocator.getCurrentPosition();
-  }
-*/
-
   Future getAddressFromLatLong() async {
     print('getAddressFromLatLong,lllllllllllllllllllllllllllllllllllllllllll');
-    print(
-        '${position.longitude},${position.latitude},////////////////////////////////');
     List<Placemark> placemark = await GeocodingPlatform.instance
         .placemarkFromCoordinates(position.latitude, position.longitude,
             localeIdentifier: "en");
-    print('getAddressFromLatLong,00000000000000000000000000000000000000000000');
+
     Placemark place = placemark[0];
     addressLocation = place.street;
     country = place.country;
@@ -220,27 +173,6 @@ class _SellLocationState extends State<SellLocation> {
                       'Country': country,
                       'postalCode': postalCode,
                       'uid': uid,
-                      /*final coordinated = new geoCo.Coordinates(
-                        position.latitude, position.longitude);
-                    var address = await geoCo.Geocoder.local
-                        .findAddressesFromCoordinates(coordinated);
-                    var firstAddress1 = address.first;
-                    getMarkers(position.latitude, position.longitude);
-                    await FirebaseFirestore.instance
-                        .collection('location')
-                        .add({
-                      'latitude': position.latitude,
-                      'longitude': position.longitude,
-                      'Address': firstAddress1.addressLine,
-                      'Country': firstAddress1.countryName,
-                    });
-                    setState(() {
-                      country = firstAddress1.countryName;
-                      postalCode = firstAddress1.postalCode;
-                      addressLocation = firstAddress1.addressLine;
-                      print(
-                          '????????????????????????????????????????$country$postalCode$addressLocation$firstAddress1');
-                    });*/
                     }).whenComplete(() => Get.snackbar(
                               "Success message",
                               'Location Added',
@@ -268,29 +200,28 @@ class _SellLocationState extends State<SellLocation> {
     );
   }
 
-  void getUserData() {
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          email = documentSnapshot.get('email');
-          firstName = documentSnapshot.get('firstName');
-          distances = documentSnapshot.get('distances');
-          url = documentSnapshot.get('Url');
-          userId = documentSnapshot.get('userId');
-        });
-        print('$email :::::::::::::::::::::::::');
-        print('$firstName :::::::::::::::::::::::::');
-        print('$distances :::::::::::::::::::::::::');
-        print('$url :::::::::::::::::::::::::');
-        print('$userId :::::::::::::::::::::::::');
-      } else {
-        print('wewe');
-      }
-    });
+  void getUserData() async {
+    try {
+      await _fireStore
+          .collection('Users')
+          .doc(uid)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          setState(() {
+            email = documentSnapshot.get('email');
+            firstName = documentSnapshot.get('firstName');
+            distances = documentSnapshot.get('distances');
+            url = documentSnapshot.get('Url');
+            userId = documentSnapshot.get('userId');
+          });
+        } else {
+          print('wewe');
+        }
+      });
+    } on FirebaseException catch (e) {
+      print(e.message);
+    }
   }
 
   void upDateUserData(

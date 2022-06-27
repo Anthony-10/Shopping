@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
-import 'package:shopping_app/core/service/data_base_service.dart';
 
 class BuyController extends GetxController {
   var name;
@@ -96,14 +94,23 @@ class BuyController extends GetxController {
 
   Future<void> categories({var items}) async {
     String uid = FirebaseAuth.instance.currentUser.uid;
-    await _fireStore.collection("Categories").doc().set({
-      'Item': items,
-      'userId': uid,
-    });
+    try {
+      await _fireStore.collection("Categories").doc().set({
+        'Item': items,
+        'userId': uid,
+      });
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future getCategories({var uid}) async {
-    print('getCategories,kkkkkkkkkkkkkkkkkkkkkkkkk');
     itemsCatego.clear();
     try {
       await FirebaseFirestore.instance
@@ -111,14 +118,10 @@ class BuyController extends GetxController {
           .where('userId', isEqualTo: uid)
           .get()
           .then((QuerySnapshot querySnapshot) {
-        print('$uid,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-        print('ooooooooooooooooooooooooooooo');
         if (querySnapshot.docs.isNotEmpty) {
           querySnapshot.docs.forEach((doc) {
             items.value = doc['Item'];
             itemsCatego.add(items.value);
-            print('$itemsCatego,ggggggggggggggggggggggggggggggggg');
-            print('${items.value},yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
           });
         } else {
           print("No data");
@@ -126,8 +129,6 @@ class BuyController extends GetxController {
         }
       });
     } on FirebaseException catch (e) {
-      print(
-          "Error Adding User Info, ${e.message}llllllllllllllllllllllllllllllllllllllllllllll");
       Get.snackbar(
         "Error Adding User Info",
         e.message,
@@ -140,27 +141,37 @@ class BuyController extends GetxController {
 
   Future<void> checkForLikes() async {
     String uid = FirebaseAuth.instance.currentUser.uid;
-    FirebaseFirestore.instance
-        .collection("Favorite")
-        .doc(uid)
-        .collection("currentUser")
-        .doc(id)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        removeFavorite(image: image, name: name, userUid: id);
+    try {
+      FirebaseFirestore.instance
+          .collection("Favorite")
+          .doc(uid)
+          .collection("currentUser")
+          .doc(id)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          removeFavorite(image: image, name: name, userUid: id);
 
-        color.value = 0;
+          color.value = 0;
 
-        print('removeFavorite, ############################################');
-      } else {
-        addFavorite(image: image, name: name, userUid: id);
+          print('removeFavorite, ############################################');
+        } else {
+          addFavorite(image: image, name: name, userUid: id);
 
-        color.value = 1;
+          color.value = 1;
 
-        print('addFavorite, *******************************************');
-      }
-    });
+          print('addFavorite, *******************************************');
+        }
+      });
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future addFavorite({var image, String name, var userUid}) async {
@@ -168,9 +179,11 @@ class BuyController extends GetxController {
 
     try {
       if (uid != null) {
-        await _fireStore.collection("Favorite").doc(uid)
-            /* .collection("currentUser")
-            .doc(userUid)*/
+        await _fireStore
+            .collection("Favorite")
+            .doc(uid)
+            .collection("currentUser")
+            .doc(userUid)
             .set({
           'image': image,
           'name': name,
@@ -178,7 +191,6 @@ class BuyController extends GetxController {
           'userUid': userUid,
         });
         {
-          print("likeCounts, ooooooooooooooooo");
           FirebaseFirestore.instance
               .collection("likeCounts")
               .where('id', isEqualTo: id)
@@ -186,10 +198,8 @@ class BuyController extends GetxController {
               .then((QuerySnapshot querySnapshot) async {
             if (querySnapshot.docs.isEmpty) {
               likeCounts(countLikes: addLike, likeUid: id);
-              print("$addLike, $id, lllllllllllllll");
             } else {
               likeCounts(countLikes: FieldValue.increment(1), likeUid: id);
-              print("no data, $id, lllllllllllllll");
             }
           });
         }
@@ -216,12 +226,10 @@ class BuyController extends GetxController {
             .collection("Favorite")
             .doc(uid)
             .collection("currentUser")
-            /*.where('userUid' ,isEqualTo: userUid)*/
             .doc(userUid)
             .delete();
         {
           dislikeCount(countDisLikes: FieldValue.increment(-1), disLikeUid: id);
-          print("0000000000000000000$id");
         }
       } else {
         print('Uid null');
@@ -239,101 +247,154 @@ class BuyController extends GetxController {
 
   Future<void> likeCounts({var countLikes, var likeUid}) async {
     print('likeCounts function');
-    FirebaseFirestore.instance
-        .collection("likeCounts")
-        .where('id', isEqualTo: likeUid)
-        .get()
-        .then((QuerySnapshot querySnapshot) async {
-      if (querySnapshot.docs.isEmpty) {
-        print('isEmpty, llllllllllllll');
-        print('$countLikes, $likeUid,hhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-        await _fireStore.collection("likeCounts").doc(likeUid).set({
-          'likes': countLikes,
-          'id': likeUid,
-        });
-      } else {
-        print('isNotEmpty, llllllllllllll');
-        await _fireStore.collection("likeCounts").doc(likeUid).update({
-          'likes': countLikes,
-          'id': likeUid,
-        });
-      }
-      {
-        getLikeCount(ids: id);
-      }
-    });
-    print('...........$likeUid');
+    try {
+      FirebaseFirestore.instance
+          .collection("likeCounts")
+          .where('id', isEqualTo: likeUid)
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+        if (querySnapshot.docs.isEmpty) {
+          await _fireStore.collection("likeCounts").doc(likeUid).set({
+            'likes': countLikes,
+            'id': likeUid,
+          });
+        } else {
+          await _fireStore.collection("likeCounts").doc(likeUid).update({
+            'likes': countLikes,
+            'id': likeUid,
+          });
+        }
+        {
+          getLikeCount(ids: id);
+        }
+      });
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   void dislikeCount({var countDisLikes, var disLikeUid}) async {
-    await _fireStore.collection("likeCounts").doc(disLikeUid).update({
-      'likes': countDisLikes,
-      'id': disLikeUid,
-    });
-    {
-      getLikeCount(ids: id);
+    try {
+      await _fireStore.collection("likeCounts").doc(disLikeUid).update({
+        'likes': countDisLikes,
+        'id': disLikeUid,
+      });
+      {
+        getLikeCount(ids: id);
+      }
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
     }
   }
 
   Future<void> getLikeCount({var ids}) async {
-    FirebaseFirestore.instance
-        .collection("likeCounts")
-        .where('id', isEqualTo: ids)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      if (querySnapshot.docs.isNotEmpty) {
-        querySnapshot.docs.forEach((doc) {
-          likes.value = doc['likes'];
-        });
-      } else {
-        print(
-            'there is no data,llllllllllllllllllllllllllllllllllllllllllllllll');
-      }
-    });
+    try {
+      FirebaseFirestore.instance
+          .collection("likeCounts")
+          .where('id', isEqualTo: ids)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        if (querySnapshot.docs.isNotEmpty) {
+          querySnapshot.docs.forEach((doc) {
+            likes.value = doc['likes'];
+          });
+        } else {
+          print(
+              'there is no data,llllllllllllllllllllllllllllllllllllllllllllllll');
+        }
+      });
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   void colorFunction() {
     String uid = FirebaseAuth.instance.currentUser.uid;
-    FirebaseFirestore.instance
-        .collection("Favorite")
-        .doc(uid)
-        .collection("currentUser")
-        .doc(id)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        color.value = 1;
-        print('value 1,   $id,ddddddddddddddddddddddddddddddddd');
-      } else {
-        color.value = 0;
-        print('value 0,  uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
-      }
-    });
+    try {
+      FirebaseFirestore.instance
+          .collection("Favorite")
+          .doc(uid)
+          .collection("currentUser")
+          .doc(id)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          color.value = 1;
+        } else {
+          color.value = 0;
+        }
+      });
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future queryData(String queryString) async {
-    return FirebaseFirestore.instance
-        .collection('Users')
-        .where('firstName', isEqualTo: queryString)
-        .get();
+    try {
+      return FirebaseFirestore.instance
+          .collection('Users')
+          .where('firstName', isEqualTo: queryString)
+          .get();
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> getUserToken() async {
     print('getUserToken,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     final uuid = FirebaseAuth.instance.currentUser.uid;
-    print('$uuid,>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-    FirebaseFirestore.instance
-        .collection("NotificationToken")
-        .where('id', isEqualTo: uuid)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      if (querySnapshot.docs.isNotEmpty) {
-        querySnapshot.docs.forEach((doc) {
-          token = doc['token'];
-        });
-      } else {
-        print('<<<<<<<<<<No data>>>>>>>>>>>');
-      }
-    });
+    try {
+      FirebaseFirestore.instance
+          .collection("NotificationToken")
+          .where('id', isEqualTo: uuid)
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        if (querySnapshot.docs.isNotEmpty) {
+          querySnapshot.docs.forEach((doc) {
+            token = doc['token'];
+          });
+        } else {
+          print('<<<<<<<<<<No data>>>>>>>>>>>');
+        }
+      });
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Error Adding User Info",
+        e.message,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 }
