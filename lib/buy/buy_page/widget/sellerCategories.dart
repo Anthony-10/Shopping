@@ -14,7 +14,7 @@ class _SellerCategoriesState extends State<SellerCategories> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   final buyController = Get.put(BuyController());
-  bool _isSelected = false;
+  //bool _isSelected = false;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -90,7 +90,7 @@ class _SellerCategoriesState extends State<SellerCategories> {
                                             fontSize: 17))),
                               ),
                               decoration: BoxDecoration(
-                                  color: Colors.grey[400],
+                                  color: Colors.blue,
                                   borderRadius: BorderRadius.circular(20)),
                             ),
                           ),

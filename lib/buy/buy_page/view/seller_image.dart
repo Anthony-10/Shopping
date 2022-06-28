@@ -68,7 +68,7 @@ class _SellerImageState extends State<SellerImage> {
 
               effect: JumpingDotEffect(
                 activeDotColor: Colors.red,
-                dotColor: Colors.blue,
+                dotColor: Colors.grey,
                 dotHeight: 10,
                 dotWidth: 10,
                 spacing: 16,

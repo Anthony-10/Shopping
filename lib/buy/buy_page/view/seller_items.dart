@@ -179,6 +179,7 @@ class _SellerItemState extends State<SellerItem> {
                                 Container(
                                   height: heights * .35,
                                   width: widths,
+                                  color: Colors.grey[300],
                                   child: SingleChildScrollView(
                                     child: productDescription(),
                                   ),

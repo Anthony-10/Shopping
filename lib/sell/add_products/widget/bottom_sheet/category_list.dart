@@ -25,10 +25,6 @@ class _CategoryListState extends State<CategoryList> {
                     addProductsController.productElement = element;
                     //addProductsController.initialIndex = 1;
                   });
-                  print(element.obs);
-                  print(element.title);
-                  print(
-                      '************************${addProductsController.productElement.title}');
                 },
                 child: Container(
                   margin: EdgeInsets.all(10.0),

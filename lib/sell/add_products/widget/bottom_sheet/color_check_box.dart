@@ -35,8 +35,6 @@ class _ColorChekBoxState extends State<ColorChekBox> {
                     addProductsController.colorElement = colorE.color;
                     addProductsController.colorValue = colorE.value;
                   });
-                  print(addProductsController.colorElement);
-                  print(addProductsController.colorValue);
                 },
               ),
             )
