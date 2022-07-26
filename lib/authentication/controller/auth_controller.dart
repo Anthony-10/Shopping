@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shopping_app/authentication/view/auth_view.dart';
@@ -32,6 +33,16 @@ class AuthController extends GetxController {
     //super.onInit();
   }
 
+  Future<void> storeNotificationToken() async {
+    print("storeNotificationToken>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    final uuid = FirebaseAuth.instance.currentUser.uid;
+    String token = await FirebaseMessaging.instance.getToken();
+    FirebaseFirestore.instance.collection('NotificationToken').doc().set({
+      'token': token,
+      'id': uuid,
+    });
+  }
+
   Future<void> createUser(
       {String email, String password, String firstName}) async {
     try {
@@ -54,6 +65,9 @@ class AuthController extends GetxController {
           returns: databaseService.returns,
           order: databaseService.order,
         );
+      }
+      {
+        storeNotificationToken();
       }
 
       {

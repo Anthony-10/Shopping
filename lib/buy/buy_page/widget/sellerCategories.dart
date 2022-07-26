@@ -14,7 +14,7 @@ class _SellerCategoriesState extends State<SellerCategories> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   final buyController = Get.put(BuyController());
-
+  //bool _isSelected = false;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -38,11 +38,7 @@ class _SellerCategoriesState extends State<SellerCategories> {
                     scrollDirection: Axis.horizontal,
                     itemCount: snapshot.data.size,
                     itemBuilder: (BuildContext context, int index) {
-                      //removeDuplicat by .toSet
                       final categories = snapshot.data.docs[index]['Item'];
-                      print(
-                          '${snapshot.data.docs[index]['Item']},9999999999999999999999');
-
                       return Row(
                         children: [
                           SizedBox(
@@ -54,23 +50,47 @@ class _SellerCategoriesState extends State<SellerCategories> {
                                 buyController.id =
                                     snapshot.data.docs[index]['userId'];
                                 //TODO
-                                buyController.item = categories;
+                                buyController.item.value = categories;
                               });
                               print(
                                   '(((((((((((((((((((${buyController.id}))))))))))))))))))');
+
+                              print(
+                                  '(((((((((((((((((((${buyController.item.value}))))))))))))))))))');
                               print(
                                   '(((((((((((((((((((${buyController.productElement}))))))))))))))))))');
                             },
-                            child: Container(
+                            /* child: Container(
                               height: 30,
                               width: 90,
-                              child: Center(
-                                  child: Text(categories.toString(),
+                              child: ChoiceChip(
+                                  label: Text(categories.toString(),
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 17))),
+                                          fontSize: 17)),
+                                  selectedColor: Colors.blue,
+                                  selected: _isSelected,
+                                  onSelected: (newBoolValue) {
+                                    setState(() {
+                                      return _isSelected = newBoolValue;
+                                    });
+                                  }),
+                            ),*/
+                            child: Container(
+                              height: Get.height * .06,
+                              width: Get.width * .3,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    left: Get.width * .01,
+                                    right: Get.width * .01),
+                                child: Center(
+                                    child: Text(categories.toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 17))),
+                              ),
                               decoration: BoxDecoration(
-                                  color: Colors.grey[400],
+                                  color: Colors.blue,
                                   borderRadius: BorderRadius.circular(20)),
                             ),
                           ),
@@ -101,8 +121,8 @@ class _SellerCategoriesState extends State<SellerCategories> {
                           width: 10,
                         ),
                         Container(
-                          height: 30,
-                          width: 90,
+                          height: Get.height * .06,
+                          width: Get.width * .3,
                           decoration: BoxDecoration(
                               color: Colors.grey[400],
                               borderRadius: BorderRadius.circular(20)),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
@@ -33,7 +34,6 @@ class _AddProductsViewState extends State<AddProductsView> {
   void initState() {
     // TODO: implement initState
     databaseService.getCounterNumber();
-    print('getCategories(),jjjjjjjjjjjjjjjj');
     super.initState();
   }
 
@@ -41,7 +41,7 @@ class _AddProductsViewState extends State<AddProductsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blue,
         child: Icon(Icons.add),
         onPressed: () {
           addProductsController.bottomIndex = 0;
@@ -128,6 +128,7 @@ class _AddProductsViewState extends State<AddProductsView> {
                         ElevatedButton(
                           onPressed: () async {
                             //adding Await
+                            String uuid = FirebaseAuth.instance.currentUser.uid;
                             if (addProductsController.image.isNotEmpty) {
                               await databaseService.userImage();
                               showModalBottomSheet(
@@ -138,7 +139,7 @@ class _AddProductsViewState extends State<AddProductsView> {
                                       borderRadius: BorderRadius.vertical(
                                     top: Radius.circular(20),
                                   )));
-                              buyController.getCategories();
+                              buyController.getCategories(uid: uuid);
                             } else {
                               Get.snackbar('Massage', 'Select Image',
                                   snackPosition: SnackPosition.TOP);
@@ -146,7 +147,7 @@ class _AddProductsViewState extends State<AddProductsView> {
                           },
                           child: Text('Continue'),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.black,
+                            primary: Colors.blue,
                           ),
                         )
                       ],

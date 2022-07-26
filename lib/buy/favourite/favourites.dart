@@ -4,11 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
-import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
+
+import '../../sell/widget/sell_shimmer_effect.dart';
+import '../buy_page/view/seller_account.dart';
 
 class Favourites extends StatefulWidget {
   //final VoidCallback openDrawer;
-  //const Favourites({Key? key, required this.openDrawer}) : super(key: key);
+  const Favourites({
+    Key key,
+  }) : super(key: key);
 
   @override
   State<Favourites> createState() => _FavouritesState();
@@ -16,10 +20,6 @@ class Favourites extends StatefulWidget {
 
 class _FavouritesState extends State<Favourites> {
   final buyController = Get.put(BuyController());
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  CollectionReference users = FirebaseFirestore.instance.collection('Favorite');
-  var me;
-  String uid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -30,46 +30,31 @@ class _FavouritesState extends State<Favourites> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () => Get.back(),
-                  icon: Icon(Icons.arrow_back),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: Get.height * .03, left: Get.width * .09),
-                  child: Text(
-                    'Favourites',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                ),
-              ],
+                child: Padding(
+              padding:
+                  EdgeInsets.only(top: Get.height * .06, left: Get.width * .09),
+              child: Text(
+                'Favourites',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
             )),
             Expanded(
-              //Changed from stream to future
-
-              child: FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance
-                      .collection('Favorite')
-                      .doc()
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection("Favorite")
+                      .doc(FirebaseAuth.instance.currentUser.uid)
                       .collection("currentUser")
-                      .doc(uid)
-                      .get(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    print(
-                        'builder,lllllllllllllllllllllllllllllllllllllllllllllll');
-                    if (snapshot.connectionState == ConnectionState.done) {
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
                       if (!snapshot.hasData) {
                         return const Center(
                           child: Text("Check your connection"),
                         );
                       } else {
                         if (snapshot.hasData) {
-                          Map<String, dynamic> datas =
-                              snapshot.data.data() as Map<String, dynamic>;
-                          print('${datas},mmmmmmmmmmmmmmmmmmmmm');
+                          final data = snapshot.data.docs;
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -77,14 +62,8 @@ class _FavouritesState extends State<Favourites> {
                             primary: false,
                             padding: const EdgeInsets.all(15),
                             physics: BouncingScrollPhysics(),
-                            itemCount: snapshot.data.length,
+                            itemCount: data.length,
                             itemBuilder: (context, index) {
-                              print('$me,kkkkkkkkkkkkkkkkkkkkk');
-                              print(
-                                  '${FirebaseAuth.instance.currentUser.uid},,,,,,,,,,,,,,,,,,');
-                              print(
-                                  '888888888888888888888888888888888888888888');
-
                               return Column(
                                 children: [
                                   SizedBox(
@@ -92,21 +71,20 @@ class _FavouritesState extends State<Favourites> {
                                     width: Get.width * 0.5,
                                     child: GestureDetector(
                                       onTap: () {
-                                        /*Get.to(() => SellerAccount());
+                                        Get.to(() => SellerAccount());
                                         buyController.name =
-                                            snapshot.data[index]['name'];
+                                            data[index]['name'];
                                         buyController.id =
-                                            snapshot.data[index]['userUid'];
+                                            data[index]['userUid'];
                                         buyController.image =
-                                            snapshot.data[index]['image'];*/
+                                            data[index]['image'];
                                       },
                                       child: Card(
                                         child: CachedNetworkImage(
                                           cacheManager:
                                               buyController.customCacheManager,
-                                          imageUrl: snapshot.data[index]
-                                                  ['image']
-                                              .toString(),
+                                          imageUrl:
+                                              data[index]['image'].toString(),
                                           fit: BoxFit.fill,
                                           placeholder: (context, url) =>
                                               Container(
@@ -135,9 +113,10 @@ class _FavouritesState extends State<Favourites> {
                                     height: 20,
                                   ),
                                   Text(
-                                    snapshot.data
-                                        .data()[index]['name']
-                                        .toString(),
+                                    data[index]['name'].toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 20),
                                   )
                                 ],
                               );
@@ -147,7 +126,7 @@ class _FavouritesState extends State<Favourites> {
                       }
                       return null;
                     } else {
-                      return Center(child: Text('Loading.....'));
+                      return SellShimmerEffect();
                     }
                   }),
             ),

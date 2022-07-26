@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/buy/bought/controller/bought_controller.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/cart/controller/cart_controller.dart';
 import 'package:shopping_app/core/widget/drawer/drawer_view/drawer_view.dart';
+
+import '../../../core/service/data_base_service.dart';
 
 class PayView extends StatefulWidget {
   PayView({Key key}) : super(key: key);
@@ -20,21 +20,17 @@ class _PayViewState extends State<PayView> {
   final cartController = Get.put(CartController());
 
   final buyController = Get.put(BuyController());
+  final databaseService = Get.put(DatabaseService());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    /*print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-    getData();
-    print('$ehe,llllllllllllllllllll');*/
   }
 
   var ehe;
   @override
   Widget build(BuildContext context) {
-    /*print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-    getData();*/
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -79,6 +75,12 @@ class _PayViewState extends State<PayView> {
                           .then((value) => Get.snackbar(
                               "Success", 'product bought successful',
                               snackPosition: SnackPosition.TOP));
+
+                      ///Displays a notification to the seller
+                      databaseService.sendNotification(
+                          title: "bought",
+                          body: "an item was bought",
+                          token: buyController.token);
 
                       Get.to(() => DrawerView());
                     },
@@ -130,18 +132,4 @@ class _PayViewState extends State<PayView> {
       ),
     );
   }
-
-  /*Future<void> getData() async {
-    print('getData');
-    try {
-      ehe = FirebaseFirestore.instance
-          .collection("Products")
-          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
-          .snapshots()
-          .length
-          .toString();
-    } catch (e) {
-      print(e);
-    }
-  }*/
 }

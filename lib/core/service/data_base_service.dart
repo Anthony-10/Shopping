@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,7 @@ import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:http/http.dart' as http;
 
 class DatabaseService extends GetxController {
   final addProductsController = Get.put(AddProductsController());
@@ -17,12 +20,12 @@ class DatabaseService extends GetxController {
 
   List fileURLList = [];
 
-  var categories = 0;
-  var products = 0;
-  var sold = 0;
-  var returns = 0;
-  var order = 0;
-  var likes = 0;
+  var categories = 0.obs;
+  var products = 0.obs;
+  var sold = 0.obs;
+  var returns = 0.obs;
+  var order = 0.obs;
+  var likes = 0.obs;
 
   var itemProducts;
 
@@ -190,11 +193,11 @@ class DatabaseService extends GetxController {
         .then((QuerySnapshot querySnapshot) {
       if (querySnapshot.docs.isNotEmpty) {
         querySnapshot.docs.forEach((doc) {
-          categories = doc['categories'];
-          products = doc['products'];
-          sold = doc['sold'];
-          order = doc['order'];
-          returns = doc['returns'];
+          categories.value = doc['categories'];
+          products.value = doc['products'];
+          sold.value = doc['sold'];
+          order.value = doc['order'];
+          returns.value = doc['returns'];
         });
       } else {
         print(
@@ -299,5 +302,38 @@ class DatabaseService extends GetxController {
         return;
       }
     });
+  }
+
+  sendNotification({String title, String token, String body}) async {
+    print('sendNotification>>>>>>>>>>>>>>>>>>>>>>>>>');
+    final data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'message': title,
+    };
+    try {
+      http.Response response =
+          await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+              headers: <String, String>{
+                'Content-Type': 'application/json',
+                'Authorization':
+                    'key=AAAA_tzeppI:APA91bGKpmmwRTN1Z3I-ycfSrLsD83uEIU7j-xk63ZUT1urRh32gknodGVZRSNLbv-9zHPSfA9Ck2K3udpdRblEsJXSXk3_zO_1PJokkrSqsYl0-Q4vZpA6YXzhVHvo8y-4Evnc-7t4q'
+              },
+              body: jsonEncode(<String, dynamic>{
+                'notification': <String, dynamic>{'title': title, 'body': body},
+                'priority': 'high',
+                'data': data,
+                'to': '$token'
+              }));
+      print(
+          '${response.statusCode}>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      if (response.statusCode == 200) {
+        print('your notification is send');
+      } else {
+        print('Error');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

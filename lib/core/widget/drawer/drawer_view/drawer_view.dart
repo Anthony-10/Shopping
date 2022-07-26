@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:shopping_app/authentication/controller/auth_controller.dart';
 import 'package:shopping_app/buy/bought/view/bought_view.dart';
 import 'package:shopping_app/buy/buy_location/view/buy_location_list.dart';
-import 'package:shopping_app/buy/buy_location/view/buyer_location.dart';
 import 'package:shopping_app/buy/cart/view/cart_view.dart';
 import 'package:shopping_app/buy/data/buy_drawer/buy_item.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
@@ -14,9 +13,8 @@ import 'package:shopping_app/sell/models/drawer_model.dart';
 import 'package:shopping_app/sell/orders/view/orders_view.dart';
 import 'package:shopping_app/sell/products/view/product_view.dart';
 import 'package:shopping_app/sell/sell_location/view/sell_location_list.dart';
-import 'package:shopping_app/sell/settings/view/setting_view.dart';
-
 import '../../../../buy/favourite/favourites.dart';
+import '../../../../settings/view/setting_view.dart';
 import '../drawer_widget.dart';
 
 class DrawerView extends StatefulWidget {

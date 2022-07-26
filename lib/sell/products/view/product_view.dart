@@ -3,10 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_image.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
+
+import '../../widget/sell_shimmer_effect.dart';
 
 class ProductView extends StatefulWidget {
   ProductView({Key key}) : super(key: key);
@@ -35,22 +36,13 @@ class _ProductViewState extends State<ProductView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () => Get.back(),
-                  icon: Icon(Icons.arrow_back),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: Get.height * .03, left: Get.width * .09),
-                  child: Text(
-                    'Products',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                ),
-              ],
+                child: Padding(
+              padding:
+                  EdgeInsets.only(top: Get.height * .06, left: Get.width * .09),
+              child: Text(
+                'Products',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
             )),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
@@ -77,7 +69,6 @@ class _ProductViewState extends State<ProductView> {
                             physics: BouncingScrollPhysics(),
                             itemCount: snapshot.data.size,
                             itemBuilder: (context, index) {
-                              print('yyyyyyyyyyyyyyyyyyyyyy');
                               return Column(
                                 children: [
                                   SizedBox(
@@ -85,7 +76,7 @@ class _ProductViewState extends State<ProductView> {
                                     width: Get.width * 0.5,
                                     child: GestureDetector(
                                       onTap: () {
-                                        buyController.images =
+                                        buyController.image =
                                             snapshot.data.docs[index]['Url'];
                                         buyController.id = snapshot
                                             .data.docs[index]["userId"]
@@ -146,57 +137,7 @@ class _ProductViewState extends State<ProductView> {
                       }
                       return null;
                     } else {
-                      return GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 1 / 1.8,
-                          mainAxisSpacing: 9,
-                          crossAxisSpacing: 5,
-                          crossAxisCount: 2,
-                        ),
-                        primary: false,
-                        padding: const EdgeInsets.all(15),
-                        physics: BouncingScrollPhysics(),
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return Shimmer.fromColors(
-                            baseColor: Colors.grey[500],
-                            highlightColor: Colors.grey[100],
-                            child: Container(
-                              height: Get.height * 0.9,
-                              width: Get.width * 0.5,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: Get.height * 0.30,
-                                    width: Get.width * 0.5,
-                                    child: Card(
-                                      color: Colors.grey,
-                                      semanticContainer: true,
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      elevation: 20.0,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: Get.height * .02,
-                                  ),
-                                  Container(
-                                    width: Get.width * 0.3,
-                                    child: Container(
-                                      height: Get.height * .03,
-                                      width: Get.width * .3,
-                                      color: Colors.grey,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
+                      return SellShimmerEffect();
                     }
                   }),
             ),

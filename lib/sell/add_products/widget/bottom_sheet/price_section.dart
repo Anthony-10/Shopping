@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/sell/add_products/controller/addproducts_controller.dart';
 
@@ -31,9 +32,11 @@ class _PriceSectionState extends State<PriceSection> {
                 decoration: InputDecoration(
                   labelText: 'ProductName',
                 ),
+                keyboardType: TextInputType.text,
                 validator: (value) {
-                  if (value.isEmpty ||
-                      RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                  if (value == null ||
+                      value
+                          .isEmpty /*RegExp(r'^[a-z A-Z]+$').hasMatch(value)*/) {
                     return 'Enter correct ProductName';
                   } else {
                     return null;
@@ -48,9 +51,14 @@ class _PriceSectionState extends State<PriceSection> {
                 key: const ValueKey("ProductSize"),
                 textAlign: TextAlign.start,
                 decoration: InputDecoration(labelText: "ProductSize"),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 validator: (value) {
-                  if (value.isEmpty ||
-                      RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                  if (value == null ||
+                      value
+                          .isEmpty /*RegExp(r'^[a-z A-Z]+$').hasMatch(value)*/) {
                     return 'Enter correct ProductSize';
                   } else {
                     return null;
@@ -65,8 +73,13 @@ class _PriceSectionState extends State<PriceSection> {
                 key: const ValueKey("ProductAmount"),
                 textAlign: TextAlign.start,
                 decoration: InputDecoration(labelText: "ProductAmount"),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 validator: (value) {
-                  if (value.isEmpty || RegExp(r'^[0-9]+$').hasMatch(value)) {
+                  if (value == null ||
+                      value.isEmpty /*RegExp(r'^[0-9]+$').hasMatch(value)*/) {
                     return 'Enter correct ProductSize';
                   } else {
                     return null;
@@ -81,8 +94,13 @@ class _PriceSectionState extends State<PriceSection> {
                 key: const ValueKey("ProductPrice"),
                 textAlign: TextAlign.start,
                 decoration: InputDecoration(labelText: "ProductPrice"),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 validator: (value) {
-                  if (value.isEmpty || RegExp(r'^[0-9]+$').hasMatch(value)) {
+                  if (value == null ||
+                      value.isEmpty /*RegExp(r'^[0-9]+$').hasMatch(value)*/) {
                     return 'Enter correct ProductSize';
                   } else {
                     return null;
@@ -94,12 +112,19 @@ class _PriceSectionState extends State<PriceSection> {
                 height: 20,
               ),
               TextFormField(
+                maxLengthEnforcement: MaxLengthEnforcement.none,
                 key: const ValueKey("ProductDescription"),
                 textAlign: TextAlign.start,
-                decoration: InputDecoration(labelText: "ProductDescription"),
+                maxLength: 100,
+                maxLines: 8,
+                decoration: InputDecoration(
+                    labelText: "ProductDescription",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    )),
+                keyboardType: TextInputType.multiline,
                 validator: (value) {
-                  if (value.isEmpty ||
-                      RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                  if (value == null || value.isEmpty) {
                     return 'Enter correct ProductDescription';
                   } else {
                     return null;

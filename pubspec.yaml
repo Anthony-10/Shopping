@@ -58,6 +58,9 @@ dependencies:
   #geocoder: ^0.2.1
   shared_preferences: ^2.0.12
   lottie: ^1.2.1
+  flutter_local_notifications: ^9.5.2
+  firebase_messaging: ^11.0.0
+  http: ^0.13.4
 
 
 dev_dependencies:

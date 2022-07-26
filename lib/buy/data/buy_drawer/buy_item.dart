@@ -9,7 +9,6 @@ class BuyDrawerItems {
   static const bought = DrawerItem(title: 'Bought', icon: Icons.shop);
   static const tryIt = DrawerItem(title: 'Try It', icon: Icons.favorite);
   static const location = DrawerItem(title: 'Location', icon: Icons.map);
-  static const settings = DrawerItem(title: 'Settings', icon: Icons.settings);
   static const about = DrawerItem(title: 'About', icon: Icons.help);
   static const logOut = DrawerItem(title: 'log Out', icon: Icons.logout);
 
@@ -20,7 +19,6 @@ class BuyDrawerItems {
     bought,
     tryIt,
     location,
-    settings,
     about,
     logOut,
   ];

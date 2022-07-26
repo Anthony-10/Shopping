@@ -25,9 +25,11 @@ class _SellerAccountState extends State<SellerAccount> {
   void initState() {
     // TODO: implement initState
     buyController.colorFunction();
-
-    print(
-        'SellerAccount bbbbbbbbbbbbbbbbbbbbbbbbbb${buyController.likes.value}');
+    buyController.getLikeCount(ids: buyController.id);
+    buyController.getUserToken();
+    buyController
+        .getCategories(uid: buyController.id)
+        .then((value) => buyController.firstCategories());
     super.initState();
   }
 
@@ -38,6 +40,7 @@ class _SellerAccountState extends State<SellerAccount> {
         body: Column(children: [
           Container(
             height: Get.height * 0.33,
+            width: Get.width,
             decoration: BoxDecoration(
                 gradient: LinearGradient(begin: Alignment.topCenter, colors: [
                   Colors.indigo[800],
@@ -72,6 +75,14 @@ class _SellerAccountState extends State<SellerAccount> {
                                   print('2222222222222222');
                                   //TODO
                                   buyController.checkForLikes();
+
+                                  ///Displays a notification to the seller
+                                  databaseService.sendNotification(
+                                      title: "favorites",
+                                      body: buyController.color.value == 0
+                                          ? 'some one added you to his favorites'
+                                          : 'some one removed you to his favorites',
+                                      token: buyController.token);
                                 },
                                 icon: Obx(() => Icon(Icons.favorite,
                                     color: buyController.color.value == 0
@@ -97,9 +108,71 @@ class _SellerAccountState extends State<SellerAccount> {
                     padding: const EdgeInsets.only(left: 10),
                     child: Align(
                         alignment: Alignment.bottomLeft,
-                        child: Text(
-                          buyController.name,
-                          style: TextStyle(fontSize: 25, color: Colors.white54),
+                        child: GestureDetector(
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(16),
+                                    height: 90,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 48,
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'oh snap',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                ),
+                                                Text(
+                                                  'nice snackBar',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ]),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: -20,
+                                    left: 0,
+                                    child: Icon(
+                                      Icons.check_circle_outline_outlined,
+                                      size: 54.0,
+                                      color: Colors.blueGrey,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ));
+                          },
+                          child: Text(
+                            buyController.name,
+                            style:
+                                TextStyle(fontSize: 25, color: Colors.white54),
+                          ),
                         )),
                   )
                 ],
@@ -109,61 +182,14 @@ class _SellerAccountState extends State<SellerAccount> {
           SizedBox(
             height: 20,
           ),
-          // The Categories menu
+
+          /// The Categories menu
           SellerCategories(),
-          // The Products
+
+          /// The Products
           SellerProducts(),
         ]),
       ),
     );
   }
-
-  /*Future favorite({var image, String name}) async {
-    try {
-      String uid = FirebaseAuth.instance.currentUser.uid;
-      dynamic likes;
-      bool _isLiked = likes[uid] == true;
-      if (_isLiked) {
-        setState(() {
-          likeCount -= 1;
-          isLiked = false;
-          likes[uid] = false;
-        });
-      }
-      */ /*var value = 1;
-      DocumentReference documentReference =
-          FirebaseFirestore.instance.collection('love').doc(uid);
-
-      return FirebaseFirestore.instance.runTransaction((transaction) async {
-        DocumentSnapshot snapshot = await transaction.get(documentReference);
-
-        if (!snapshot.exists) {
-          documentReference.set(
-              {'love': value});
-        }
-        int newAmount = snapshot.get('love') + 1;
-        transaction.update(documentReference, {'Love': newAmount});
-      });*/ /*
-    } on FirebaseException catch (e) {
-      Get.snackbar(
-        "Error Adding User Info",
-        e.message,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }*/
-
-  /*Future<void> getData() async {
-    try {
-      buyController.item = FirebaseFirestore.instance
-          .collection("Products")
-          .where("productElement",
-              isEqualTo: "productElement".startsWith("productElement"))
-          .snapshots();
-    } catch (e) {
-      print(e);
-    }
-  }*/
 }

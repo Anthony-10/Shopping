@@ -4,13 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/seller_account.dart';
 import 'package:shopping_app/buy/buy_page/widget/carouselSlider.dart';
 import 'package:shopping_app/buy/buy_page/widget/userInfo.dart';
 import 'package:shopping_app/buy/data/slide_controller.dart';
 import 'package:shopping_app/core/service/data_base_service.dart';
+import 'package:shopping_app/core/service/local_notification_service.dart';
 import 'package:shopping_app/core/widget/drawer/controller/drawer_controller.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class BuyView extends StatefulWidget {
   @override
@@ -44,11 +47,6 @@ class _BuyViewState extends State<BuyView> {
   Future _getTheDistance() async {
     _currentUserPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    /* print('${_currentUserPosition.latitude}Lalalalalalalalalalalala');
-    print('${buyController.lat}latlatlatlatlatlatlatlatlat');
-    print('${_currentUserPosition.longitude}lololololololololololololo');
-    print('${buyController.long}longlonglonglonglonglonglonglonglonglong');*/
-    print('${userInfo.length},kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
     for (int i = 0; i < userInfo.length; i++) {
       double lat = userInfo[i]['lat'];
       double long = userInfo[i]['long'];
@@ -56,18 +54,12 @@ class _BuyViewState extends State<BuyView> {
       var email = userInfo[i]['email'];
       var userId = userInfo[i]['userId'];
       var firstName = userInfo[i]['firstName'];
-      print('$lat,ppppppppppppppppppp');
-      print('${userInfo[i]['long']},77777777777777777777777777');
-      print('$long,oooooooooooooooooooooo');
       distanceImMeter = Geolocator.distanceBetween(
           _currentUserPosition.latitude,
           _currentUserPosition.longitude,
           lat,
           long);
-      print('rerere');
       var distance = distanceImMeter.round().toInt();
-      print('qeqeqe');
-      print('$distance,llllllllllllllllllllllllllllllllllllllllllllll');
 
       updateDistance(
           email: email,
@@ -80,7 +72,7 @@ class _BuyViewState extends State<BuyView> {
 
   Future<void> getData() async {
     print('getData888888888888888888888888');
-    print('$uid,uid ooooooooooooooooooooooooooooooooooooo');
+
     try {
       FirebaseFirestore.instance
           .collection('Users')
@@ -95,9 +87,6 @@ class _BuyViewState extends State<BuyView> {
           buyController.email = doc['email'];
           buyController.userId = doc['userId'];
           buyController.firstName = doc['firstName'];
-          /*buyController.address = doc['Address'];
-          buyController.postalCode = doc['postalCode'];
-          buyController.country = doc['Country'];*/
           userInfo.add({
             'lat': buyController.lat,
             'long': buyController.long,
@@ -106,45 +95,8 @@ class _BuyViewState extends State<BuyView> {
             'userId': buyController.userId,
             'firstName': buyController.firstName
           });
-          //loglatid.add({'long': buyController.long});
-          //loglatid.add(buyController.locationId);
-          print('${doc['latitude']},eeeeeeeeeeeeeeeeeeeeee');
-          print('${doc['longitude']},eeeeeeeeeeeeeeeeeeeeee');
-          print('$userInfo,999999999999999999999999999999999999999999999999');
         });
       }).whenComplete(() => _getTheDistance());
-
-      /*DocumentSnapshot documentSnapshot =
-          await*/
-      /* FirebaseFirestore.instance
-          .collection('Products')
-          .doc()
-          .get()
-          .then((DocumentSnapshot documentSnapshot) {
-        if (documentSnapshot.exists) {
-          setState(() {
-            buyController.lat = documentSnapshot.get('latitude');
-            buyController.long = documentSnapshot.get('longitude');
-            buyController.address = documentSnapshot.get('Address');
-            buyController.country = documentSnapshot.get('Country');
-          });
-          print('${buyController.lat} getData:::::::::::::::::::::::::');
-        } else {
-          print('wewe');
-        }
-      });*/
-      /* print('$documentSnapshot,55555555555555555555555555555555555555555');
-      if (documentSnapshot.exists) {
-        setState(() {
-          buyController.lat = documentSnapshot.get('latitude');
-          buyController.long = documentSnapshot.get('longitude');
-          buyController.address = documentSnapshot.get('Address');
-          buyController.country = documentSnapshot.get('Country');
-        });
-        print('${buyController.lat} getData:::::::::::::::::::::::::');
-      } else {
-        print('wewe');
-      }*/
     } catch (e) {
       print(e);
     }
@@ -157,13 +109,7 @@ class _BuyViewState extends State<BuyView> {
     var userId,
     var distances,
   }) async {
-    print('$email,ggggggggggggggggggggggggjgjjgjgjgj');
-    print('$firstName,ggggggggggggggggggggggggjgjjgjgjgj');
-    print('$url,ggggggggggggggggggggggggjgjjgjgjgj');
-    print('$userId,ggggggggggggggggggggggggjgjjgjgjgj');
-    print('$distances,ggggggggggggggggggggggggjgjjgjgjgj');
     if (distances != null) {
-      print('$distances,jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
       try {
         await _fireStore.collection("Users").doc(userId).update({
           'email': email,
@@ -173,8 +119,6 @@ class _BuyViewState extends State<BuyView> {
           'distances': distances
         });
       } on FirebaseException catch (e) {
-        print('${e.code},kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-        print('${e.message},kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
         Get.snackbar(
           "Error Adding User ",
           e.message,
@@ -205,30 +149,40 @@ class _BuyViewState extends State<BuyView> {
       });
     });
     print('$getUserDataList,9999999999999999999999999999999');
-    /*print('${buyController.url},000000000000000000000000000000000');
-    print('${buyController.email},9999999999999999999999999999999');
-    print('${buyController.firstName},22222222222222222222222222222');
-    print('${buyController.userId},44444444444444444444444444444444');*/
-    /*if (documentSnapshot.exists) {
-      setState(() {
-        buyController.url = documentSnapshot.get('Url');
-        buyController.email = documentSnapshot.get('email');
-        buyController.firstName = documentSnapshot.get('firstName');
-        buyController.userId = documentSnapshot.get('userId');
-      });
-      print('${buyController.lat} getUserData:::::::::::::::::::::::::');
-    } else {
-      print('wewe');
-    }*/
   }
 
   @override
   void initState() {
     // TODO: implement initSttData();*/
-    /*getUserData().whenComplete(() => getData());*/
-    /*_getTheDistance();*/
     getData();
     super.initState();
+
+    ///gives you the message on which user taps
+    ///and it opens the app from terminated state
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      print('opens the app>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      if (message != null) {
+        final routeFromMessage = message.data['/sell_view'];
+        Get.to(routeFromMessage);
+      }
+    });
+
+    ///foreground work
+    FirebaseMessaging.onMessage.listen((message) {
+      print('onMessage>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      if (message.notification != null) {
+        print(message.notification.body);
+        print(message.notification.title);
+      }
+      LocalNotificationService.display(message);
+    });
+
+    ///when the app is in background but opened and user taps
+    ///on the notification
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      final routeFromMessage = message.data['/sell_view'];
+      Get.to(routeFromMessage);
+    });
   }
 
   @override
@@ -264,9 +218,6 @@ class _BuyViewState extends State<BuyView> {
                                     snapshotData.docs[index]['userId'];
                                 buyController.image =
                                     snapshotData.docs[index]['Url'];
-                                print('ttttttttttttttttt,${buyController.id}');
-                                print(
-                                    'ttttttttttttttttt,${buyController.image}');
                                 Get.to(() => SellerAccount());
                               },
                               child: Card(
@@ -327,9 +278,70 @@ class _BuyViewState extends State<BuyView> {
                     );
                   }),
             )
-          : Container(
-              color: Colors.blue,
-              child: Center(child: Text('search')),
+          : Expanded(
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 1 / 1.8,
+                  mainAxisSpacing: 9,
+                  crossAxisSpacing: 5,
+                  crossAxisCount: 2,
+                ),
+                primary: false,
+                padding: const EdgeInsets.all(15),
+                physics: BouncingScrollPhysics(),
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[500],
+                    highlightColor: Colors.grey[100],
+                    child: Container(
+                      height: Get.height * 0.9,
+                      width: Get.width * 0.5,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: Get.height * 0.30,
+                            width: Get.width * 0.5,
+                            child: Card(
+                              color: Colors.grey,
+                              semanticContainer: true,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              elevation: 20.0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: Get.height * .02,
+                          ),
+                          Container(
+                            width: Get.width * 0.3,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: Get.height * .03,
+                                  width: Get.width * .3,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(
+                                  height: Get.height * .02,
+                                ),
+                                Container(
+                                  height: Get.height * .03,
+                                  width: Get.width * .3,
+                                  color: Colors.grey,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             );
     }
 

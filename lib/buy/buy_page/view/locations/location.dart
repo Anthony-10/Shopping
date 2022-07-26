@@ -6,10 +6,6 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shopping_app/buy/buy_page/controller/buy_controller.dart';
 import 'package:shopping_app/buy/buy_page/view/locations/.env.dart';
-import 'package:shopping_app/buy/buy_page/view/locations/direction_model.dart';
-
-import 'directions_repository.dart';
-//import 'package:shopping_app/core/service/.env.dart';
 
 class Location extends StatefulWidget {
   const Location({Key key}) : super(key: key);
@@ -28,7 +24,6 @@ class _LocationState extends State<Location> {
   PolylinePoints polylinePoints;
   Position position;
   int length;
-  Directions _info;
 
   void getCurrentLocation() async {
     Position currentPosition =

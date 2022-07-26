@@ -157,17 +157,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               SizedBox(
                                 width: 20,
                               ),
-                              Column(children: [
-                                Text(
-                                    snapshot.data.docs[index]['firstName']
-                                        .toString(),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18)),
-                                Text(
-                                  snapshot.data.docs[index]['email'].toString(),
-                                ),
-                              ])
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        snapshot.data.docs[index]['firstName']
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                    SizedBox(
+                                      height: Get.height * .01,
+                                    ),
+                                    Text(
+                                      snapshot.data.docs[index]['email']
+                                          .toString(),
+                                    ),
+                                  ])
                             ],
                           ),
                         );
